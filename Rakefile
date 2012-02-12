@@ -7,19 +7,23 @@ CLEAN.include OUTPUT_DIR
 
 directory OUTPUT_DIR
 
-task :html => ['public_static'] do
+task :html => [OUTPUT_DIR] do
   puts 'index.html'
   system "haml index.haml #{OUTPUT_DIR}/index.html"
 end
 
-task :css => ['public_static'] do
+task :css => [OUTPUT_DIR] do
   puts 'styles.css'
   system "sass styles.scss #{OUTPUT_DIR}/styles.css"
 end
 
-task :js => [ 'public_static'] do
+task :js => [ OUTPUT_DIR ] do
   puts 'main.js'
-  system "coffee -o #{OUTPUT_DIR} main.coffee"
+  cp Dir.glob("*.js"), OUTPUT_DIR
+  Dir.glob("*.coffee").each do |file|
+    system "coffee -o #{OUTPUT_DIR} #{file}"
+  end
 end
 
+desc "Create all static assets for this project"
 task :all => [:js, :html, :css]
