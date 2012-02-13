@@ -1,4 +1,26 @@
 body {
   color: #FFFFFF;
   background: #000000;
+  margin: 0px;
+  padding: 0px;
+}
+
+#list {
+  padding: 0px;
+  margin: 0px;
+  li {
+    padding: 6px;
+    display: block;
+    list-style-type: none;
+    float: left;
+    overflow: hidden;
+    section {
+      width: 160px;
+      height: 160px;
+      border: dotted 2px red;
+      h1 {
+        width: 160px;
+      }
+    }
+  }
 }

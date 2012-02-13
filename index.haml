@@ -6,9 +6,11 @@
   %script(type="text/javascript" src="main.js")
   %link(rel="stylesheet" type="text/css" href="styles.css")
   %script(id="spacetile" type="text/x-jquery-tmpl")
-    %section.spacetile
-      %h1 {{=space}}
-      %img(src="{{=icon.open}}")
+    %li
+      %section
+        %h1 {{=space}}
+        %img(src="{{=logo}}")
 %body
   %h1 Our Spaces
-  #list Loading...
+  %ul#list
+  #loading Loading...
