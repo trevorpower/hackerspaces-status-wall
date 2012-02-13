@@ -2,8 +2,13 @@
 %head
   %title Our Spaces
   %script(type="text/javascript" src="jquery-1.7.1.min.js")
+  %script(type="text/javascript" src="jsrender.js")
   %script(type="text/javascript" src="main.js")
   %link(rel="stylesheet" type="text/css" href="styles.css")
+  %script(id="spacetile" type="text/x-jquery-tmpl")
+    %section.spacetile
+      %h1 {{=space}}
+      %img(src="{{=icon.open}}")
 %body
   %h1 Our Spaces
   #list Loading...
