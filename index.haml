@@ -7,8 +7,14 @@
   %link(rel="stylesheet" type="text/css" href="styles.css")
   %script(id="spacetile" type="text/x-jquery-tmpl")
     %li(style="background-image: url({{=logo}}); background-clip: content-box;")
-      %section(class="{{state}} test")
+      %section(class="{{=state}}")
         %h1 {{=space}}
+        %img(src="{{=state_icon}}")
+        %h2 {{=status}}
+        %a#web(href="{{=url}}") Web
+        %a#email(href="mailto://{{=contact.ml}}") Email
+        %a#twitter(href="http://twitter.com/{{=contact.twitter}}") Twitter
+        
 %body
   %header
     %h1 Our Spaces
