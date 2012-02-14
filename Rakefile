@@ -25,5 +25,9 @@ task :js => [ OUTPUT_DIR ] do
   end
 end
 
+task :watch do
+  system "sass --watch styles.scss:#{OUTPUT_DIR}/styles.css"
+end
+
 desc "Create all static assets for this project"
 task :all => [:js, :html, :css]

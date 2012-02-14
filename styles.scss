@@ -5,6 +5,14 @@ body {
   padding: 0px;
 }
 
+header {
+  width: 100%;
+  text-align: center;
+  h1 {
+    margin: { left: auto; right: auto; }
+  }
+}
+
 #list {
   padding: 0px;
   margin: 0px;
@@ -14,10 +22,13 @@ body {
     list-style-type: none;
     float: left;
     overflow: hidden;
+    background-origin: content-box;
     section {
-      width: 160px;
-      height: 160px;
+      opacity: 0.9;
+      width: 260px;
+      height: 260px;
       border: dotted 2px red;
+      background: #000000;
       h1 {
         width: 160px;
       }

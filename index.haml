@@ -6,11 +6,11 @@
   %script(type="text/javascript" src="main.js")
   %link(rel="stylesheet" type="text/css" href="styles.css")
   %script(id="spacetile" type="text/x-jquery-tmpl")
-    %li
-      %section
+    %li(style="background-image: url({{=logo}}); background-clip: content-box;")
+      %section(class="{{state}} test")
         %h1 {{=space}}
-        %img(src="{{=logo}}")
 %body
-  %h1 Our Spaces
+  %header
+    %h1 Our Spaces
   %ul#list
   #loading Loading...

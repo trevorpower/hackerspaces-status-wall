@@ -5,8 +5,12 @@ jQuery ->
       $.each(directory, (name, url) ->
         $.getJSON(
           url
-          (space, statusText) ->
-            $('#list').append($('#spacetile').render(space))
+          (space) ->
+            space['state'] = 'open'
+            $($('#spacetile').render(space))
+              .hide()
+              .appendTo('#list')
+              .fadeIn()
             $('#loading').remove() 
         )
       )
