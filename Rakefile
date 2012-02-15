@@ -2,7 +2,7 @@ require 'rake/clean'
 
 task :default => [:all]
 
-OUTPUT_DIR = 'public_static'
+OUTPUT_DIR = 'public/wall'
 CLEAN.include OUTPUT_DIR
 
 directory OUTPUT_DIR
