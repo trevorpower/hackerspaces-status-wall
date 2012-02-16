@@ -14,7 +14,7 @@ header {
   }
 }
 
-#list {
+#spaces {
   padding: 0px;
   margin: 0px;
   li {
@@ -47,4 +47,8 @@ header {
       border: solid 2px green;
     }
   }
+}
+
+#loading {
+  clear: both;
 }

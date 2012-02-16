@@ -1,6 +1,6 @@
 !!! 5
 %head
-  %title Hackerspaces Status Wall
+  %title Global Hackerspaces Status Wall
   %script(type="text/javascript" src="jquery-1.7.1.min.js")
   %script(type="text/javascript" src="jsrender.js")
   %script(type="text/javascript" src="main.js")
@@ -14,9 +14,13 @@
         %a#web(href="{{=url}}") Web
         %a#email(href="mailto://{{=contact.ml}}") Email
         %a#twitter(href="http://twitter.com/{{=contact.twitter}}") Twitter
-        
+  %script(id="progress" type="text/x-jquery-tmpl")
+    %li(id='{{=name}}')
+      %a(href='{{=url}}') {{=name}}
 %body
   %header
-    %h1 Hackerspaces Status Wall
-  %ul#list
-  #loading Loading...
+    %h1 Global Hackerspaces Status Wall
+  %ul#spaces
+  #loading
+    Loading...
+    %ul

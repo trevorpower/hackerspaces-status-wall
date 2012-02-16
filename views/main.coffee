@@ -1,30 +1,37 @@
+directorySource = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+
+$ = jQuery
+
+$.fn.movingBackground = ->
+  this.mousemove (e)->
+    $(this).css("background-position-x", "#{$(this).offset().left - e.pageX}px")
+    $(this).css("background-position-y", "#{$(this).offset().top - e.pageY}px")
+    
+createSpaceTile = (info) ->
+  if info.open?
+    if info.open
+      info['state'] = 'open'
+      info['state_icon'] = info.icon.open if info.icon?
+    else 
+      info['state'] = 'closed'
+      info['state_icon'] = info.icon.close if info.icon?
+  else
+    info['state'] = 'unknown'
+    info['state_icon'] = ''
+  $($('#spacetile').render(info))
+
 jQuery ->
-  $.getJSON(
-    "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-    (directory) ->
+  $.getJSON(directorySource, (directory) ->
       $.each(directory, (name, url) ->
-        $.getJSON(
-          url
-          (space) ->
-            if space.open?
-              if space.open
-                space['state'] = 'open'
-                space['state_icon'] = space.icon.open if space.icon?
-              else 
-                space['state'] = 'closed'
-                space['state_icon'] = space.icon.close if space.icon?
-            else
-              space['state'] = 'unknown'
-              space['state_icon'] = ''
-            section = $($('#spacetile').render(space))
-              .hide()
-              .appendTo('#list')
-              .fadeIn()
-            $('#loading').remove() 
-            section.mousemove((e)->
-              $(this).css("background-position-x", -((e.pageX - 130) - section.offset().left) + "px")
-              $(this).css("background-position-y", -((e.pageY - 130) - section.offset().top) + "px")
-            )
+        $($('#progress').render({ name: name, url: url}))
+          .appendTo('#loading ul')
+        $.getJSON(url, (spaceInfo, statusText) ->
+          $("li[id='#{name}']").remove()
+          createSpaceTile(spaceInfo)
+            .hide()
+            .appendTo('#spaces')
+            .fadeIn()
+            .movingBackground()
         )
       )
   )
