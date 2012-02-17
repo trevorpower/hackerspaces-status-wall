@@ -50,5 +50,9 @@ header {
 }
 
 #loading {
+  margin: 20px;
   clear: both;
+  li.error {
+    color: #ff0000;
+  }
 }
