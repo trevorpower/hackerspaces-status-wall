@@ -50,9 +50,33 @@ header {
 }
 
 #loading {
-  margin: 20px;
+  text-align: center;
+  margin: 60px;
+  padding-top: 40px;
   clear: both;
+  h1 {
+    background-color: #222222;
+    padding: 10px;
+    margin: 0px;
+  }
+  ul {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+  }
+  li {
+    a {
+      color: #339933;
+    }
+    background-color: #222222;
+    list-style-type: none;
+    margin: 0px;
+    padding: 10px;
+    border-top: dotted 1px #000000;
+  }
   li.error {
-    color: #ff0000;
+    a {
+      color: #993333;
+    }
   }
 }

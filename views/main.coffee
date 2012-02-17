@@ -26,13 +26,15 @@ jQuery ->
           datatype: 'json'
           success: (spaceInfo, statusText) ->
             $("li[id='#{name}']").remove()
-            #alert(spaceInfo)
             createSpaceTile(spaceInfo)
               .hide()
               .appendTo('#spaces')
               .fadeIn()
               .movingBackground()
           error: (jqXHR, textStatus, errorThrown) ->
-            $("li[id='#{name}']").addClass('error')
+            $("li[id='#{name}']")
+              .addClass('error')
+              .find('.details')
+              .text("#{textStatus} #{errorThrown} #{jqXHR.responseText}")
       )
   )
