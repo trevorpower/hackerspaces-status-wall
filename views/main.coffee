@@ -16,25 +16,36 @@ createSpaceTile = (info) ->
     info['state_icon'] = info.icon.close if info.icon?
   $($('#spacetile').render(info))
 
+getSpaceInfo = (name, url, tries = 1) ->
+  $($('#progress').render({ name: name, url: url}))
+    .appendTo('#loading ul') if tries == 1
+  $.ajax
+    url: url
+    datatype: 'json'
+    success: (spaceInfo, statusText) ->
+      $("li[id='#{name}']").remove()
+      createSpaceTile(spaceInfo)
+        .hide()
+        .appendTo('#spaces')
+        .fadeIn()
+        .movingBackground()
+    error: (jqXHR, textStatus, errorThrown) ->
+      details = $("li[id='#{name}']")
+        .addClass('error')
+        .find('.details')
+      switch textStatus
+        when "error"
+          if jqXHR.status == 0
+            details.text "#{errorThrown} #{JSON.stringify(jqXHR)} (Tries #{tries})"
+            getSpaceInfo name, url, tries + 1 if tries < 3
+          else
+            details.text "#{jqXHR.status}:#{errorThrown}"
+        when "timeout"
+          details.text "The request timed out."
+        when "parsererror" 
+          details.text "#{errorThrown}\n#{jqXHR.responseText}"
+          
 jQuery ->
   $.getJSON(directorySource, (directory) ->
-      $.each(directory, (name, url) ->
-        $($('#progress').render({ name: name, url: url}))
-          .appendTo('#loading ul')
-        $.ajax
-          url: url
-          datatype: 'json'
-          success: (spaceInfo, statusText) ->
-            $("li[id='#{name}']").remove()
-            createSpaceTile(spaceInfo)
-              .hide()
-              .appendTo('#spaces')
-              .fadeIn()
-              .movingBackground()
-          error: (jqXHR, textStatus, errorThrown) ->
-            $("li[id='#{name}']")
-              .addClass('error')
-              .find('.details')
-              .text("#{textStatus} #{errorThrown} #{jqXHR.responseText}")
-      )
+    $.each(directory, getSpaceInfo)
   )
