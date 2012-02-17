@@ -13,7 +13,7 @@ createSpaceTile = (info) ->
     info['state_icon'] = info.icon.open if info.icon?
   else 
     info['state'] = 'closed'
-    info['state_icon'] = info.icon.close if info.icon?
+    info['state_icon'] = info.icon.closed if info.icon?
   $($('#spacetile').render(info))
 
 getSpaceInfo = (name, url, tries = 1) ->
