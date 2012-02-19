@@ -16,12 +16,25 @@ createSpaceTile = (info) ->
     info['state_icon'] = info.icon.closed if info.icon?
   $($('#spacetile').render(info))
 
+getAjaxErrorText = (xhr, status, error, tries) ->
+  switch status
+    when "error"
+      if xhr.status == 0
+        "#{JSON.stringify(xhr)} (Tries #{tries})"
+      else
+        "#{xhr.status}:#{error}"
+    when "timeout"
+      "The request timed out."
+    when "parsererror" 
+      "#{error}\n--\n#{xhr.responseText}"
+
 getSpaceInfo = (name, url, tries = 1) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading ul') if tries == 1
   $.ajax
     url: url
     datatype: 'json'
+    cache: false
     success: (spaceInfo, statusText) ->
       $("li[id='#{name}']").remove()
       createSpaceTile(spaceInfo)
@@ -33,17 +46,8 @@ getSpaceInfo = (name, url, tries = 1) ->
       details = $("li[id='#{name}']")
         .addClass('error')
         .find('.details')
-      switch textStatus
-        when "error"
-          if jqXHR.status == 0
-            details.text "#{errorThrown} #{JSON.stringify(jqXHR)} (Tries #{tries})"
-            getSpaceInfo name, url, tries + 1 if tries < 3
-          else
-            details.text "#{jqXHR.status}:#{errorThrown}"
-        when "timeout"
-          details.text "The request timed out."
-        when "parsererror" 
-          details.text "#{errorThrown}\n#{jqXHR.responseText}"
+        .text(getAjaxErrorText(jqXHR, textStatus, errorThrown, tries))
+      getSpaceInfo name, url, tries + 1 if tries < 3
           
 jQuery ->
   $.getJSON(directorySource, (directory) ->

@@ -65,17 +65,24 @@ header {
     text-align: left;
   }
   li {
-    a {
+    h2 {
+      font-size: 18px;
       color: #339933;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+    a {
+      color: #666699;
     }
     background-color: #222222;
     list-style-type: none;
     margin: 0px;
     padding: 10px;
+    padding-top: 0px;
     border-top: dotted 1px #000000;
   }
   li.error {
-    a {
+    h2 {
       color: #993333;
     }
     .details {
