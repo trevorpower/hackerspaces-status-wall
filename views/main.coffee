@@ -16,11 +16,11 @@ createSpaceTile = (info) ->
     info['state_icon'] = info.icon.closed if info.icon?
   $($('#spacetile').render(info))
 
-getAjaxErrorText = (xhr, status, error, tries) ->
+getAjaxErrorText = (xhr, status, error) ->
   switch status
     when "error"
       if xhr.status == 0
-        "#{JSON.stringify(xhr)} (Tries #{tries})"
+        "#{JSON.stringify(xhr)}"
       else
         "#{xhr.status}:#{error}"
     when "timeout"
@@ -28,9 +28,9 @@ getAjaxErrorText = (xhr, status, error, tries) ->
     when "parsererror" 
       "#{error}\n--\n#{xhr.responseText}"
 
-getSpaceInfo = (name, url, tries = 1) ->
+getSpaceInfo = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
-    .appendTo('#loading ul') if tries == 1
+    .appendTo('#loading ul')
   $.ajax
     url: url
     datatype: 'json'
@@ -46,8 +46,7 @@ getSpaceInfo = (name, url, tries = 1) ->
       details = $("li[id='#{name}']")
         .addClass('error')
         .find('.details')
-        .text(getAjaxErrorText(jqXHR, textStatus, errorThrown, tries))
-      getSpaceInfo name, url, tries + 1 if tries < 3
+        .text(getAjaxErrorText(jqXHR, textStatus, errorThrown))
           
 jQuery ->
   $.getJSON(directorySource, (directory) ->
