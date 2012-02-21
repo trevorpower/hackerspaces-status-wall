@@ -8,7 +8,7 @@ jQuery.fn.movingBackground = ->
       .css("background-position-y", "#{offset.top - e.pageY}px")
     
 createSpaceTile = (info) ->
-  if info.open
+  if info['open']
     info['state'] = 'open'
     info['state_icon'] = info.icon.open if info.icon?
   else 
@@ -35,8 +35,13 @@ getSpaceInfo = (name, url) ->
     url: url
     datatype: 'json'
     cache: false
-    success: (spaceInfo, statusText) ->
-      $("li[id='#{name}']").remove()
+    success: (spaceInfo, statusText, xhr) ->
+      if $.type(spaceInfo) == "string"
+        spaceInfo = $.parseJSON(spaceInfo)
+        details = $("li[id='#{name}']")
+          .addClass('warning')
+          .find('.details')
+          .text("Content-Type: #{xhr.getResponseHeader('Content-Type')}")
       createSpaceTile(spaceInfo)
         .hide()
         .appendTo('#spaces')

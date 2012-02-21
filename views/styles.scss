@@ -98,4 +98,13 @@ footer {
       white-space: pre-wrap;
     }
   }
+  li.warning {
+    h2 {
+      color: #999933;
+    }
+    .details {
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  }
 }
