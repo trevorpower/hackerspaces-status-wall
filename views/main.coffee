@@ -49,30 +49,33 @@ reportError = (name, error) ->
     .find('.details')
     .text(error)
 
-getSpaceInfo = (name, url) ->
+getJsonFromApi = (name, url, success) ->
   reportStart name, url
   $.ajax
     url: url
     datatype: 'json'
     cache: false
-    success: (result, statusText, xhr) ->
-      spaceInfo = getResultObject name, result, xhr
+    success: (result, status, xhr) ->
+      success(getResultObject(name, result, xhr))
+    error: (xhr, status, error) ->
+      reportError name, getAjaxErrorText(xhr, status, error)
+
+getSpaceInfo = (name, url) ->
+  getJsonFromApi(
+    name,
+    url,
+    (spaceInfo) ->
       createSpaceTile(spaceInfo)
         .hide()
         .appendTo('#spaces')
         .fadeIn()
         .find('.tile')
         .movingBackground()
-    error: (jqXHR, textStatus, errorThrown) ->
-      reportError name, getAjaxErrorText(jqXHR, textStatus, errorThrown)
+  )
           
 jQuery ->
-  reportStart 'Directory', directoryUrl
-  $.ajax
-    url: directoryUrl
-    datatype: 'json'
-    success: (result, status, xhr) ->
-      directory = getResultObject 'Directory', result, xhr
-      $.each(directory, getSpaceInfo)
-    error: (xhr, status, error) ->
-      reportError 'Directory', getAjaxErrorText(xhr, status, error) 
+  getJsonFromApi(
+    'Directory',
+    directoryUrl,
+    (directory) -> $.each(directory, getSpaceInfo)
+  )
