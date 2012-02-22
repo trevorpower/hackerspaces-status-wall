@@ -37,17 +37,20 @@ reportStart = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading ul')
 
-reportWarning = (name, error) ->
+report = (name, type, details = '') ->
   details = $("li[id='#{name}']")
-    .addClass('warning')
+    .addClass(type)
     .find('.details')
-    .text(error)
+    .text(details)
+
+reportSuccess = (name, error) ->
+  report name, 'success'
+    
+reportWarning = (name, error) ->
+  report name, 'warning', error
     
 reportError = (name, error) ->
-  details = $("li[id='#{name}']")
-    .addClass('error')
-    .find('.details')
-    .text(error)
+  report name, 'error', error
 
 getJsonFromApi = (name, url, success) ->
   reportStart name, url
@@ -56,6 +59,7 @@ getJsonFromApi = (name, url, success) ->
     datatype: 'json'
     cache: false
     success: (result, status, xhr) ->
+      reportSuccess name
       success(getResultObject(name, result, xhr))
     error: (xhr, status, error) ->
       reportError name, getAjaxErrorText(xhr, status, error)
