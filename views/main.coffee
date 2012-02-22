@@ -46,6 +46,7 @@ getSpaceInfo = (name, url) ->
         .hide()
         .appendTo('#spaces')
         .fadeIn()
+        .find('.tile')
         .movingBackground()
     error: (jqXHR, textStatus, errorThrown) ->
       details = $("li[id='#{name}']")

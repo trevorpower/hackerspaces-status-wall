@@ -30,29 +30,29 @@ footer {
     display: block;
     list-style-type: none;
     float: left;
-    overflow: hidden;
-    background-origin: content-box;
-    section {
-      text-align: center;
-      opacity: 0.9;
-      width: 260px;
-      height: 260px;
-      border: dotted 2px red;
-      background: #000000;
-      h1 {
-        margin: 3px;
+    .tile {
+      section {
+        overflow: hidden;
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+        height: 100%;
+        opacity: 0.9;
+        background: #000000;
+        h1 {
+          margin: 3px;
+        }
+        h2 {
+          font-size: 11pt; 
+          margin: 2px;
+        }
+        width: 260px;
+        height: 260px;
       }
-      h2 {
-        font-size: 11pt; 
-        margin: 2px;
-      }
+      border: dotted 1px red;
     }
-    section.unknown {
-      border: dashed 2px orange;
-      img { display: none; }
-    }
-    section.open {
-      border: solid 2px green;
+    .tile.open {
+      border: solid 1px green;
     }
   }
 }
