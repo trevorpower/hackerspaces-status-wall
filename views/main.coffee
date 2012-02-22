@@ -1,4 +1,4 @@
-directorySource = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 
 jQuery.fn.movingBackground = ->
   this.mousemove (e)->
@@ -28,20 +28,35 @@ getAjaxErrorText = (xhr, status, error) ->
     when "parsererror" 
       "#{error}\n--\n#{xhr.responseText}"
 
-getSpaceInfo = (name, url) ->
+getResultObject = (name, ajaxResult, xhr) ->
+  return ajaxResult unless $.type(ajaxResult) == "string"
+  reportWarning name, "Content-Type: #{xhr.getResponseHeader('Content-Type')}"
+  $.parseJSON(ajaxResult)
+
+reportStart = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading ul')
+
+reportWarning = (name, error) ->
+  details = $("li[id='#{name}']")
+    .addClass('warning')
+    .find('.details')
+    .text(error)
+    
+reportError = (name, error) ->
+  details = $("li[id='#{name}']")
+    .addClass('error')
+    .find('.details')
+    .text(error)
+
+getSpaceInfo = (name, url) ->
+  reportStart name, url
   $.ajax
     url: url
     datatype: 'json'
     cache: false
-    success: (spaceInfo, statusText, xhr) ->
-      if $.type(spaceInfo) == "string"
-        spaceInfo = $.parseJSON(spaceInfo)
-        details = $("li[id='#{name}']")
-          .addClass('warning')
-          .find('.details')
-          .text("Content-Type: #{xhr.getResponseHeader('Content-Type')}")
+    success: (result, statusText, xhr) ->
+      spaceInfo = getResultObject name, result, xhr
       createSpaceTile(spaceInfo)
         .hide()
         .appendTo('#spaces')
@@ -49,12 +64,15 @@ getSpaceInfo = (name, url) ->
         .find('.tile')
         .movingBackground()
     error: (jqXHR, textStatus, errorThrown) ->
-      details = $("li[id='#{name}']")
-        .addClass('error')
-        .find('.details')
-        .text(getAjaxErrorText(jqXHR, textStatus, errorThrown))
+      reportError name, getAjaxErrorText(jqXHR, textStatus, errorThrown)
           
 jQuery ->
-  $.getJSON(directorySource, (directory) ->
-    $.each(directory, getSpaceInfo)
-  )
+  reportStart 'Directory', directoryUrl
+  $.ajax
+    url: directoryUrl
+    datatype: 'json'
+    success: (result, status, xhr) ->
+      directory = getResultObject 'Directory', result, xhr
+      $.each(directory, getSpaceInfo)
+    error: (xhr, status, error) ->
+      reportError 'Directory', getAjaxErrorText(xhr, status, error) 
