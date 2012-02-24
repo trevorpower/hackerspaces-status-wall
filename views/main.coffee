@@ -55,16 +55,17 @@ getResultObject = (name, ajaxResult, xhr) ->
 getJsonFromProxy = (name, url, success) ->
   $.ajax
     type: 'POST'
-    url: "/fetch"
+    url: "/proxy"
     data: url
     processData: false
     datatype: 'json'
     cache: false
-    success: (result, status, xhr) ->
-      reportWarning name, 'by proxy'
+    success: (result, status, xhr) -> 
+      return reportError name, "via proxy: #{result['error']}" if result['error']
+      reportWarning name, 'via proxy'
       success(getResultObject(name, result, xhr))
     error: (xhr, status, error) ->
-      reportError name, 'by proxy'
+      reportError name, "via proxy: #{getAjaxErrorText xhr, status, error}"
 
 getJsonFromApi = (name, url, success) ->
   reportStart name, url
