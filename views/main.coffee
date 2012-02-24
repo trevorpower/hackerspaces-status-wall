@@ -7,6 +7,25 @@ jQuery.fn.movingBackground = ->
       .css("background-position-x", "#{offset.left - e.pageX}px")
       .css("background-position-y", "#{offset.top - e.pageY}px")
     
+reportStart = (name, url) ->
+  $($('#progress').render({ name: name, url: url}))
+    .appendTo('#loading ul')
+
+report = (name, type, details = '') ->
+  details = $("li[id='#{name}']")
+    .addClass(type)
+    .find('.details')
+    .text(details)
+
+reportSuccess = (name, error) ->
+  report name, 'success'
+    
+reportWarning = (name, error) ->
+  report name, 'warning', error
+    
+reportError = (name, error) ->
+  report name, 'error', error
+
 createSpaceTile = (info) ->
   if info['open']
     info['state'] = 'open'
@@ -33,24 +52,19 @@ getResultObject = (name, ajaxResult, xhr) ->
   reportWarning name, "Content-Type: #{xhr.getResponseHeader('Content-Type')}"
   $.parseJSON(ajaxResult)
 
-reportStart = (name, url) ->
-  $($('#progress').render({ name: name, url: url}))
-    .appendTo('#loading ul')
-
-report = (name, type, details = '') ->
-  details = $("li[id='#{name}']")
-    .addClass(type)
-    .find('.details')
-    .text(details)
-
-reportSuccess = (name, error) ->
-  report name, 'success'
-    
-reportWarning = (name, error) ->
-  report name, 'warning', error
-    
-reportError = (name, error) ->
-  report name, 'error', error
+getJsonFromProxy = (name, url, success) ->
+  $.ajax
+    type: 'POST'
+    url: "/fetch"
+    data: url
+    processData: false
+    datatype: 'json'
+    cache: false
+    success: (result, status, xhr) ->
+      reportWarning name, 'by proxy'
+      success(getResultObject(name, result, xhr))
+    error: (xhr, status, error) ->
+      reportError name, 'by proxy'
 
 getJsonFromApi = (name, url, success) ->
   reportStart name, url
@@ -62,6 +76,7 @@ getJsonFromApi = (name, url, success) ->
       reportSuccess name
       success(getResultObject(name, result, xhr))
     error: (xhr, status, error) ->
+      getJsonFromProxy name, url, success
       reportError name, getAjaxErrorText(xhr, status, error)
 
 getSpaceInfo = (name, url) ->
