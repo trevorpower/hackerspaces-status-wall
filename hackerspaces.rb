@@ -5,14 +5,30 @@ require 'uri'
 require 'json'
 
 helpers do
-  def getSpaceInfo(uri)
+  def getSpaceInfo(uri, limit = 4)
     begin
+      return {:error => "To many HTTP redirects"}.to_json if limit == 0
       response = Net::HTTP.get_response(uri)
-      response.body
+      case response
+      when Net::HTTPSuccess then
+        response.body
+      when Net::HTTPRedirection then
+        location = URI.parse(response['Location'])
+        location = uri.merge(location) if location.relative?
+        getSpaceInfo URI.parse(response['location']), limit - 1
+      else
+        {:error => "#{response.value}"}.to_json
+      end
     rescue => e
-      {:error => e.message}.to_json
+      if uri.scheme == 'https'
+        uri.scheme = 'http'
+        getSpaceInfo uri, limit
+      else
+        {:error => e.message}.to_json
+      end
     end
   end
+  
 end
 
 get '/wall' do
