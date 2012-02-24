@@ -19,17 +19,16 @@ footer {
   padding: 0px;
   margin: 0px;
   li {
-    padding: 6px;
     display: block;
     list-style-type: none;
     float: left;
+    width: 100%;
     .tile {
       section {
         overflow: hidden;
         text-align: center;
         margin: 0px;
         padding: 0px;
-        height: 100%;
         opacity: 0.9;
         background: #000000;
         h1 {
@@ -39,13 +38,10 @@ footer {
           font-size: 11pt; 
           margin: 2px;
         }
-        width: 260px;
         height: 260px;
       }
-      border: dotted 1px red;
     }
     .tile.open {
-      border: solid 1px green;
     }
   }
 }
@@ -100,4 +96,24 @@ footer {
       }
     }
   }
+}
+
+@media screen and (min-width: 600px){
+  #spaces{ li { width: 50% } } 
+}
+
+@media screen and (min-width: 900px){
+  #spaces{ li { width: 33.33% } } 
+}
+
+@media screen and (min-width: 1200px){
+  #spaces{ li { width: 25% } } 
+}
+
+@media screen and (min-width: 1600px){
+  #spaces{ li { width: 20% } } 
+}
+
+@media screen and (min-width: 2000px){
+  #spaces{ li { width: 16.66% } } 
 }
