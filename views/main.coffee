@@ -33,7 +33,11 @@ createSpaceTile = (info) ->
   else 
     info['state'] = 'closed'
     info['state_icon'] = info.icon.closed if info.icon?
-  $($('#spacetile').render(info))
+  tile = $($('#spacetile').render(info))
+  tile.find('ul').hide()
+  tile.hover( -> $(this).find('ul').fadeToggle('fast', 'linear') )
+  tile.find('.tile').movingBackground()
+  tile
 
 getAjaxErrorText = (xhr, status, error) ->
   switch status
@@ -89,8 +93,6 @@ getSpaceInfo = (name, url) ->
         .hide()
         .appendTo('#spaces')
         .fadeIn()
-        .find('.tile')
-        .movingBackground()
   )
           
 jQuery ->
