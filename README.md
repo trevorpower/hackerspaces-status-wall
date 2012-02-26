@@ -13,7 +13,7 @@ A second aim of this page is to display any errors or potential problems with a 
 
 Technologies Used
 -----------------
-Sinatra (Ruby)
-Coffee Script
-Haml
-Sass
+* [Sinatra](http://www.sinatrarb.com/) (Ruby)
+* [CoffeeScript](http://coffeescript.org)
+* [Haml](http://haml-lang.com)
+* [Sass](http://sass-lang.com)
