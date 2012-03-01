@@ -7,6 +7,8 @@ require 'dalli'
 
 set :cache, Dalli::Client.new
 
+set :static_cache_control, [:public, :max_age => 86400]
+
 helpers do
   def getSpaceInfo(uri, limit = 4)
     begin
