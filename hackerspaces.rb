@@ -3,6 +3,9 @@ require 'coffee-script'
 require 'net/http'
 require 'uri'
 require 'json'
+require 'dalli'
+
+set :cache, Dalli::Client.new
 
 helpers do
   def getSpaceInfo(uri, limit = 4)
@@ -15,7 +18,7 @@ helpers do
       when Net::HTTPRedirection then
         location = URI.parse(response['Location'])
         location = uri.merge(location) if location.relative?
-        getSpaceInfo URI.parse(response['location']), limit - 1
+        getSpaceInfo location, limit - 1
       else
         {:error => "#{response.value}"}.to_json
       end
@@ -28,7 +31,6 @@ helpers do
       end
     end
   end
-  
 end
 
 get '/wall' do
@@ -50,4 +52,8 @@ end
 
 get '*' do
   redirect '/wall'
+end
+
+before do
+  expires 3600, :public, :must_revalidate if production?
 end

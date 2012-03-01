@@ -63,7 +63,6 @@ getJsonFromProxy = (name, url, success) ->
     data: url
     processData: false
     datatype: 'json'
-    cache: false
     success: (result, status, xhr) -> 
       return reportError name, "via proxy: #{result['error']}" if result['error']
       reportWarning name, 'via proxy'
