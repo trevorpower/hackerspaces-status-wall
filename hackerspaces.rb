@@ -47,7 +47,10 @@ end
 
 post '/proxy' do
   headers 'Content-Type' => 'application/json'
-  getSpaceInfo URI.parse(request.body.read)
+  url = request.body.read
+  settings.cache.fetch(url, 50) do
+    getSpaceInfo URI.parse(url) 
+  end
 end
 
 get '*' do
