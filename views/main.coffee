@@ -26,17 +26,28 @@ reportWarning = (name, error) ->
 reportError = (name, error) ->
   report name, 'error', error
 
-createSpaceTile = (info) ->
+normalizeSpaceInfo = (info) ->
   if info['open']
     info['state'] = 'open'
     info['state_icon'] = info.icon.open if info.icon?
   else 
     info['state'] = 'closed'
     info['state_icon'] = info.icon.closed if info.icon?
+    
+createSpaceTile = (info) ->
+  normalizeSpaceInfo info
   tile = $($('#spacetile').render(info))
   tile.find('ul').hide()
   tile.hover( -> $(this).find('ul').fadeToggle('fast', 'linear') )
   tile.find('.tile').movingBackground()
+  tile.find('img').error ->
+    src = $(this).attr 'src'
+    alert src 
+    alert src.substring(0, 8)
+    if src.substring(0, 8) == 'https://'
+      src = src.replace('https://', 'http://')
+      alert src
+      $(this).attr 'src', src
   tile
 
 getAjaxErrorText = (xhr, status, error) ->
