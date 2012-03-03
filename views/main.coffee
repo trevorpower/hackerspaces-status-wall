@@ -42,11 +42,8 @@ createSpaceTile = (info) ->
   tile.find('.tile').movingBackground()
   tile.find('img').error ->
     src = $(this).attr 'src'
-    alert src 
-    alert src.substring(0, 8)
     if src.substring(0, 8) == 'https://'
       src = src.replace('https://', 'http://')
-      alert src
       $(this).attr 'src', src
   tile
 
