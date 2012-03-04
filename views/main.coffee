@@ -3,9 +3,10 @@ directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 jQuery.fn.movingBackground = ->
   this.mousemove (e)->
     offset = $(this).offset()
-    $(this)
-      .css("background-position-x", "#{offset.left - e.pageX}px")
-      .css("background-position-y", "#{offset.top - e.pageY}px")
+    $(this).css(
+        "background-position",
+        "#{offset.left - e.pageX}px #{offset.top - e.pageY}px"
+    )
     
 reportStart = (name, url) ->
   $($('#progress').render({ name: name, url: url}))

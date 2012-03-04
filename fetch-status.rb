@@ -1,4 +1,5 @@
 require 'json'
+require 'net/http'
 
 def fetchStatus uri, limit = 5
   return {:error => "To many HTTP redirects"}.to_json if limit == 0
