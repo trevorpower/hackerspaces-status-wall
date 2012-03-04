@@ -43,8 +43,10 @@ createSpaceTile = (info) ->
   tile.find('.tile').movingBackground()
   tile.find('img').error ->
     src = $(this).attr 'src'
+    reportWarning info.space, "icon failed to load: #{src}"
     if src.substring(0, 8) == 'https://'
       src = src.replace('https://', 'http://')
+      reportWarning info.space, "trying #{src}"
       $(this).attr 'src', src
   tile
 
