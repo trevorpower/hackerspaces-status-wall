@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'coffee-script'
-require 'net/http'
 require 'uri'
 require 'dalli'
 require './fetch-status'
@@ -20,7 +19,8 @@ end
 post '/proxy' do
   headers 'Content-Type' => 'application/json'
   url = request.body.read
-  settings.cache.fetch(url, 50) do
+  settings.cache.fetch(url, 55) do
+    puts "proxy request not cached: #{url}"
     fetchStatus URI.parse url
   end
 end

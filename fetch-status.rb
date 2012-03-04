@@ -5,6 +5,7 @@ def fetchStatus uri, limit = 5
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = uri.scheme == 'https'
   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  http.read_timeout = 25
   http.start do |http|
     handleResponse uri, http.request_get(uri.request_uri), limit
   end
@@ -14,9 +15,12 @@ end
 
 def handleResponse uri, response, limit
   case response
-  when Net::HTTPSuccess then response.body
-  when Net::HTTPRedirection then followRedirection uri, response, limit
-  else {:error => response.value}.to_json
+  when Net::HTTPSuccess
+    response.body
+  when Net::HTTPRedirection
+    followRedirection uri, response, limit
+  else
+    {:error => response.value}.to_json
   end
 end
 
