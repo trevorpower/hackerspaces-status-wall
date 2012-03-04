@@ -23,9 +23,10 @@
               {{/if}}
   %script(id="progress" type="text/x-jquery-tmpl")
     %li(id='{{=name}}')
-      %h2 {{=name}}
-      %a(href='{{=url}}') {{=url}}
-      .details
+      %details
+        %summary {{=name}}
+        %a(href='{{=url}}') {{=url}}
+        %ul
 %body
   %h1 Global Hackerspaces Status Wall
   %ul#spaces

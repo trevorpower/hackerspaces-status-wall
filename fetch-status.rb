@@ -9,7 +9,6 @@ def fetchStatus uri, limit = 5
     handleResponse uri, http.request_get(uri.request_uri), limit
   end
 rescue => e
-  #return tryHttp uri, limit if uri.scheme == 'https'
   {:error => e.message}.to_json
 end
 
@@ -25,9 +24,4 @@ def followRedirection uri, response, limit
   location = URI.parse(response['Location'])
   location = uri.merge(location) if location.relative?
   fetchStatus location, limit - 1
-end
-
-def tryHttp uri, limit
-  uri.scheme = 'http'
-  fetchStatus uri, limit
 end

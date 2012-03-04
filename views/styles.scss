@@ -60,42 +60,48 @@ footer {
     padding: 10px;
     margin: 0px;
   }
-  ul {
+  > ul {
     padding: 0px;
     margin: 0px;
     text-align: left;
-    li {
-      h2 {
-        font-size: 18px;
-        padding-bottom: 0px;
-        margin-bottom: 0px;
-      }
-      a {
-        color: #666699;
-      }
-      .details {
-        font-family: monospace;
-        white-space: pre-wrap;
-      }
-      background-color: #222222;
+    > li {
       list-style-type: none;
-      margin: 0px;
       padding: 10px;
-      padding-top: 0px;
+      background-color: #222222;
+      margin: 0px;
       border-top: dotted 1px #000000;
+      details {
+        overflow: hidden;
+        summary {
+          font-size: 18px;
+          padding-bottom: 0px;
+          margin-bottom: 0px;
+          display: block;
+        }
+        a {
+          color: #666699;
+        }
+        ul {
+          li {
+            padding: 2px;
+            font-family: monospace;
+            white-space: pre-wrap;
+          }
+        }
+      }
     }
     li.success {
-      h2 {
+      summary {
         color: green;
       }
     }
     li.error {
-      h2 {
+      summary {
         color: red;
       }
     }
     li.warning {
-      h2 {
+      summary {
         color: orange;
       }
     }

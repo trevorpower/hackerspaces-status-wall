@@ -9,13 +9,13 @@ jQuery.fn.movingBackground = ->
     
 reportStart = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
-    .appendTo('#loading ul')
+    .appendTo('#loading > ul')
 
 report = (name, type, details = '') ->
-  details = $("li[id='#{name}']")
+  list = $("li[id='#{name}']")
     .addClass(type)
-    .find('.details')
-    .text(details)
+    .find('ul') 
+  $('<li/>').appendTo(list).text(details) if details != ''
 
 reportSuccess = (name, error) ->
   report name, 'success'
@@ -47,7 +47,7 @@ createSpaceTile = (info) ->
       $(this).attr 'src', src
   tile
 
-getAjaxErrorText = (xhr, status, error) ->
+ajaxErrorText = (xhr, status, error) ->
   switch status
     when "error"
       if xhr.status == 0
@@ -72,11 +72,11 @@ getJsonFromProxy = (name, url, success) ->
     processData: false
     datatype: 'json'
     success: (result, status, xhr) -> 
-      return reportError name, "via proxy: #{result['error']}" if result['error']
-      reportWarning name, 'via proxy'
+      return reportError name, "from proxy: #{result['error']}" if result['error']
+      reportWarning name, 'resort to proxy'
       success(getResultObject(name, result, xhr))
     error: (xhr, status, error) ->
-      reportError name, "via proxy: #{getAjaxErrorText xhr, status, error}"
+      reportError name, "via proxy: #{ajaxErrorText xhr, status, error}"
 
 getJsonFromApi = (name, url, success) ->
   reportStart name, url
@@ -88,8 +88,8 @@ getJsonFromApi = (name, url, success) ->
       reportSuccess name
       success(getResultObject(name, result, xhr))
     error: (xhr, status, error) ->
+      reportError name, "client ajax: #{ajaxErrorText(xhr, status, error)}"
       getJsonFromProxy name, url, success
-      reportError name, getAjaxErrorText(xhr, status, error)
 
 getSpaceInfo = (name, url) ->
   getJsonFromApi(
