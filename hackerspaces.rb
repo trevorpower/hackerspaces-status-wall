@@ -1,8 +1,9 @@
 require 'sinatra'
 require 'coffee-script'
-require 'uri'
 require 'dalli'
-require './fetch-status'
+require './proxy'
+
+use Proxy
 
 get '/wall' do
   haml :wall
@@ -14,15 +15,6 @@ end
 
 get '/main.js' do
   coffee :main
-end
-
-post '/proxy' do
-  headers 'Content-Type' => 'application/json'
-  url = request.body.read
-  settings.cache.fetch(url, 180) do
-    puts "proxy request not cached: #{url}"
-    fetchStatus URI.parse url
-  end
 end
 
 get '*' do
