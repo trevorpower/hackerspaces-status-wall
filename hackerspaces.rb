@@ -19,7 +19,7 @@ end
 post '/proxy' do
   headers 'Content-Type' => 'application/json'
   url = request.body.read
-  settings.cache.fetch(url, 55) do
+  settings.cache.fetch(url, 180) do
     puts "proxy request not cached: #{url}"
     fetchStatus URI.parse url
   end
