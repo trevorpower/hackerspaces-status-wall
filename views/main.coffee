@@ -77,7 +77,7 @@ getJsonFromProxy = (name, url, success) ->
     success: (result, status, xhr) -> 
       return reportError name, "from proxy: #{result['error']}" if result['error']
       reportWarning name, 'resort to proxy'
-      success(getResultObject(name, result, xhr))
+      success(getResultObject(name, result.body, xhr))
     error: (xhr, status, error) ->
       reportError name, "via proxy: #{ajaxErrorText xhr, status, error}"
 
