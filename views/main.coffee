@@ -68,7 +68,7 @@ reportContentType = (name, contentType) ->
 
 reportAllowOrigin = (name, allowOrigin) ->
   if allowOrigin?
-    if contentType.toLowerCase().indexOf('*') == -1
+    if allowOrigin.toLowerCase().indexOf('*') == -1
       reportWarning name, "Access-Control-Allow-Origin: #{allowOrigin}" 
   else
     reportWarning name, 'Access-Control-Allow-Origin not set'
