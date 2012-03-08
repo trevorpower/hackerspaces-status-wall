@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'net/http'
 require 'dalli'
 require 'faraday_middleware'
+require 'json'
 
 class Proxy < Sinatra::Base
   
@@ -12,11 +13,25 @@ class Proxy < Sinatra::Base
     url = request.body.read
     settings.cache.fetch url, 180 do
       puts "#{url}: not cached"
-      connection = Faraday.new url, :ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'} do |conn|
-        conn.use FaradayMiddleware::FollowRedirects
-        conn.adapter :net_http
-      end
-      connection.get.body
+      fetch(url).to_json
+    end
+  end
+
+  def fetch url
+    JSON.parse connection(url).get.body
+  rescue => e
+    { :error => e.message }
+  end
+
+  def connection url
+    options = {
+      :timeout => 20,
+      :open_timeout => 10,
+      :ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}
+    }
+    Faraday.new url, options do |conn|
+      conn.use FaradayMiddleware::FollowRedirects
+      conn.adapter :net_http
     end
   end
 end
