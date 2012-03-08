@@ -27,7 +27,8 @@ class Proxy < Sinatra::Base
     options = {
       :timeout => 20,
       :open_timeout => 10,
-      :ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}
+      :ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'},
+      :user_agent => 'hackerspaces.me server side proxy'
     }
     Faraday.new url, options do |conn|
       conn.use FaradayMiddleware::ParseJson
