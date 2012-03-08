@@ -62,9 +62,20 @@ ajaxErrorText = (xhr, status, error) ->
     when "parsererror" 
       "#{error}\n--\n#{xhr.responseText}"
 
+reportContentType = (name, contentType) ->
+  if contentType.toLowerCase().indexOf('application/json') == -1
+    reportWarning name, "Content-Type: #{contentType}" 
+
+reportAllowOrigin = (name, allowOrigin) ->
+  if allowOrigin?
+    if contentType.toLowerCase().indexOf('*') == -1
+      reportWarning name, "Access-Control-Allow-Origin: #{allowOrigin}" 
+  else
+    reportWarning name, 'Access-Control-Allow-Origin not set'
+
 getResultObject = (name, ajaxResult, xhr) ->
   return ajaxResult unless $.type(ajaxResult) == "string"
-  reportWarning name, "Content-Type: #{xhr.getResponseHeader('Content-Type')}"
+  reportContentType name, xhr.getResponseHeader('Content-Type')
   $.parseJSON(ajaxResult)
 
 getJsonFromProxy = (name, url, success) ->
@@ -77,6 +88,8 @@ getJsonFromProxy = (name, url, success) ->
     success: (result, status, xhr) -> 
       return reportError name, "from proxy: #{result['error']}" if result['error']
       reportWarning name, 'resort to proxy'
+      reportContentType name, result.headers['content-type']
+      reportAllowOrigin name, result.headers['access-control-allow-origin']
       success(getResultObject(name, result.body, xhr))
     error: (xhr, status, error) ->
       reportError name, "via proxy: #{ajaxErrorText xhr, status, error}"

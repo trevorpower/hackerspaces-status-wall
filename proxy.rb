@@ -11,7 +11,7 @@ class Proxy < Sinatra::Base
   post '/proxy' do
     headers 'Content-Type' => 'application/json'
     url = request.body.read
-    settings.cache.fetch url, 18 do
+    settings.cache.fetch url, 180 do
       puts "#{url}: not cached"
       fetch(url).to_json
     end
