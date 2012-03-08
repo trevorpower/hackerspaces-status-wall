@@ -18,7 +18,7 @@ class Proxy < Sinatra::Base
   end
 
   def fetch url
-    JSON.parse connection(url).get.body
+    connection(url).get.body
   rescue => e
     { :error => e.message }
   end
@@ -30,6 +30,7 @@ class Proxy < Sinatra::Base
       :ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}
     }
     Faraday.new url, options do |conn|
+      conn.use FaradayMiddleware::ParseJson
       conn.use FaradayMiddleware::FollowRedirects
       conn.adapter :net_http
     end
