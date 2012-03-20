@@ -27,6 +27,12 @@ reportWarning = (name, error) ->
 reportError = (name, error) ->
   report name, 'error', error
 
+reportProxyError = (name, error, headers, body) ->
+  reportError(
+    name,
+    "from proxy: #{error}\n--HEADERS--\n#{headers}\n--BODY--\n#{body}"
+  )
+
 normalizeSpaceInfo = (info) ->
   if info['open']
     info['state'] = 'open'
@@ -63,7 +69,9 @@ ajaxErrorText = (xhr, status, error) ->
       "#{error}\n--\n#{xhr.responseText}"
 
 reportContentType = (name, contentType) ->
-  if contentType.toLowerCase().indexOf('application/json') == -1
+  unless contentType?
+    reportWarning name, "Content-Type is unavailable" 
+  else if contentType.toLowerCase().indexOf('application/json') == -1
     reportWarning name, "Content-Type: #{contentType}" 
 
 reportAllowOrigin = (name, allowOrigin) ->
@@ -81,16 +89,23 @@ getResultObject = (name, ajaxResult, xhr) ->
 getJsonFromProxy = (name, url, success) ->
   $.ajax
     type: 'POST'
-    url: "/proxy"
-    data: url
-    processData: false
+    url: "http://proxy.hackerspaces.me"
+    data: "url=#{url}"
+    processData: true
     datatype: 'json'
     success: (result, status, xhr) -> 
-      return reportError name, "from proxy: #{result['error']}" if result['error']
+      resultObject = getResultObject(name, result.body, xhr)
+      if resultObject['error']
+        return reportProxyError(
+          name,
+          resultObject['error'],
+          JSON.stringify resultObject['headers']
+          resultObject['body']
+        )
       reportWarning name, 'resort to proxy'
-      reportContentType name, result.headers['content-type']
-      reportAllowOrigin name, result.headers['access-control-allow-origin']
-      success(getResultObject(name, result.body, xhr))
+      reportContentType name, resultObject.headers['content-type']
+      reportAllowOrigin name, resultObject.headers['access-control-allow-origin']
+      success resultObject
     error: (xhr, status, error) ->
       reportError name, "via proxy: #{ajaxErrorText xhr, status, error}"
 
