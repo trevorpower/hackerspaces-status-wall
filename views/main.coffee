@@ -8,12 +8,9 @@ jQuery.fn.movingBackground = ->
         "#{offset.left - e.pageX}px #{offset.top - e.pageY}px"
     )
     
-reportStart = (name, url) ->
+createLog = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading > ul')
-  logger(name)
-
-logger = (name) ->
   report: (type, details = '') ->
     list = $("li[id='#{name}']")
       .addClass(type)
@@ -123,7 +120,7 @@ getJsonFromApi = (log, url, success) ->
 
 getSpaceInfo = (name, url) ->
   getJsonFromApi(
-    reportStart(name, url),
+    createLog(name, url),
     url,
     (spaceInfo) ->
       createSpaceTile(spaceInfo)
@@ -134,7 +131,7 @@ getSpaceInfo = (name, url) ->
           
 jQuery ->
   getJsonFromApi(
-    reportStart('Directory', directoryUrl),
+    createLog('Directory', directoryUrl),
     directoryUrl,
     (directory) -> $.each(directory, getSpaceInfo)
   )
