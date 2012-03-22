@@ -1,9 +1,6 @@
 require 'sinatra'
 require 'coffee-script'
 require 'dalli'
-require './proxy'
-
-use Proxy
 
 get '/wall' do
   haml :wall
