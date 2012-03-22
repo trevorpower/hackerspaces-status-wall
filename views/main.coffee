@@ -11,27 +11,26 @@ jQuery.fn.movingBackground = ->
 reportStart = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading > ul')
+  logger(name)
 
-report = (name, type, details = '') ->
-  list = $("li[id='#{name}']")
-    .addClass(type)
-    .find('ul') 
-  $('<li/>').appendTo(list).text(details) if details != ''
+logger = (name) ->
+  report: (type, details = '') ->
+    list = $("li[id='#{name}']")
+      .addClass(type)
+      .find('ul') 
+    $('<li/>').appendTo(list).text(details) if details != ''
+  success: (details) -> this.report 'success', details
+  warning: (details) -> this.report 'warning', details
+  error: (details) -> this.report 'error', details
 
-reportSuccess = (name, error) ->
-  report name, 'success'
-    
-reportWarning = (name, error) ->
-  report name, 'warning', error
-    
-reportError = (name, error) ->
-  report name, 'error', error
-
-reportProxyError = (name, error, headers, body) ->
-  reportError(
-    name,
-    "from proxy: #{error}\n--HEADERS--\n#{headers}\n--BODY--\n#{body}"
-  )
+formatProxyError = (error, headers, body) ->
+  """
+  from proxy: #{error}
+  --HEADERS--
+  #{headers}
+  --BODY--
+  #{body}
+  """
 
 normalizeSpaceInfo = (info) ->
   if info['open']
@@ -48,11 +47,12 @@ createSpaceTile = (info) ->
   tile.hover( -> $(this).find('ul').fadeToggle('fast', 'linear') )
   tile.find('.tile').movingBackground()
   tile.find('img').error ->
+    log = logger(info.space)
     src = $(this).attr 'src'
-    reportWarning info.space, "icon failed to load: #{src}"
+    log.warning "icon failed to load: #{src}"
     if src.substring(0, 8) == 'https://'
       src = src.replace('https://', 'http://')
-      reportWarning info.space, "trying #{src}"
+      log.warning "trying #{src}"
       $(this).attr 'src', src
   tile
 
@@ -68,25 +68,25 @@ ajaxErrorText = (xhr, status, error) ->
     when "parsererror" 
       "#{error}\n--\n#{xhr.responseText}"
 
-reportContentType = (name, contentType) ->
+reportContentType = (log, contentType) ->
   unless contentType?
-    reportWarning name, "Content-Type is unavailable" 
+    log.warning "Content-Type is unavailable" 
   else if contentType.toLowerCase().indexOf('application/json') == -1
-    reportWarning name, "Content-Type: #{contentType}" 
+    log.warning "Content-Type: #{contentType}" 
 
-reportAllowOrigin = (name, allowOrigin) ->
+reportAllowOrigin = (log, allowOrigin) ->
   if allowOrigin?
     if allowOrigin.toLowerCase().indexOf('*') == -1
-      reportWarning name, "Access-Control-Allow-Origin: #{allowOrigin}" 
+      log.warning "Access-Control-Allow-Origin: #{allowOrigin}" 
   else
-    reportWarning name, 'Access-Control-Allow-Origin not set'
+    log.warning 'Access-Control-Allow-Origin not set'
 
-getResultObject = (name, ajaxResult, xhr) ->
+getResultObject = (log, ajaxResult, xhr) ->
   return ajaxResult unless $.type(ajaxResult) == "string"
-  reportContentType name, xhr.getResponseHeader('Content-Type')
+  reportContentType log, xhr.getResponseHeader('Content-Type')
   $.parseJSON(ajaxResult)
 
-getJsonFromProxy = (name, url, success) ->
+getJsonFromProxy = (log, url, success) ->
   $.ajax
     type: 'POST'
     url: "http://proxy.hackerspaces.me"
@@ -94,37 +94,36 @@ getJsonFromProxy = (name, url, success) ->
     processData: true
     datatype: 'json'
     success: (result, status, xhr) -> 
-      resultObject = getResultObject(name, result.body, xhr)
+      log.warning 'resort to proxy'
+      resultObject = getResultObject(log, result.body, xhr)
       if resultObject['error']
-        return reportProxyError(
-          name,
+        log.error formatProxyError(
           resultObject['error'],
           JSON.stringify resultObject['headers']
           resultObject['body']
         )
-      reportWarning name, 'resort to proxy'
-      reportContentType name, resultObject.headers['content-type']
-      reportAllowOrigin name, resultObject.headers['access-control-allow-origin']
+        return
+      reportContentType log, resultObject.headers['content-type']
+      reportAllowOrigin log, resultObject.headers['access-control-allow-origin']
       success resultObject
     error: (xhr, status, error) ->
-      reportError name, "via proxy: #{ajaxErrorText xhr, status, error}"
+      log.error "via proxy: #{ajaxErrorText xhr, status, error}"
 
-getJsonFromApi = (name, url, success) ->
-  reportStart name, url
+getJsonFromApi = (log, url, success) ->
   $.ajax
     url: url
     datatype: 'json'
     cache: false
     success: (result, status, xhr) ->
-      reportSuccess name
-      success(getResultObject(name, result, xhr))
+      log.success()
+      success(getResultObject(log, result, xhr))
     error: (xhr, status, error) ->
-      reportError name, "client ajax: #{ajaxErrorText(xhr, status, error)}"
-      getJsonFromProxy name, url, success
+      log.error "client ajax: #{ajaxErrorText(xhr, status, error)}"
+      getJsonFromProxy log, url, success
 
 getSpaceInfo = (name, url) ->
   getJsonFromApi(
-    name,
+    reportStart(name, url),
     url,
     (spaceInfo) ->
       createSpaceTile(spaceInfo)
@@ -135,7 +134,7 @@ getSpaceInfo = (name, url) ->
           
 jQuery ->
   getJsonFromApi(
-    'Directory',
+    reportStart('Directory', directoryUrl),
     directoryUrl,
     (directory) -> $.each(directory, getSpaceInfo)
   )
