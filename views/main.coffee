@@ -3,22 +3,20 @@ directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 jQuery.fn.movingBackground = ->
   this.mousemove (e)->
     offset = $(this).offset()
-    $(this).css(
-        "background-position",
-        "#{offset.left - e.pageX}px #{offset.top - e.pageY}px"
-    )
+    $(this).css
+      "background-position": "#{offset.left - e.pageX}px #{offset.top - e.pageY}px"
     
 createLog = (name, url) ->
   $($('#progress').render({ name: name, url: url}))
     .appendTo('#loading > ul')
-  report: (type, details = '') ->
+  report = (type, details = '') ->
     list = $("li[id='#{name}']")
       .addClass(type)
       .find('ul') 
     $('<li/>').appendTo(list).text(details) if details != ''
-  success: (details) -> this.report 'success', details
-  warning: (details) -> this.report 'warning', details
-  error: (details) -> this.report 'error', details
+  success: (details) -> report 'success', details
+  warning: (details) -> report 'warning', details
+  error: (details) -> report 'error', details
 
 formatProxyError = (error, headers, body) ->
   """
