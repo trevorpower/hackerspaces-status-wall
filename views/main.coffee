@@ -90,17 +90,17 @@ getJsonFromProxy = (log, url, success) ->
     datatype: 'json'
     success: (result, status, xhr) -> 
       log.warning 'resort to proxy'
-      resultObject = getResultObject(log, result.body, xhr)
-      if resultObject['error']
+      resultObject = getResultObject(log, result, xhr)
+      if resultObject.error?
         log.error formatProxyError(
-          resultObject['error'],
-          JSON.stringify resultObject['headers']
-          resultObject['body']
+          resultObject.error,
+          JSON.stringify resultObject.headers
+          resultObject.body
         )
         return
       reportContentType log, resultObject.headers['content-type']
       reportAllowOrigin log, resultObject.headers['access-control-allow-origin']
-      success resultObject
+      success resultObject.body
     error: (xhr, status, error) ->
       log.error "via proxy: #{ajaxErrorText xhr, status, error}"
 
