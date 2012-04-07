@@ -87,7 +87,7 @@ getJsonFromProxy = (log, url, success) ->
     url: "http://proxy.hackerspaces.me"
     data: "url=#{url}"
     processData: true
-    datatype: 'json'
+    datatype: 'jsonp'
     success: (result, status, xhr) -> 
       log.warning 'resort to proxy'
       resultObject = getResultObject(log, result, xhr)
