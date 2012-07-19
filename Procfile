@@ -1,1 +1,1 @@
-web: coffee proxy.coffee
+web: coffee server.coffee
