@@ -6,10 +6,5 @@ app = express.createServer()
 app.configure ->
   app.use express.static('generated_static')
 
-generated_static = 'generated_static'
-
-app.get '/wall', (request, response) ->
-  response.sendfile path.join(generated_static, 'wall.html')
-
 port = process.env.PORT
 app.listen port, () -> console.log "Listening on port #{port}"
