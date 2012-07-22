@@ -3,6 +3,9 @@ path = require 'path'
 
 app = express.createServer()
 
+app.configure ->
+  app.use express.static('generated_static')
+
 generated_static = 'generated_static'
 
 app.get '/wall', (request, response) ->
