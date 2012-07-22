@@ -8,6 +8,7 @@ task 'clean', "Delete generated files", () ->
   wrench.rmdirSyncRecursive generated_static
 
 task 'precompile', 'Create static assets', () ->
+  invoke 'clean'
   fs.mkdirSync generated_static
   fs.mkdirSync path.join(generated_static, 'wall')
   jade = require 'jade'
