@@ -4,6 +4,7 @@
   "dependencies": {
     "express": "2.2.0",
     "coffee-script": "",
+    "wrench": "",
     "jade": ""
   }
 }

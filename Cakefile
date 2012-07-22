@@ -1,7 +1,11 @@
 fs = require 'fs'
 path = require 'path'
+wrench = require 'wrench'
 
 generated_static = 'generated_static'
+
+task 'clean', "Delete generated files", () ->
+  wrench.rmdirSyncRecursive generated_static
 
 task 'precompile', 'Create static assets', () ->
   fs.mkdirSync generated_static
