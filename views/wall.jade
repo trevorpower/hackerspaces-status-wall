@@ -1,0 +1,41 @@
+doctype 5
+head
+  title Global Hackerspaces Status Wall
+  script(src="jquery-1.7.1.min.js")
+  script(src="jsrender.js")
+  script(src="main.js")
+  link(rel="stylesheet", href="styles.css")
+  script(id="spacetile", type="text/x-jquery-tmpl")
+    li      
+      .tile(style="background-image: url({{=logo}}); background-clip: content-box;", class="{{=state}}")
+        section
+          h1 {{=space}}
+          img(src="{{=state_icon}}")
+          h2 {{=status}}
+          ul
+            li
+              a#web(href="{{=url}}") Web
+              {{#if contact}}
+            li
+              a#email(href="mailto://{{=contact.ml}}") Email
+            li
+              a#twitter(href="http://twitter.com/{{=contact.twitter}}") Twitter
+              {{/if}}
+  script(id="progress", type="text/x-jquery-tmpl")
+    li(id='{{=name}}')
+      details
+        summary {{=name}}
+        a(href='{{=url}}') {{=url}}
+        ul
+body
+  h1 Global Hackerspaces Status Wall
+  ul#spaces
+  section#loading
+    h1 Status API Status
+    ul
+  footer
+    a(href="https://github.com/trevorpower/hackerspaces-status-wall") Source
+    by
+    a(href="http://trevorpower.com") Trevor Power
+    of
+    a(href="http://milklabs.ie") miLKlabs
