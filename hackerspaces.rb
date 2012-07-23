@@ -2,10 +2,6 @@ require 'sinatra'
 require 'coffee-script'
 require 'dalli'
 
-get '/wall' do
-  haml :wall
-end
-
 get '/styles.css' do
   scss :styles
 end
