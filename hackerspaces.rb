@@ -10,10 +10,6 @@ get '/main.js' do
   coffee :main
 end
 
-get '*' do
-  redirect '/wall'
-end
-
 set :cache, Dalli::Client.new
 
 set :static_cache_control, [:public, :max_age => 86400]
