@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'coffee-script'
 require 'dalli'
 
 set :cache, Dalli::Client.new
