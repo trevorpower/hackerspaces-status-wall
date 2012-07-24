@@ -1,3 +1,5 @@
+#= require_tree vendor
+
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 
 jQuery.fn.movingBackground = ->
@@ -14,7 +16,7 @@ createLog = (name, url) ->
   report: (type, details = '') ->
     list = $("li[id='#{name}']")
       .addClass(type)
-      .find('ul') 
+      .find('ul')
     $('<li/>').appendTo(list).text(details) if details != ''
   success: (details) -> this.report 'success', details
   warning: (details) -> this.report 'warning', details
@@ -33,7 +35,7 @@ normalizeSpaceInfo = (info) ->
   if info['open']
     info['state'] = 'open'
     info['state_icon'] = info.icon.open if info.icon?
-  else 
+  else
     info['state'] = 'closed'
     info['state_icon'] = info.icon.closed if info.icon?
     
@@ -62,14 +64,14 @@ ajaxErrorText = (xhr, status, error) ->
         "#{xhr.status}:#{error}"
     when "timeout"
       "The request timed out."
-    when "parsererror" 
+    when "parsererror"
       "#{error}\n--\n#{xhr.responseText}"
 
 reportContentType = (log, contentType) ->
   unless contentType?
-    log.warning "Content-Type is unavailable" 
+    log.warning "Content-Type is unavailable"
   else if contentType.toLowerCase().indexOf('application/json') == -1
-    log.warning "Content-Type: #{contentType}" 
+    log.warning "Content-Type: #{contentType}"
 
 reportAllowOrigin = (log, allowOrigin) ->
   if allowOrigin?
