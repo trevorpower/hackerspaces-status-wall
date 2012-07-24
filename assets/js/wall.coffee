@@ -1,4 +1,5 @@
-#= require_tree vendor
+#= require vendor/jquery-1.7.1.min
+#= require vendor/jsrender
 
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 
