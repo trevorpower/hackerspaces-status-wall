@@ -4,8 +4,9 @@
   "dependencies": {
     "express": "2.2.0",
     "connect-assets": "",
-    "coffee-script": "",
     "wrench": "",
+    "coffee-script": "",
+    "less": "",
     "jade": ""
   }
 }

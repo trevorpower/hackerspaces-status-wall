@@ -3,8 +3,8 @@ head
   title Global Hackerspaces Status Wall
   script(src="jquery-1.7.1.min.js")
   script(src="jsrender.js")
+  != css('style')
   != js('wall')
-  link(rel="stylesheet", href="styles.css")
   script(id="spacetile", type="text/x-jquery-tmpl")
     li      
       .tile(style="background-image: url({{=logo}}); background-clip: content-box;", class="{{=state}}")
