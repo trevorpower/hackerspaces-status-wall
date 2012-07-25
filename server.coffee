@@ -25,7 +25,7 @@ app.post '/proxy', (req, res) ->
           "error": ex.message
 
 app.get '*', (req, res) ->
- res.redirect 'wall'
+  res.redirect 'wall'
 
 port = process.env.PORT
 app.listen port, () -> console.log "Listening on port #{port}"
