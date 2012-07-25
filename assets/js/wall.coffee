@@ -87,7 +87,7 @@ getResultObject = (log, ajaxResult, xhr) ->
 getJsonFromProxy = (log, url, success) ->
   $.ajax
     type: 'POST'
-    url: "http://proxy.hackerspaces.me"
+    url: "/proxy"
     data: "url=#{url}"
     processData: true
     datatype: 'jsonp'

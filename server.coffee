@@ -10,9 +10,19 @@ app.get '/wall', (req, res) ->
   res.render 'wall.jade', {layout: false}
 
 app.post '/proxy', (req, res) ->
-  require('request')
-  res.send 'proxy'
-  
+  require('request') req.body.url, (error, apiResponse, apiBody) ->
+    if error?
+      res.send error if error?
+    else
+      try
+        res.send
+          "headers": apiResponse.headers
+          "body": JSON.parse apiBody
+      catch ex
+        res.send
+          "headers": apiResponse.headers
+          "body": apiBody
+          "error": ex.message
 
 app.get '*', (req, res) ->
  res.redirect 'wall'
