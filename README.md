@@ -15,6 +15,8 @@ A second aim of this page is to display any errors or potential problems with a 
 
 Technologies Used
 -----------------
+* [Node.js](http://nodejs.org)
+* [Express](http://expressjs.com)
 * [CoffeeScript](http://coffeescript.org)
-* [Haml](http://haml-lang.com)
-* [Sass](http://sass-lang.com)
+* [Jade](http://jade-lang.com)
+* [Less](http://lesscss.org)
