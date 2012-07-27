@@ -9,6 +9,9 @@ app.configure ->
 app.get '/wall', (req, res) ->
   res.render 'wall.jade', {layout: false}
 
+app.get '/twitter', (req, res) ->
+  res.render 'twitter.jade', {layout: false}
+
 app.post '/proxy', (req, res) ->
   require('request') req.body.url, (error, apiResponse, apiBody) ->
     if error?
