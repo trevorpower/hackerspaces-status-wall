@@ -1,7 +1,6 @@
-doctype 5
-head
-  title Global Hackerspaces Status Wall
-  != css('style')
+extends layout
+
+block scripts
   != js('wall')
   script(id="spacetile", type="text/x-jquery-tmpl")
     li      
@@ -25,16 +24,9 @@ head
         summary {{=name}}
         a(href='{{=url}}') {{=url}}
         ul
-  != partial('google-analytics.ejs')
-body
-  h1 Global Hackerspaces Status Wall
+
+block content
   ul#spaces
   section#loading
     h1 Status API Status
     ul
-  footer
-    a(href="https://github.com/trevorpower/hackerspaces-status-wall") Source
-    |  by 
-    a(href="http://trevorpower.com") Trevor Power
-    |  of 
-    a(href="http://milklabs.ie") miLKlabs
