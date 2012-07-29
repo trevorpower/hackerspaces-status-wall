@@ -1,5 +1,4 @@
 express = require 'express'
-
 app = express.createServer()
 
 app.configure ->
@@ -32,3 +31,10 @@ app.get '*', (req, res) ->
 
 port = process.env.PORT
 app.listen port, () -> console.log "Listening on port #{port}"
+
+io = require('socket.io').listen(app)
+
+broadcastLatest = ->
+  io.sockets.emit 'test', 'o'
+
+setInterval broadcastLatest, 5000
