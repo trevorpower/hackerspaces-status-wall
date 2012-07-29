@@ -35,6 +35,6 @@ app.listen port, () -> console.log "Listening on port #{port}"
 io = require('socket.io').listen(app)
 
 broadcastLatest = ->
-  io.sockets.emit 'test', 'o'
+  io.sockets.emit 'test', 'Hello World!!'
 
 setInterval broadcastLatest, 5000
