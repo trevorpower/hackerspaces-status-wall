@@ -1,4 +1,6 @@
 express = require 'express'
+request = require 'request'
+
 app = express.createServer()
 
 app.configure ->
@@ -12,7 +14,7 @@ app.get '/twitter', (req, res) ->
   res.render 'twitter.jade', {layout: false}
 
 app.post '/proxy', (req, res) ->
-  require('request') req.body.url, (error, apiResponse, apiBody) ->
+  request req.body.url, (error, apiResponse, apiBody) ->
     if error?
       res.send error if error?
     else
