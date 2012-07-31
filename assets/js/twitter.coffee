@@ -3,7 +3,7 @@
 socket = io.connect 'http://0.0.0.0:5000'
 
 socket.on 'message', (data) ->
-  $("<li>#{data}</li>")
+  $("<li>#{data.text}</li>")
     .hide()
     .prependTo('#tweets')
     .slideDown()
