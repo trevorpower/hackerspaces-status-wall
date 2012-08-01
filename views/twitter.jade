@@ -1,8 +1,10 @@
 extends layout
 
 block scripts
+  != css('style')
   script(src='/socket.io/socket.io.js', type='text/javascript') 
   != js('twitter')
 
 block content
-  ul#tweets
+  div#tweets
+    ul

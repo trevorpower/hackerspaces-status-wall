@@ -109,6 +109,26 @@ footer {
   }
 }
 
+#tweets {
+  overflow: hidden;
+  height: 300px;
+  position: relative;
+  ul {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
+    li {
+      width: 100%;
+      list-style-type: none;
+      border: solid 1px red;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+}
+
 @media screen and (min-width: 600px){
   #spaces{ li { width: 50% } } 
 }
@@ -127,4 +147,10 @@ footer {
 
 @media screen and (min-width: 2000px){
   #spaces{ li { width: 16.66% } } 
+}
+
+#tweets {
+  overflow: hidden;
+  height: 300px;
+  position: relative;
 }

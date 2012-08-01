@@ -3,13 +3,13 @@
 socket = io.connect 'http://0.0.0.0:5000'
 
 socket.on 'message', (data) ->
-  $("<li>#{data.text}</li>")
+  $("<li>#{data.user.screen_name} - #{data.text}</li>")
     .hide()
-    .prependTo('#tweets')
+    .appendTo('#tweets ul')
     .slideDown()
-  $('#tweets li:eq(3)')
+  $('#tweets ul li').eq(-3)
     .fadeTo(3000, 0.5)
-  $('#tweets li:eq(4)')
+  $('#tweets ul li').eq(-4)
     .fadeTo(3000, 0.3)
-  $('#tweets li:gt(4)')
-    .fadeOut(3000, (li) -> li.remove())
+  $('#tweets ul li').eq(-5)
+    .fadeOut(3000, () -> $(this).remove())
