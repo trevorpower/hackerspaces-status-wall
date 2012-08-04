@@ -1,7 +1,7 @@
 #= require_tree vendor
 #= require tweet
 
-socket = io.connect 'http://0.0.0.0:5000'
+socket = io.connect '/'
 
 socket.on 'message', (data) ->
   $(tweet(data))

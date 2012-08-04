@@ -13,6 +13,6 @@ module.exports = (callback) ->
     twit.stream 'statuses/sample', {}, (stream) ->
       stream.on 'data', (data) ->
         d = d + 1
-        if d == 30
+        if d == 100
           callback data
           d = 0
