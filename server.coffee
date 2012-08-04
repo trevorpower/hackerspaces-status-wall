@@ -37,6 +37,10 @@ app.listen port, () -> console.log "Listening on port #{port}"
 
 io = require('socket.io').listen(app)
 
+io.configure () ->
+  io.set "transports", ["xhr-polling"]
+  io.set "polling duration", 10
+
 tweets = require('./tweets')
 
 tweets (tweet) ->
