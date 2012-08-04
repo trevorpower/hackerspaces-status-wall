@@ -4,7 +4,15 @@ request = require 'request'
 app = express.createServer()
 
 app.configure ->
-  app.use require('connect-assets')()
+  app.use require('connect-assets')
+    jsCompilers:
+      jade:
+        match: /\.js$/
+        compileSync: (sourcePath, source) ->
+          require('jade')
+            .compile(source, {client: true})
+            .toString()
+            .replace('anonymous', require('path').basename(sourcePath, '.jade'))
   app.use express.bodyParser()
 
 app.get '/wall', (req, res) ->

@@ -1,9 +1,10 @@
-#= require vendor/jquery-1.7.1.min
+#= require_tree vendor
+#= require tweet
 
 socket = io.connect 'http://0.0.0.0:5000'
 
 socket.on 'message', (data) ->
-  $("<li>#{data.user.screen_name} - #{data.text}</li>")
+  $(tweet(data))
     .hide()
     .appendTo('#tweets ul')
     .slideDown()
