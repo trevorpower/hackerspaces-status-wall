@@ -9,10 +9,7 @@ twit = new twitter
 module.exports = (callback) ->
   d = 0
   require('fs').readFile 'ids.txt', 'ascii', (err, ids) ->
-    #filter = {'follow' : ids.split('\n').filter((x) -> x != '')}
-    twit.stream 'statuses/sample', {}, (stream) ->
+    filter = {'follow' : ids.split('\n').filter((x) -> x != '')}
+    twit.stream 'statuses/filter', filter, (stream) ->
       stream.on 'data', (data) ->
-        d = d + 1
-        if d == 100
-          callback data
-          d = 0
+        callback data
