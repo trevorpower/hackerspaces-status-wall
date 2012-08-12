@@ -122,11 +122,27 @@ footer {
     padding: 0px;
     width: 100%;
     li {
-      width: 100%;
       list-style-type: none;
-      border: solid 1px red;
+      overflow: hidden;
+      width: 100%;
       margin: 0px;
       padding: 0px;
+      position: relative;
+      height: 110px;
+      a {
+        position: absolute;
+        text-decoration: none;
+        width: 190px;
+        display: block;
+        span {
+          width: 190px;
+          display: block;
+        }
+      }
+      > span {
+        display: block;
+        margin-left: 200px;
+      }
     }
   }
 }
