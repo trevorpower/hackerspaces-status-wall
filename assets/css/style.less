@@ -109,43 +109,7 @@ footer {
   }
 }
 
-#tweets {
-  overflow: hidden;
-  height: 300px;
-  position: relative;
-  width: 100%;
-  ul {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    li {
-      list-style-type: none;
-      overflow: hidden;
-      width: 100%;
-      margin: 0px;
-      padding: 0px;
-      position: relative;
-      height: 110px;
-      a {
-        position: absolute;
-        text-decoration: none;
-        width: 190px;
-        display: block;
-        span {
-          width: 190px;
-          display: block;
-        }
-      }
-      > span {
-        display: block;
-        margin-left: 200px;
-      }
-    }
-  }
-}
+@import "tweets";
 
 @media screen and (min-width: 600px){
   #spaces{ li { width: 50% } } 
@@ -165,10 +129,4 @@ footer {
 
 @media screen and (min-width: 2000px){
   #spaces{ li { width: 16.66% } } 
-}
-
-#tweets {
-  overflow: hidden;
-  height: 450px;
-  position: relative;
 }
