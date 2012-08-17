@@ -1,18 +1,18 @@
 Mongo = require 'mongodb'
 
-with_directories = (callback) ->
+with_database = (callback) ->
   server = new Mongo.Server('localhost', 27017, {})
   db = new Mongo.Db('hackerspaces-me', server)
-  db.open (err, db) ->
+  db.open callback
+
+with_directories = (callback) ->
+  with_database (err, db) ->
     if !err
       db.collection 'directories', (err, collection) ->
         callback collection if !err
 
 exports.create = (callback) ->
-  server = new Mongo.Server('localhost', 27017, {})
-  db = new Mongo.Db('hackerspaces-me', server)
-  db.open (err, db) ->
-    console.log 'teswt'
+  with_database (err, db) ->
     if !err
       db.executeDbCommand
         create: 'directories'
