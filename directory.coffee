@@ -1,9 +1,12 @@
 Mongo = require 'mongodb'
 
 with_database = (callback) ->
-  server = new Mongo.Server('localhost', 27017, {})
+  server = new Mongo.Server(process.env.MONGO_HOST, parseInt process.env.MONGO_PORT, {})
   db = new Mongo.Db('hackerspaces-me', server)
-  db.open callback
+  db.open (err, db) ->
+    db.authenticate process.env.MONGO_USER, process.env.MONGO_PASSWORD, (err, authenticated) ->
+      if authenticated
+        callback(err, db)
 
 with_directories = (callback) ->
   with_database (err, db) ->
@@ -14,11 +17,18 @@ with_directories = (callback) ->
 exports.create = (callback) ->
   with_database (err, db) ->
     if !err
-      db.executeDbCommand
-        create: 'directories'
-        capped: true
-        size: 10000000
-    callback(err)
+      db.executeDbCommand(
+        {
+          create: 'directories'
+          capped: true
+          size: 10000000
+        },
+        (err) ->
+          if err
+            callback err
+          else
+            callback()
+      )
 
 exports.store = (spaces, callback) ->
   with_directories (directories) ->
