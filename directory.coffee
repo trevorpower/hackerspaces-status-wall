@@ -8,11 +8,10 @@ with_directories = (callback) ->
       db.collection 'directories', (err, collection) ->
         callback collection if !err
 
-exports.store = (spaces) ->
+exports.store = (spaces, callback) ->
   with_directories (directories) ->
-    directories.insert
-      date: new Date()
-      spaces: spaces
+    directories.insert {date: new Date(), spaces: spaces}, (err) ->
+      callback(err)
 
 exports.latest = (callback) ->
   with_directories (directories) ->
