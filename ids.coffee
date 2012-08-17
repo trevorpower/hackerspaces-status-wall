@@ -1,11 +1,11 @@
 request = require 'request'
-
-directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 twitterApiUrl = "http://api.twitter.com/1/"
 
-request directoryUrl, (error, response, body) ->
-  directory = JSON.parse body
-  for name, url of directory
+console.log 'getting latest directory'
+require('./directory').latest (latest) ->
+  console.log "directory found for #{latest.date}"
+  for name, url of latest.spaces
+    console.log "requesting status for #{name}"
     request url, (error, response, body) ->
       try
         space = JSON.parse body

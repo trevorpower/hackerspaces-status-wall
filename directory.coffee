@@ -27,6 +27,9 @@ exports.store = (spaces, callback) ->
 
 exports.latest = (callback) ->
   with_directories (directories) ->
-    directories.findOne {}, (err, item) ->
-      if !err
-        callback item
+    directories
+      .find()
+      .sort({$natural: -1})
+      .limit(1)
+      .toArray (err, items) ->
+        callback items[0] if !err
