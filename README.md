@@ -26,12 +26,12 @@ Technologies Used
 
 Playing With It
 ---------------
-The application uses [mongoDb] and this should be started first:
+The application uses [MongoDb](http://mongodb.org) and this should be started first:
 
-   $ mongod
+    $ mongod
 
 There is no migration infrastructure but the `database.coffee` module exports a function `create` that will create the required collections.
 
 To be deployable on [Heroku](http://heroku.com) a Procfile is used and the web service can be started by foreman:
 
-  $ foreman start
+    $ foreman start
