@@ -22,3 +22,16 @@ Technologies Used
 * [CoffeeScript](http://coffeescript.org)
 * [Jade](http://jade-lang.com)
 * [Less](http://lesscss.org)
+* [mongoDB](http://mongodb.org)
+
+Playing With It
+---------------
+The application uses [mongoDb] and this should be started first:
+
+   $ mongod
+
+There is no migration infrastructure but the `directory.coffee` module exports a function `create` that will create the document collections.
+
+To be deployable on [Heroku](http://heroku.com) a Procfile is used and the web service can be started by foreman:
+
+  $ foreman start
