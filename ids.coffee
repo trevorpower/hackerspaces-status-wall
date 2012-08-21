@@ -2,7 +2,7 @@ request = require 'request'
 twitterApiUrl = "http://api.twitter.com/1/"
 
 console.log 'getting latest directory'
-require('./directory').latest (latest) ->
+require('./database').latest (latest) ->
   console.log "directory found for #{latest.date}"
   for name, url of latest.spaces
     console.log "requesting status for #{name}"
