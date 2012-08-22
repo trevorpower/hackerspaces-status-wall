@@ -17,14 +17,6 @@ connect = (callback) ->
 
 exports.connect = connect
 
-with_directories = (callback) ->
-  connect (err, db) ->
-    if !err
-      db.collection 'directories', (err, collection) ->
-        callback collection if !err
-    else
-      callback null
-
 exports.create = (callback) ->
   connect (err, db) ->
     if !err
@@ -36,17 +28,3 @@ exports.create = (callback) ->
       async.forEach collections, create, callback
     else
       callback err
-
-exports.store = (spaces, callback) ->
-  with_directories (directories) ->
-    directories.insert {date: new Date(), spaces: spaces}, (err) ->
-      callback(err)
-
-exports.latest = (callback) ->
-  with_directories (directories) ->
-    directories
-      .find()
-      .sort({$natural: -1})
-      .limit(1)
-      .toArray (err, items) ->
-        callback items[0] if !err
