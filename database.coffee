@@ -1,7 +1,7 @@
 Mongo = require 'mongodb'
 async = require 'async'
 
-with_database = (callback) ->
+connect = (callback) ->
   server = new Mongo.Server(process.env.MONGO_HOST, parseInt process.env.MONGO_PORT, {})
   db = new Mongo.Db('hackerspaces-me', server)
   db.open (err, db) ->
@@ -15,8 +15,10 @@ with_database = (callback) ->
       else
         callback(err, db)
 
+exports.connect = connect
+
 with_directories = (callback) ->
-  with_database (err, db) ->
+  connect (err, db) ->
     if !err
       db.collection 'directories', (err, collection) ->
         callback collection if !err
@@ -24,7 +26,7 @@ with_directories = (callback) ->
       callback null
 
 exports.create = (callback) ->
-  with_database (err, db) ->
+  connect (err, db) ->
     if !err
       collections = [
         { create: 'directories', capped: true, size: 10000000 },
