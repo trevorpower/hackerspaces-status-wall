@@ -1,8 +1,9 @@
 request = require 'request'
-twitterApiUrl = "http://api.twitter.com/1/"
+twitterApi = "http://api.twitter.com/1/"
 
 console.log 'getting latest directory'
-require('./database').latest (latest) ->
+
+require('./directories').latest (latest) ->
   console.log "directory found for #{latest.date}"
   for name, url of latest.spaces
     console.log "requesting status for #{name}"
@@ -12,6 +13,6 @@ require('./database').latest (latest) ->
         if space.contact?
           if (space.contact.twitter?)
             screen_name = space.contact.twitter.substring(1)
-            request "#{twitterApiUrl}users/show.json?screen_name=#{screen_name}", (error, response, body) ->
+            request "#{twitterApi}users/show.json?screen_name=#{screen_name}", (error, response, body) ->
               if response.statusCode == 200
                 console.log JSON.parse(body).id

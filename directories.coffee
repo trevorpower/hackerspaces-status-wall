@@ -2,15 +2,17 @@ with_directories = (callback) ->
   require('./database').connect (err, db) ->
     if !err
       db.collection 'directories', (err, collection) ->
-        callback collection if !err
+        callback err, collection if !err
     else
-      callback null
+      callback err
 
 
 exports.store = (spaces, callback) ->
-  with_directories (directories) ->
-    directories.insert {date: new Date(), spaces: spaces}, (err) ->
-      callback(err)
+  with_directories (err, directories) ->
+    if !err
+      directories.insert {date: new Date(), spaces: spaces}, callback
+    else
+      callback err
 
 exports.latest = (callback) ->
   with_directories (directories) ->
