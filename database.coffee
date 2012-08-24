@@ -6,7 +6,12 @@ schema = [
   { create: 'spaces', capped: true, size: 80000000 }
 ]
 
-connect = (callback) ->
+add_collections = (err, db, collections..., callback) ->
+  get_collection = (name, callback) -> db.collection name, callback
+  async.map collections, get_collection, (err, collections) ->
+    callback(err, db, collections...)
+
+connect = (collections..., callback) ->
   server = new Mongo.Server(
     process.env.MONGO_HOST,
     parseInt process.env.MONGO_PORT,
@@ -23,12 +28,12 @@ connect = (callback) ->
             process.env.MONGO_PASSWORD,
             (err, authenticated) ->
               if authenticated
-                callback(err, db)
+                add_collections err, db, collections..., callback
               else
                 callback 'failed to authenticate'
           )
         else
-          callback(err, db)
+          add_collections err, db, collections..., callback
 
 exports.connect = connect
 
