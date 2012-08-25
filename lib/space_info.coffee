@@ -1,3 +1,3 @@
-module.exports = (response) ->
+module.exports = (body) ->
   date: new Date()
-  status: JSON.parse response.body
+  status: JSON.parse body

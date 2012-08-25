@@ -1,6 +1,8 @@
 request = require 'request'
 async = require 'async'
+createStatusDocument = require './lib/space_info'
 
+spaceStatus = require
 latest = (collection, callback) ->
   collection
     .find()
@@ -21,8 +23,9 @@ update_spaces = (directories, spaces, callback) ->
         callback()
       else
         console.log "reply for #{space.name}"
-        status = JSON.parse body
-        spaces.insert {date: new Date(), status: status}, (err) ->
+        statusDocument = createStatusDocument body
+        
+        spaces.insert statusDocument, (err) ->
           if err
             console.log err
           else
