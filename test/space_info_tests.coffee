@@ -13,3 +13,10 @@ exports.spaceInfoContainsStatus = (test) ->
 
   test.deepEqual result.status, {status: "open"}
   test.done()
+
+exports.spaceInfoWithBadJsonCreatesADocument = (test) ->
+
+  result = createStatusFromResponse '<badjson />'
+
+  test.ok result.error
+  test.done()
