@@ -5,6 +5,9 @@
     "node": "0.8.x",
     "npm": "1.1.x"
   },
+  "scripts": {
+    "test": "nodeunit test"
+  },
   "dependencies": {
     "express": "2.2.0",
     "connect-assets": "",
