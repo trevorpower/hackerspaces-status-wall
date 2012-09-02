@@ -1,6 +1,6 @@
 request = require 'request'
 async = require 'async'
-createStatusDocument = require './lib/space_info'
+createStatusDocument = require '../lib/space_info'
 
 spaceStatus = require
 latest = (collection, callback) ->
@@ -42,7 +42,7 @@ update_spaces = (directories, spaces, callback) ->
       async.forEach entries, update_space, (err) ->
         callback err
 
-require('./database')
+require('../database')
   .connect 'directories', 'spaces', (err, db, directories, spaces) ->
     if err
       console.log err

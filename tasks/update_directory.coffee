@@ -7,7 +7,7 @@ require('request') directoryUrl, (err, res, body) ->
     console.log err
   else
     console.log 'reply recieved'
-    require('./directories').store JSON.parse(body), (err) ->
+    require('../directories').store JSON.parse(body), (err) ->
       if err
         console.log err
       else

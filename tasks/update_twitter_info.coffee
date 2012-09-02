@@ -12,7 +12,7 @@ getScreenNames = (db, callback) ->
       else
         callback err, result.values.map((s) -> s.substring(1))
 
-require('./database').connect 'tweeps', (err, db, tweeps) ->
+require('../database').connect 'tweeps', (err, db, tweeps) ->
   saveTwitterInfo = (name, callback) ->
     console.log "requesting info for @#{name}"
     request "#{twitterApi}users/show.json?screen_name=#{name}", (err, res, body) ->
