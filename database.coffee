@@ -1,13 +1,6 @@
 Mongo = require 'mongodb'
 async = require 'async'
 
-schema = [
-  { create: 'directories', capped: true, size: 10000000 },
-  { create: 'spaces', capped: true, size: 80000000 }
-  { create: 'tweeps', capped: true, size: 5000000 }
-  { create: 'tweets', capped: true, size: 1000000 }
-]
-
 add_collections = (err, db, collections..., callback) ->
   get_collection = (name, callback) -> db.collection name, callback
   async.map collections, get_collection, (err, collections) ->
@@ -42,7 +35,8 @@ exports.connect = connect
 exports.create = (callback) ->
   connect (err, db) ->
     if !err
+      collections = require './database/collections'
       create = (o, c) -> db.executeDbCommand(o, c)
-      async.forEach schema, create, callback
+      async.forEach collections, create, callback
     else
       callback err
