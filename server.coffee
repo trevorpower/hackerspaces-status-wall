@@ -46,11 +46,11 @@ database = require './database'
 
 io.sockets.on 'connection', (socket) ->
   socket.on 'tweets', () ->
-    require('./tweets').recent (err, tweet) ->
+    require('./twitter').recent (err, tweet) ->
       socket.emit 'message', tweet if !err
 
-require('./tweets').listen (tweet) ->
+require('./twitter').listen (tweet) ->
   io.sockets.emit 'message', tweet
   database.connect 'tweets', (err, db, tweets) ->
     if !err
-        tweets.insert tweet
+      tweets.insert tweet
