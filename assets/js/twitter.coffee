@@ -14,3 +14,5 @@ socket.on 'message', (data) ->
     .fadeTo(3000, 0.3)
   $('#tweets ul li').eq(-5)
     .fadeOut(3000, () -> $(this).remove())
+
+socket.emit 'tweets'
