@@ -27,6 +27,8 @@ exports.listen = (callback) ->
         console.log data
       stream.on 'data', (data) ->
         callback data
+        require('./database').connect 'tweets', (err, db, tweets) ->
+          tweets.insert data if !err
 
 exports.recent = (callback) ->
   require('./database').connect 'tweets', (err, db, tweets) ->

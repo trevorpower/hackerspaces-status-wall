@@ -51,6 +51,3 @@ io.sockets.on 'connection', (socket) ->
 
 require('./twitter').listen (tweet) ->
   io.sockets.emit 'message', tweet
-  database.connect 'tweets', (err, db, tweets) ->
-    if !err
-      tweets.insert tweet
