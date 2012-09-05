@@ -41,8 +41,20 @@ io.configure () ->
   io.set "transports", ["xhr-polling"]
   io.set "polling duration", 10
 
-require('./database').connect 'tweets', (err, db, tweets) ->
-  if !err
-    require('./tweets') (tweet) ->
-      io.sockets.emit 'message', tweet
-      tweets.insert tweet
+
+database = require './database'
+
+io.sockets.on 'connection', (socket) ->
+  database.connect 'tweets', (err, db, tweets) ->
+    tweets
+      .find()
+      .sort({$natural: -1})
+      .limit(10)
+      .each (err, tweet) ->
+        socket.emit 'message', tweet if !err
+
+require('./tweets') (tweet) ->
+  io.sockets.emit 'message', tweet
+  database.connect 'tweets', (err, db, tweets) ->
+    if !err
+        tweets.insert tweet
