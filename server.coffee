@@ -46,15 +46,10 @@ database = require './database'
 
 io.sockets.on 'connection', (socket) ->
   socket.on 'tweets', () ->
-    database.connect 'tweets', (err, db, tweets) ->
-      tweets
-        .find()
-        .sort({$natural: -1})
-        .limit(10)
-        .each (err, tweet) ->
-          socket.emit 'message', tweet if !err
+    require('./tweets').recent (err, tweet) ->
+      socket.emit 'message', tweet if !err
 
-require('./tweets') (tweet) ->
+require('./tweets').listen (tweet) ->
   io.sockets.emit 'message', tweet
   database.connect 'tweets', (err, db, tweets) ->
     if !err

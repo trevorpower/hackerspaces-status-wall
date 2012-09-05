@@ -20,10 +20,18 @@ getTwitterIds = (callback) ->
           else
             callback err, result.values
 
-module.exports = (callback) ->
+exports.listen = (callback) ->
   getTwitterIds (err, ids) ->
     twit.stream 'statuses/filter', {follow: ids}, (stream) ->
       stream.on 'error', (data) ->
         console.log data
       stream.on 'data', (data) ->
         callback data
+
+exports.recent = (callback) ->
+  require('./database').connect 'tweets', (err, db, tweets) ->
+    tweets
+      .find()
+      .sort({$natural: -1})
+      .limit(10)
+      .each callback
