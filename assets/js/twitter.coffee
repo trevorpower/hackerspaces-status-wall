@@ -1,13 +1,7 @@
 #= require_tree vendor
 #= require tweet
 
-socket = io.connect '/'
-
-socket.on 'tweet', (data) ->
-  $(tweet(data))
-    .hide()
-    .appendTo('#tweets ul')
-    .slideDown()
+curateList = () ->
   $('#tweets ul li').eq(-3)
     .fadeTo(3000, 0.5)
   $('#tweets ul li').eq(-4)
@@ -15,4 +9,20 @@ socket.on 'tweet', (data) ->
   $('#tweets ul li').eq(-5)
     .fadeOut(3000, () -> $(this).remove())
 
-socket.emit 'tweets', 4
+socket = io.connect '/'
+
+socket.on 'new tweet', (data) ->
+  $(tweet(data))
+    .hide()
+    .appendTo('#tweets ul')
+    .slideDown()
+  curateList()
+
+socket.on 'previous tweet', (data) ->
+  $(tweet(data))
+    .hide()
+    .prependTo('#tweets ul')
+    .slideDown()
+  curateList()
+
+socket.emit 'previous tweets', 4
