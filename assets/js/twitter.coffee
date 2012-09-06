@@ -3,7 +3,7 @@
 
 socket = io.connect '/'
 
-socket.on 'message', (data) ->
+socket.on 'tweet', (data) ->
   $(tweet(data))
     .hide()
     .appendTo('#tweets ul')

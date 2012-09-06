@@ -46,7 +46,7 @@ twitter = require './twitter'
 io.sockets.on 'connection', (socket) ->
   socket.on 'tweets', () ->
     twitter.recent (err, tweet) ->
-      socket.emit 'message', tweet if !err
+      socket.emit 'tweet', tweet if !err
 
 twitter.listen (tweet) ->
-  io.sockets.emit 'message', tweet
+  io.sockets.emit 'tweet', tweet
