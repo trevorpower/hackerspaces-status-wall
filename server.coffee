@@ -44,8 +44,8 @@ io.configure () ->
 twitter = require './twitter'
 
 io.sockets.on 'connection', (socket) ->
-  socket.on 'tweets', () ->
-    twitter.recent (err, tweet) ->
+  socket.on 'tweets', (max) ->
+    twitter.recent max, (err, tweet) ->
       socket.emit 'tweet', tweet if !err
 
 twitter.listen (tweet) ->

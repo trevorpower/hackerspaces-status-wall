@@ -30,10 +30,10 @@ exports.listen = (callback) ->
         require('./database').connect 'tweets', (err, db, tweets) ->
           tweets.insert data if !err
 
-exports.recent = (callback) ->
+exports.recent = (max, callback) ->
   require('./database').connect 'tweets', (err, db, tweets) ->
     tweets
       .find()
-      .sort({$natural: -1})
-      .limit(10)
+      .sort($natural: -1)
+      .limit(max)
       .each callback
