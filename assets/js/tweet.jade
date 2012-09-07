@@ -2,4 +2,5 @@ li
   a(href="http://twitter.com/#{user.screen_name}")
     img(src="#{user.profile_image_url}")
     span @#{user.screen_name}
-  span #{text}
+  span.text #{text}
+  span.time #{created_at}
