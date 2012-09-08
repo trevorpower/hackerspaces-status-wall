@@ -6,7 +6,7 @@ twit = new twitter
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 
 getTwitterIds = (callback) ->
-  require('./database').connect (err, db) ->
+  require('../database').connect (err, db) ->
     if err
       callback err
     else
@@ -27,11 +27,11 @@ exports.listen = (callback) ->
         console.log data
       stream.on 'data', (data) ->
         callback data
-        require('./database').connect 'tweets', (err, db, tweets) ->
+        require('../database').connect 'tweets', (err, db, tweets) ->
           tweets.insert data if !err
 
 exports.recent = (max, callback) ->
-  require('./database').connect 'tweets', (err, db, tweets) ->
+  require('../database').connect 'tweets', (err, db, tweets) ->
     tweets
       .find()
       .sort($natural: -1)
