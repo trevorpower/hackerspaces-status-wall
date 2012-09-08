@@ -1,3 +1,5 @@
+createDirectory = require './lib/directory'
+
 with_directories = (callback) ->
   require('./database').connect (err, db) ->
     if !err
@@ -10,13 +12,14 @@ with_directories = (callback) ->
 exports.store = (spaces, callback) ->
   with_directories (err, directories) ->
     if !err
-      directories.insert {date: new Date(), spaces: spaces}, callback
+      directories.insert createDirectory(spaces), callback
     else
       callback err
 
 exports.latest = (callback) ->
   with_directories (directories) ->
     directories
+
       .find()
       .sort({$natural: -1})
       .limit(1)
