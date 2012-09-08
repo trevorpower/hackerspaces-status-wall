@@ -41,7 +41,7 @@ io.configure () ->
   io.set "transports", ["xhr-polling"]
   io.set "polling duration", 10
 
-twitter = require './twitter'
+twitter = require './lib/twitter'
 
 io.sockets.on 'connection', (socket) ->
   socket.on 'previous tweets', (max) ->
