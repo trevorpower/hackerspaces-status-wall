@@ -1,18 +1,8 @@
-createDirectory = require './lib/directory'
-
 with_directories = (callback) ->
   require('./database').connect (err, db) ->
     if !err
       db.collection 'directories', (err, collection) ->
         callback err, collection if !err
-    else
-      callback err
-
-
-exports.store = (spaces, callback) ->
-  with_directories (err, directories) ->
-    if !err
-      directories.insert createDirectory(spaces), callback
     else
       callback err
 
