@@ -35,3 +35,7 @@ There is no migration infrastructure but the `database.coffee` module exports a 
 To be deployable on [Heroku](http://heroku.com) a Procfile is used and the web service can be started by foreman:
 
     $ foreman start
+
+Tests
+-----
+Tests can be run with `npm test`.
