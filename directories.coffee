@@ -19,7 +19,6 @@ exports.store = (spaces, callback) ->
 exports.latest = (callback) ->
   with_directories (directories) ->
     directories
-
       .find()
       .sort({$natural: -1})
       .limit(1)
