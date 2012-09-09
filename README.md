@@ -2,10 +2,9 @@ Hackerspaces Status Wall
 ========================
 A basic web page that shows the status of hackerspaces that implement the [hackerspace status API](https://hackerspaces.nl/spaceapi/).
 It uses a directory API to find the available endpoints.
+Displays recent tweets from spaces.
 
 It is currently hosted at [hackerspaces.me](http://hackerspaces.me)
-
-There is also an experimental [hackerspace twitter page](http://hackerspaces.me/twitter).
 
 Client Side First
 -----------------
