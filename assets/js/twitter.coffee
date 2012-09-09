@@ -25,4 +25,5 @@ socket.on 'previous tweet', (data) ->
     .slideDown()
   curateList()
 
-socket.emit 'previous tweets', 4
+jQuery ->
+  socket.emit 'previous tweets', 4

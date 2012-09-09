@@ -1,6 +1,7 @@
 extends layout
 
 block scripts
+  script(src='/socket.io/socket.io.js', type='text/javascript')
   != js('wall')
   script(id="spacetile", type="text/x-jquery-tmpl")
     li      
@@ -24,9 +25,11 @@ block scripts
         summary {{=name}}
         a(href='{{=url}}') {{=url}}
         ul
-
+  
 block content
   h1 Global Hackerspaces Status Wall
+  section#tweets
+    ul
   ul#spaces
   section#loading
     h1 Status API Status

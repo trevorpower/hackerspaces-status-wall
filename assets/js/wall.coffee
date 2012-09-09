@@ -1,5 +1,6 @@
 #= require vendor/jquery-1.7.1.min
 #= require vendor/jsrender
+#= require twitter
 
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
 
