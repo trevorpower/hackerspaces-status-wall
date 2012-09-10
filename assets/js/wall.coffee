@@ -39,14 +39,13 @@ normalizeSpaceInfo = (info) ->
     info['state'] = 'closed'
     info['state_icon'] = info.icon.closed if info.icon?
     
-createSpaceTile = (info) ->
+createSpaceTile = (log, info) ->
   normalizeSpaceInfo info
   tile = $($('#spacetile').render(info))
   tile.find('ul').hide()
   tile.hover( -> $(this).find('ul').fadeToggle('fast', 'linear') )
   tile.find('.tile').movingBackground()
   tile.find('img').error ->
-    log = logger(info.space)
     src = $(this).attr 'src'
     log.warning "icon failed to load: #{src}"
     if src.substring(0, 8) == 'https://'
@@ -121,11 +120,12 @@ getJsonFromApi = (log, url, success) ->
       getJsonFromProxy log, url, success
 
 getSpaceInfo = (name, url) ->
+  log = createLog(name, url)
   getJsonFromApi(
-    createLog(name, url),
+    log,
     url,
     (spaceInfo) ->
-      createSpaceTile(spaceInfo)
+      createSpaceTile(log, spaceInfo)
         .hide()
         .appendTo('#spaces')
         .fadeIn()
