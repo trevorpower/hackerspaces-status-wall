@@ -2,16 +2,6 @@ request = require 'request'
 async = require 'async'
 twitterApi = "http://api.twitter.com/1/"
 
-getScreenNames = (db, callback) ->
-  db.command
-    distinct: "spaces"
-    key: "status.contact.twitter",
-    (err, result) ->
-      if err
-        callback err
-      else
-        callback err, result.values.map((s) -> s.substring(1))
-
 require('../database').connect 'hackerspaces-me', 'tweeps', (err, db, tweeps) ->
   saveTwitterInfo = (name, callback) ->
     console.log "requesting info for @#{name}"
@@ -35,7 +25,7 @@ require('../database').connect 'hackerspaces-me', 'tweeps', (err, db, tweeps) ->
   else
     console.log "connected to #{db}"
 
-    getScreenNames db, (err, names) ->
+    require('../lib/twitterScreenNames')  db, (err, names) ->
       console.log "got #{names.length} screen names"
       async.forEach names, saveTwitterInfo, (err) ->
         process.exit()
