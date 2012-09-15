@@ -6,7 +6,7 @@ add_collections = (err, db, collections..., callback) ->
   async.map collections, get_collection, (err, collections) ->
     callback(err, db, collections...)
 
-connect = (collections..., callback) ->
+connect = (name, collections..., callback) ->
   server = new Mongo.Server(
     process.env.MONGO_HOST,
     parseInt process.env.MONGO_PORT,
