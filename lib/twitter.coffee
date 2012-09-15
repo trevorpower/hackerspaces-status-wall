@@ -5,9 +5,7 @@ twit = new twitter
   access_token_key: process.env.TWITTER_ACCESS_TOKEN
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 
-dbSettings = {name: 'hackerspaces-me'}
-database = require('../database')(dbSettings)
-
+database = require('../database') require('../db_settings')
 
 getTwitterIds = (callback) ->
   database.connect (err, db) ->

@@ -1,5 +1,5 @@
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-database = require('../database') {name: 'hackerspaces-me'}
+database = require('../database') require('../db_settings')
 createDirectory = require '../lib/directory'
 
 console.log 'requesting directory'

@@ -1,7 +1,7 @@
 request = require 'request'
 async = require 'async'
 createStatusDocument = require '../lib/space_info'
-database = require('../database')({name: 'hackerspaces-me'})
+database = require('../database') require('../db_settings')
 
 spaceStatus = require
 latest = (collection, callback) ->

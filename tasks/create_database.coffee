@@ -1,7 +1,6 @@
-dbOptions = {name: 'hackerspaces-me'}
-database = require('../database')(dbOptions)
+database = require('../database') require('../db_settings')
   
-database.connect , (err, db) ->
+database.connect (err, db) ->
   if err
     console.log err
     process.exit()

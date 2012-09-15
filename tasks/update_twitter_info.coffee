@@ -2,7 +2,7 @@ request = require 'request'
 async = require 'async'
 twitterApi = "http://api.twitter.com/1/"
 
-database = require('../database')({name: 'hackerspaces-me'})
+database = require('../database') require('../db_settings')
   
 database.connect 'tweeps', (err, db, tweeps) ->
   saveTwitterInfo = (name, callback) ->
