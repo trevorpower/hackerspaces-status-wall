@@ -20,6 +20,11 @@ module.exports =
     done()
 
   test_test: (test) ->
-    screenNames (err, screenNames) ->
-      test.deepEqual screenNames, ['user']
-      test.done()
+    require('../database').connect 'test', (err, db) ->
+      if err
+        console.log err
+        test.done(err)
+      else
+        screenNames db, (err, screenNames) ->
+          test.deepEqual screenNames, ['user']
+          test.done(err)

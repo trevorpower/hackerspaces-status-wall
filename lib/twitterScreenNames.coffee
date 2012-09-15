@@ -1,4 +1,4 @@
-module.exports = (callback) ->
+module.exports = (db, callback) ->
   require('../database').connect 'test', (err, db) ->
     if err
       callback err
