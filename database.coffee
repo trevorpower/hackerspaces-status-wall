@@ -12,7 +12,7 @@ connect = (name, collections..., callback) ->
     parseInt process.env.MONGO_PORT,
     {}
   )
-  new Mongo.Db('hackerspaces-me', server)
+  new Mongo.Db(name, server)
     .open (err, db) ->
       if err
         callback err

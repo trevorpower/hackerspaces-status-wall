@@ -1,10 +1,10 @@
 database =
   spaces: [
-    {contact: {twitter: '@user'}}
+    {status: {contact: {twitter: '@user'}}}
   ]
 
 twitterScreenNames = (callback) ->
-  require('../database').connect (err, db) ->
+  require('../database').connect 'test', (err, db) ->
     if err
       console.log err
     else
@@ -12,22 +12,24 @@ twitterScreenNames = (callback) ->
         distinct: "spaces"
         key: "status.contact.twitter",
         (err, result) ->
-          console.log result 
-          callback result.values#.map((s) -> s.substring(1))
+          callback result.values.map((s) -> s.substring(1))
 
 
 module.exports =
 
   setUp: (done) ->
-    console.log 'setUp'
-    require('../database').connect (err, db) ->
-      require('../database/create') db, database, (err) ->
+    require('../database').connect 'test', (err, db) ->
+      if err
         done()
+      else
+        require('../database/create') db, database, (err) ->
+          console.log err if err
+          done()
 
   tearDown: (done) ->
     done()
 
   test_test: (test) ->
     twitterScreenNames (screenNames) ->
-      test.ok screenNames == ['user']
+      test.deepEqual screenNames, ['user']
       test.done()
