@@ -6,7 +6,9 @@ require('../database').connect 'hackerspaces-me', 'tweeps', (err, db, tweeps) ->
   saveTwitterInfo = (name, callback) ->
     console.log "requesting info for @#{name}"
     request "#{twitterApi}users/show.json?screen_name=#{name}", (err, res, body) ->
-      if res.statusCode == 200
+      if err
+        callback err
+      else if res.statusCode == 200
         tweeps.insert(
           {date: new Date(), user: JSON.parse(body)}
           (err) ->
