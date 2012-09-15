@@ -22,7 +22,7 @@ module.exports =
   tearDown: (done) ->
     done()
 
-  test_test: (test) ->
+  screenNamesContainSingleUser: (test) ->
     screenNames testDb, (err, screenNames) ->
       test.deepEqual screenNames, ['user']
       test.done(err)
