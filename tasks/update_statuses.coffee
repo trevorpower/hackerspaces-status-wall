@@ -42,8 +42,8 @@ update_spaces = (directories, spaces, callback) ->
       async.forEach entries, update_space, (err) ->
         callback err
 
-require('../database')
-  .connect 'hackerspaces-me', 'directories', 'spaces', (err, db, directories, spaces) ->
+require('../database')({name: 'hackerspaces-me'})
+  .connect 'directories', 'spaces', (err, db, directories, spaces) ->
     if err
       console.log err
       process.exit()

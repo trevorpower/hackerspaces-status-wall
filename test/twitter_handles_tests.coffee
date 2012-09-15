@@ -11,7 +11,7 @@ testDb = null
 module.exports =
 
   setUp: (done) ->
-    require('../database').connect 'test', (err, db) ->
+    require('../database')({name: 'test'}).connect (err, db) ->
       testDb = db
       if err
         done()

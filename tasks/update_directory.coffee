@@ -1,5 +1,5 @@
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-database = require '../database'
+database = require('../database') {name: 'hackerspaces-me'}
 createDirectory = require '../lib/directory'
 
 console.log 'requesting directory'
@@ -13,7 +13,7 @@ require('request') directoryUrl, (err, res, body) ->
     complete err
   else
     console.log 'reply recieved'
-    database.connect 'hackerspaces-me', 'directories', (err, db, directories) ->
+    database.connect 'directories', (err, db, directories) ->
       if err
         complete err
       else
