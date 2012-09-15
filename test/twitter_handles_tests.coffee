@@ -20,6 +20,6 @@ module.exports =
     done()
 
   test_test: (test) ->
-    screenNames (screenNames) ->
+    screenNames (err, screenNames) ->
       test.deepEqual screenNames, ['user']
       test.done()

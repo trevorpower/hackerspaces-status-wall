@@ -1,10 +1,10 @@
 module.exports = (callback) ->
   require('../database').connect 'test', (err, db) ->
     if err
-      console.log err
+      callback err
     else
       db.command
         distinct: "spaces"
         key: "status.contact.twitter",
         (err, result) ->
-          callback result.values.map((s) -> s.substring(1))
+          callback err, result.values.map((s) -> s.substring(1))
