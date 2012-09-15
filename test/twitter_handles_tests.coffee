@@ -6,7 +6,7 @@ data =
 
 screenNames = require '../lib/twitterScreenNames'
 
-database = require('../database')({name: 'test'})
+database = require('../database') require('../test_db_settings')
 connection = null
 
 module.exports =
