@@ -12,7 +12,7 @@ connection = null
 module.exports =
 
   setUp: (done) ->
-    require('../database')({name: 'test'}).connect (err, db) ->
+    database.connect (err, db) ->
       connection = db
       if err
         done()
