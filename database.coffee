@@ -11,7 +11,7 @@ module.exports = (options) ->
   console.log options
   connect: (collections..., callback) ->
     server = new Mongo.Server(
-      process.env.MONGO_HOST,
+      options.host,
       options.port,
       {}
     )
