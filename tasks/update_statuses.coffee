@@ -43,7 +43,7 @@ update_spaces = (directories, spaces, callback) ->
         callback err
 
 require('../database')
-  .connect 'directories', 'spaces', (err, db, directories, spaces) ->
+  .connect 'hackerspaces-me', 'directories', 'spaces', (err, db, directories, spaces) ->
     if err
       console.log err
       process.exit()

@@ -1,4 +1,4 @@
-require('../database').connect (err, db) ->
+require('../database').connect 'hackerspaces-me', (err, db) ->
   if err
     console.log err
     process.exit()
