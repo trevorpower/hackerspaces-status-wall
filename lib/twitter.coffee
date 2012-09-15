@@ -6,9 +6,11 @@ twit = new twitter
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 
 dbSettings = {name: 'hackerspaces-me'}
+database = require('../database')(dbSettings)
+
 
 getTwitterIds = (callback) ->
-  require('../database')(dbSettings).connect (err, db) ->
+  database.connect (err, db) ->
     if err
       callback err
     else
@@ -29,11 +31,11 @@ exports.listen = (callback) ->
         console.log data
       stream.on 'data', (data) ->
         callback data
-        require('../database')(dbsettings).connect 'tweets', (err, db, tweets) ->
+        database.connect 'tweets', (err, db, tweets) ->
           tweets.insert data if !err
 
 exports.recent = (max, callback) ->
-  require('../database')(dbSettings).connect 'tweets', (err, db, tweets) ->
+  database.connect 'tweets', (err, db, tweets) ->
     tweets
       .find()
       .sort($natural: -1)

@@ -2,7 +2,9 @@ request = require 'request'
 async = require 'async'
 twitterApi = "http://api.twitter.com/1/"
 
-require('../database')({name: 'hackerspaces-me'}).connect 'tweeps', (err, db, tweeps) ->
+database = require('../database')({name: 'hackerspaces-me'})
+  
+database.connect 'tweeps', (err, db, tweeps) ->
   saveTwitterInfo = (name, callback) ->
     console.log "requesting info for @#{name}"
     request "#{twitterApi}users/show.json?screen_name=#{name}", (err, res, body) ->

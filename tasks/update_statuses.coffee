@@ -1,6 +1,7 @@
 request = require 'request'
 async = require 'async'
 createStatusDocument = require '../lib/space_info'
+database = require('../database')({name: 'hackerspaces-me'})
 
 spaceStatus = require
 latest = (collection, callback) ->
@@ -42,8 +43,7 @@ update_spaces = (directories, spaces, callback) ->
       async.forEach entries, update_space, (err) ->
         callback err
 
-require('../database')({name: 'hackerspaces-me'})
-  .connect 'directories', 'spaces', (err, db, directories, spaces) ->
+database.connect 'directories', 'spaces', (err, db, directories, spaces) ->
     if err
       console.log err
       process.exit()

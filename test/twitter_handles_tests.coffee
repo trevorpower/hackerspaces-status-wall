@@ -1,4 +1,4 @@
-database =
+data =
   spaces: [
     {status: {contact: {twitter: '@user'}}}
     {status: {contact: {twitter: 'hackerspace'}}}
@@ -6,17 +6,18 @@ database =
 
 screenNames = require '../lib/twitterScreenNames'
 
-testDb = null
+database = require('../database')({name: 'test'})
+connection = null
 
 module.exports =
 
   setUp: (done) ->
     require('../database')({name: 'test'}).connect (err, db) ->
-      testDb = db
+      connection = db
       if err
         done()
       else
-        require('../database/create') db, database, (err) ->
+        require('../database/create') db, data, (err) ->
           console.log err if err
           done()
 
@@ -24,12 +25,12 @@ module.exports =
     done()
 
   screenNamesContainUserWithOutAtSymbol: (test) ->
-    screenNames testDb, (err, screenNames) ->
+    screenNames connection, (err, screenNames) ->
       test.notEqual -1, screenNames.indexOf('user')
       test.done(err)
 
   screenNamesContainHackerspaceEvenWhenAtNotSaved: (test) ->
-    screenNames testDb, (err, screenNames) ->
+    screenNames connection, (err, screenNames) ->
       test.notEqual(
         -1, screenNames.indexOf('hackerspace'),
         "'hackerspace' not included")
