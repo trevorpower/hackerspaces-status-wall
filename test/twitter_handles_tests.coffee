@@ -3,17 +3,7 @@ database =
     {status: {contact: {twitter: '@user'}}}
   ]
 
-twitterScreenNames = (callback) ->
-  require('../database').connect 'test', (err, db) ->
-    if err
-      console.log err
-    else
-      db.command
-        distinct: "spaces"
-        key: "status.contact.twitter",
-        (err, result) ->
-          callback result.values.map((s) -> s.substring(1))
-
+screenNames = require '../lib/twitterScreenNames'
 
 module.exports =
 
@@ -30,6 +20,6 @@ module.exports =
     done()
 
   test_test: (test) ->
-    twitterScreenNames (screenNames) ->
+    screenNames (screenNames) ->
       test.deepEqual screenNames, ['user']
       test.done()
