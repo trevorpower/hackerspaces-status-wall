@@ -20,10 +20,10 @@ module.exports = (options) ->
         if err
           callback err
         else
-          if process.env.MONGO_USER
+          if options.user
             db.authenticate(
-              process.env.MONGO_USER,
-              process.env.MONGO_PASSWORD,
+              options.user,
+              options.password,
               (err, authenticated) ->
                 if authenticated
                   add_collections err, db, collections..., callback
