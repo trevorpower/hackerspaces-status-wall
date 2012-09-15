@@ -5,10 +5,13 @@ database =
 
 screenNames = require '../lib/twitterScreenNames'
 
+testDb = null
+
 module.exports =
 
   setUp: (done) ->
     require('../database').connect 'test', (err, db) ->
+      testDb = db
       if err
         done()
       else
@@ -20,11 +23,6 @@ module.exports =
     done()
 
   test_test: (test) ->
-    require('../database').connect 'test', (err, db) ->
-      if err
-        console.log err
-        test.done(err)
-      else
-        screenNames db, (err, screenNames) ->
-          test.deepEqual screenNames, ['user']
-          test.done(err)
+    screenNames testDb, (err, screenNames) ->
+      test.deepEqual screenNames, ['user']
+      test.done(err)
