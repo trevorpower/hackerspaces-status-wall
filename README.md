@@ -29,7 +29,9 @@ The application uses [MongoDb](http://mongodb.org) and this should be started fi
 
     $ mongod
 
-There is no migration infrastructure but the `database.coffee` module exports a function `create` that will create the required collections.
+There is no migration infrastructure but the database can be created with the following command:
+
+    $ coffee tasks/create_database.coffee
 
 To be deployable on [Heroku](http://heroku.com) a Procfile is used and the web service can be started by foreman:
 

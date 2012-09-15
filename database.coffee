@@ -31,14 +31,3 @@ connect = (collections..., callback) ->
           add_collections err, db, collections..., callback
 
 exports.connect = connect
-
-exports.create = (callback) ->
-  connect (err, db) ->
-    if !err
-      collections = require './database/collections'
-      create = (o, c) ->
-        console.log "creating #{o.create}"
-        db.executeDbCommand(o, c)
-      async.forEach collections, create, callback
-    else
-      callback err
