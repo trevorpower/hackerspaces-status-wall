@@ -8,7 +8,6 @@ add_collections = (err, db, collections..., callback) ->
 
 
 module.exports = (options) ->
-  console.log options
   connect: (collections..., callback) ->
     server = new Mongo.Server(
       options.host,
