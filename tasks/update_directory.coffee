@@ -13,7 +13,7 @@ require('request') directoryUrl, (err, res, body) ->
     complete err
   else
     console.log 'reply recieved'
-    database.connect 'directories', (err, db, directories) ->
+    database.connect 'hackerspaces-me', 'directories', (err, db, directories) ->
       if err
         complete err
       else
