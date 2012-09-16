@@ -23,6 +23,7 @@ module.exports =
           done()
 
   tearDown: (done) ->
+    connection.close()
     done()
 
   screenNamesContainUserWithOutAtSymbol: (test) ->
