@@ -7,6 +7,7 @@ data =
 screenNames = require '../lib/twitterScreenNames'
 
 database = require('../database') require('../test_db_settings')
+
 connection = null
 
 module.exports =
@@ -15,7 +16,7 @@ module.exports =
     database.connect (err, db) ->
       connection = db
       if err
-        done()
+        done(err)
       else
         require('../database/create') db, data, (err) ->
           console.log err if err
