@@ -1,6 +1,6 @@
 Server
 ======
-
-events.coffee
--------------
-One of the responsabilities of the server process is to respond to events from the client and broadcast events to all connected clients.
+The server process has three main responsabilities.
+ * serve assets
+ * act as a space api proxy (proxy.coffee)
+ * broadcast events (events.coffee)
