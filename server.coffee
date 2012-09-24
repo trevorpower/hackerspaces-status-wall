@@ -46,18 +46,4 @@ database.connect 'directories', (err, db, directories) ->
         port = process.env.PORT
         app.listen port, () -> console.log "Listening on port #{port}"
 
-io = require('socket.io').listen(app)
-
-io.configure () ->
-  io.set "transports", ["xhr-polling"]
-  io.set "polling duration", 10
-
-twitter = require './lib/twitter'
-
-io.sockets.on 'connection', (socket) ->
-  socket.on 'previous tweets', (max) ->
-    twitter.recent max, (err, tweet) ->
-      socket.emit 'previous tweet', tweet if !err
-
-twitter.listen (tweet) ->
-  io.sockets.emit 'new tweet', tweet
+require('./server/events').start(app)
