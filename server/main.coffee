@@ -1,23 +1,24 @@
 express = require 'express'
+database = require('../database') require('../db_settings')
+
 directory_summary = null
 
 app = express.createServer()
 
 app.configure ->
   app.use require('connect-assets')
-    jsCompilers: require('./jade-assets')
+    jsCompilers: require('../jade-assets')
   app.use express.bodyParser()
   app.set 'view options', {layout: false}
 
 app.get '/wall', (req, res) ->
   res.render 'wall.jade', directory_summary
 
-app.post '/proxy', require('./server/proxy')
+app.post '/proxy', require('./proxy')
 
 app.get '*', (req, res) ->
   res.redirect 'wall'
 
-database = require('./database') require('./db_settings')
 database.connect 'directories', (err, db, directories) ->
   directories
     .find()
@@ -31,4 +32,4 @@ database.connect 'directories', (err, db, directories) ->
         port = process.env.PORT
         app.listen port, () -> console.log "Listening on port #{port}"
 
-require('./server/events').start(app)
+require('./events').start(app)
