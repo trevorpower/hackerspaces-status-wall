@@ -7,7 +7,7 @@ app = express.createServer()
 
 app.configure ->
   app.use require('connect-assets')
-    jsCompilers: require('../jade-assets')
+    jsCompilers: require('./jade-assets')
   app.use express.bodyParser()
   app.set 'view options', {layout: false}
 
