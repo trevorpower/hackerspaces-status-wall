@@ -2,8 +2,6 @@
 #= require vendor/jsrender
 #= require twitter
 
-directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-
 jQuery.fn.movingBackground = ->
   this.mousemove (e)->
     offset = $(this).offset()
@@ -131,9 +129,4 @@ getSpaceInfo = (name, url) ->
         .fadeIn()
   )
           
-jQuery ->
-  getJsonFromApi(
-    createLog('Directory', directoryUrl),
-    directoryUrl,
-    (directory) -> $.each(directory, getSpaceInfo)
-  )
+jQuery -> $.each(directory, getSpaceInfo)
