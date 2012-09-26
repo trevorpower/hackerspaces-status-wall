@@ -39,4 +39,12 @@ To be deployable on [Heroku](http://heroku.com) a Procfile is used and the web s
 
 Tests
 -----
-Tests can be run with `npm test`.
+[![Build Status](https://secure.travis-ci.org/trevorpower/hackerspaces-status-wall.png)](http://travis-ci.org/trevorpower/hackerspaces-status-wall)
+Some integration tests connect to a database and so the mongo daemon should be started first:
+
+    $ mongod
+
+All tests can be run with:
+
+    $ npm test
+
