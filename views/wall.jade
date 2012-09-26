@@ -2,6 +2,8 @@ extends layout
 
 block scripts
   != js('wall')
+  script(type="text/javascript")
+    var directory = !{JSON.stringify(directory)};
   script(id="spacetile", type="text/x-jquery-tmpl")
     li      
       .tile(style="background-image: url({{=logo}}); background-clip: content-box;", class="{{=state}}")
