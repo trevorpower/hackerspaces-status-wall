@@ -11,65 +11,9 @@ a {
   color: #666699;
 }
 
-#loading {
-  text-align: center;
-  margin: 60px;
-  padding-top: 40px;
-  clear: both;
-  h1 {
-    background-color: #222222;
-    padding: 10px;
-    margin: 0px;
-  }
-  > ul {
-    padding: 0px;
-    margin: 0px;
-    text-align: left;
-    > li {
-      list-style-type: none;
-      padding: 10px;
-      background-color: #222222;
-      margin: 0px;
-      border-top: dotted 1px #000000;
-      details {
-        overflow: hidden;
-        summary {
-          font-size: 18px;
-          padding-bottom: 0px;
-          margin-bottom: 0px;
-          display: block;
-        }
-        a {
-          color: #666699;
-        }
-        ul {
-          li {
-            padding: 2px;
-            font-family: monospace;
-            white-space: pre-wrap;
-          }
-        }
-      }
-    }
-    li.success {
-      summary {
-        color: green;
-      }
-    }
-    li.error {
-      summary {
-        color: red;
-      }
-    }
-    li.warning {
-      summary {
-        color: orange;
-      }
-    }
-  }
-}
 
 @import "header";
 @import "tweets";
 @import "spaces";
+@import "directory";
 @import "footer";
