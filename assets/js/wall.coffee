@@ -125,7 +125,7 @@ getSpaceInfo = (name, url) ->
     (spaceInfo) ->
       createSpaceTile(log, spaceInfo)
         .hide()
-        .appendTo('#spaces')
+        .appendTo('#spaces > ul')
         .fadeIn()
   )
           
