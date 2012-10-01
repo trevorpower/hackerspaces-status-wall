@@ -11,21 +11,29 @@ a {
   color: #666699;
 }
 
-.section-h1 (@background: null, @border: null) {
-  font-family: 'Galindo', cursive;
+.section (@background: null, @secondary: null, @tertiary: null) {
   background: @background;
-  border: @border solid 4px;
-  size: 18px;
-  color: DDDDDD;
-  position: absolute;
-  top: -45px;
-  left: 30px;
-  border-radius: 10px;
-  z-index: 200;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 6px;
-  padding-bottom: 3px;
+  position: relative;
+
+  > h1 {
+    font-family: 'Galindo', cursive;
+    background: @tertiary;
+    border: @secondary solid 4px;
+    size: 18px;
+    color: #DDDDDD;
+    position: absolute;
+    top: -45px;
+    left: 30px;
+    border-radius: 10px;
+    z-index: 200;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 3px;
+  }
+}
+
+.section-h1 (@background: null, @border: null) {
 }
 
 @import "header";
