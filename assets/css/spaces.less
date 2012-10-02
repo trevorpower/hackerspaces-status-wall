@@ -2,10 +2,20 @@
 
   .section(@secondarya1, @secondarya2, @secondarya3);
 
+  padding-top: 12px;
+  padding-bottom: 12px;
+
+  &:after {
+    clear: both;
+    content: ".";
+    visibility: hidden;
+    display: block;
+    height: 0;
+  }
+
   > ul {
     margin: 0px;
     padding: 2px;
-    padding-top: 15px;
 
     > li {
       display: block;
