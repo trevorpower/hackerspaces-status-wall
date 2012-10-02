@@ -8,12 +8,17 @@
   > ul {
     padding: 0px;
     margin: 0px;
+    padding-top: 15px;
     text-align: left;
     > li {
       list-style-type: none;
       padding: 10px;
       margin: 0px;
-      border-top: dotted 1px #000000;
+      border-top: solid 2px @complement4;
+      &:first-child {
+        border-top: none;
+      }
+
       details {
         overflow: hidden;
         summary {
