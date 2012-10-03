@@ -35,7 +35,7 @@ exports.listen = (callback) ->
 exports.recent = (max, callback) ->
   database.connect 'tweets', (err, db, tweets) ->
     tweets
-      .find()
+      .find(disconnect: {$exists: false})
       .sort($natural: -1)
       .limit(max)
-      .each callback
+      .each(callback)
