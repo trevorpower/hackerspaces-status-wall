@@ -1,4 +1,4 @@
-window.createLog = (name, url) ->
+window.createLog = (name) ->
   report = (type, details = '') ->
     list = $("li[id='#{name}']")
       .addClass(type)

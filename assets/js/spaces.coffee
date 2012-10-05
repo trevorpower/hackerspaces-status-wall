@@ -25,7 +25,8 @@ window.spaces = () ->
       info['state'] = 'closed'
       info['state_icon'] = info.icon.closed if info.icon?
       
-  createSpaceTile = (log, info) ->
+  createSpaceTile = (name, info) ->
+    log = createLog(name)
     normalizeSpaceInfo info
     tile = $(space_tile(info))
     tile.find('ul').hide()
@@ -70,7 +71,8 @@ window.spaces = () ->
     reportContentType log, xhr.getResponseHeader('Content-Type')
     $.parseJSON(ajaxResult)
 
-  getJsonFromProxy = (log, url, success) ->
+  getJsonFromProxy = (name, url, success) ->
+    log = createLog(name)
     $.ajax
       type: 'POST'
       url: "/proxy"
@@ -93,7 +95,8 @@ window.spaces = () ->
       error: (xhr, status, error) ->
         log.error "via proxy: #{ajaxErrorText xhr, status, error}"
 
-  getJsonFromApi = (log, url, success) ->
+  getJsonFromApi = (name, url, success) ->
+    log = createLog(name)
     $.ajax
       url: url
       datatype: 'json'
@@ -103,15 +106,14 @@ window.spaces = () ->
         success(getResultObject(log, result, xhr))
       error: (xhr, status, error) ->
         log.error "client ajax: #{ajaxErrorText(xhr, status, error)}"
-        getJsonFromProxy log, url, success
+        getJsonFromProxy name, url, success
 
   getSpaceInfo = (name, url) ->
-    log = createLog(name, url)
     getJsonFromApi(
-      log,
+      name,
       url,
       (spaceInfo) ->
-        createSpaceTile(log, spaceInfo)
+        createSpaceTile(name, spaceInfo)
           .hide()
           .appendTo('#spaces > ul')
           .fadeIn()
