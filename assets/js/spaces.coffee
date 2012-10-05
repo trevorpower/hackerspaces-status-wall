@@ -1,7 +1,7 @@
 #= require api_status
 #= require space_tile
 
-window.spaces = () ->
+window.spaces = (socket) ->
   jQuery.fn.movingBackground = ->
     this.mousemove (e)->
       offset = $(this).offset()
@@ -25,8 +25,8 @@ window.spaces = () ->
       info['state'] = 'closed'
       info['state_icon'] = info.icon.closed if info.icon?
       
-  createSpaceTile = (name, info) ->
-    log = createLog(name)
+  createSpaceTile = (info) ->
+    log = createLog(info.space)
     normalizeSpaceInfo info
     tile = $(space_tile(info))
     tile.find('ul').hide()
@@ -79,7 +79,7 @@ window.spaces = () ->
       data: "url=#{url}"
       processData: true
       datatype: 'jsonp'
-      success: (result, status, xhr) -> 
+      success: (result, status, xhr) ->
         log.warning 'resort to proxy'
         resultObject = getResultObject(log, result, xhr)
         if resultObject.error?
@@ -113,10 +113,13 @@ window.spaces = () ->
       name,
       url,
       (spaceInfo) ->
-        createSpaceTile(name, spaceInfo)
+        createSpaceTile(spaceInfo)
           .hide()
           .appendTo('#spaces > ul')
           .fadeIn()
     )
+
+  socket.on 'status', (data) ->
+    createSpaceTile(data).appendTo('#spaces > ul')
             
   jQuery -> $.each(directory, getSpaceInfo)

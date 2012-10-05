@@ -5,4 +5,4 @@
 socket = io.connect '/'
 
 tweets socket
-spaces()
+spaces socket
