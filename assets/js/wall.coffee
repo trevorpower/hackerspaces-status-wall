@@ -1,5 +1,4 @@
 #= require vendor/jquery-1.7.1.min
-#= require vendor/jsrender
 #= require tweets
 #= require space_tile
 #= require space_api_status
