@@ -11,6 +11,15 @@ a {
   color: #666699;
 }
 
+.headerfooter() {
+  background: @primary1;
+  color: #EEEEEE;
+  border: @primary4 dotted 8px;
+  font-family: 'Galindo', cursive;
+  margin: 0px;
+  a { color: @primary5; }
+}
+
 .section (@background: null, @secondary: null, @tertiary: null) {
   background: @background;
   position: relative;
@@ -20,8 +29,8 @@ a {
     font-family: 'Galindo', cursive;
     background: @tertiary;
     border: @secondary solid 4px;
-    size: 18px;
-    color: #DDDDDD;
+    font-size: 24px;
+    color: #EEEEEE;
     position: absolute;
     top: -45px;
     left: 30px;
