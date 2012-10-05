@@ -1,4 +1,3 @@
-#= require_tree vendor
 #= require tweet
 
 window.tweets = (socket) ->
