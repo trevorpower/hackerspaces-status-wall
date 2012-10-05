@@ -2,6 +2,7 @@
 #= require vendor/jsrender
 #= require tweets
 #= require space_tile
+#= require space_api_status
 
 window.spaces = () ->
   jQuery.fn.movingBackground = ->
@@ -11,7 +12,7 @@ window.spaces = () ->
         "background-position": "#{offset.left - e.pageX}px #{offset.top - e.pageY}px"
       
   createLog = (name, url) ->
-    $($('#progress').render({ name: name, url: url}))
+    $(space_api_status({ name: name, url: url}))
       .appendTo('#loading > ul')
     report = (type, details = '') ->
       list = $("li[id='#{name}']")

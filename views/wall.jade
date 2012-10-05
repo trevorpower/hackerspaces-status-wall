@@ -4,12 +4,6 @@ block scripts
   != js('wall')
   script(type="text/javascript")
     var directory = !{JSON.stringify(directory)};
-  script(id="progress", type="text/x-jquery-tmpl")
-    li(id='{{=name}}')
-      details
-        summary {{=name}}
-        a(href='{{=url}}') {{=url}}
-        ul
   
 block content
   header
