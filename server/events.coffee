@@ -1,7 +1,7 @@
 twitter = require '../lib/twitter'
 sockets = require 'socket.io'
 
-exports.start = (app) ->
+exports.start = (app, directory) ->
   io = sockets.listen(app)
 
   io.configure () ->

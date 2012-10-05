@@ -33,5 +33,5 @@ database.connect 'directories', (err, db, directories) ->
           total: Object.keys(directory.spaces).length
         port = process.env.PORT
         app.listen port, () -> console.log "Listening on port #{port}"
+        require('./events').start(app, directory.spaces)
 
-require('./events').start(app)
