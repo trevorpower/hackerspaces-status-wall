@@ -1,6 +1,7 @@
 #= require vendor/jquery-1.7.1.min
 #= require vendor/jsrender
 #= require tweets
+#= require space_tile
 
 window.spaces = () ->
   jQuery.fn.movingBackground = ->
@@ -40,7 +41,7 @@ window.spaces = () ->
       
   createSpaceTile = (log, info) ->
     normalizeSpaceInfo info
-    tile = $($('#spacetile').render(info))
+    tile = $(space_tile(info))
     tile.find('ul').hide()
     tile.hover( -> $(this).find('ul').fadeToggle('fast', 'linear') )
     tile.find('.tile').movingBackground()

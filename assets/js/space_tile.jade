@@ -1,0 +1,15 @@
+li      
+  .tile(style="background-image: url(#{logo}); background-clip: content-box;", class="#{state}")
+    section
+      h1 #{space}
+      img(src="#{state_icon}")
+      h2 #{status}
+      ul
+        li
+          a#web(href="#{url}") Web
+        if typeof(contact) != 'undefined'
+          li
+            a#email(href="mailto://#{contact.ml}") Email
+          li
+            a#twitter(href="http://twitter.com/#{contact.twitter}") Twitter
+        end
