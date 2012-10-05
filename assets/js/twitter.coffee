@@ -1,7 +1,7 @@
 #= require_tree vendor
 #= require tweet
 
-tweets = (socket) ->
+window.tweets = (socket) ->
 
   curateList = () ->
     $('#tweets ul li').eq(-3)
@@ -27,7 +27,3 @@ tweets = (socket) ->
 
   jQuery ->
     socket.emit 'previous tweets', 4
-
-socket = io.connect '/'
-
-tweets socket

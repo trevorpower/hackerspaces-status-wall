@@ -2,6 +2,10 @@
 #= require vendor/jsrender
 #= require twitter
 
+socket = io.connect '/'
+
+tweets socket
+
 jQuery.fn.movingBackground = ->
   this.mousemove (e)->
     offset = $(this).offset()
