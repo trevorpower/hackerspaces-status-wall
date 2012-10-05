@@ -1,8 +1,4 @@
-#= require space_api_status
-
 window.createLog = (name, url) ->
-  $(space_api_status({ name: name, url: url}))
-    .appendTo('#loading > ul')
   report = (type, details = '') ->
     list = $("li[id='#{name}']")
       .addClass(type)

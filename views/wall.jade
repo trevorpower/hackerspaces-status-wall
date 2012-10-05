@@ -18,3 +18,9 @@ block content
   section#loading
     h1 API Status
     ul
+      each url, name in directory
+        li(id='#{name}')
+          details
+            summary #{name}
+            a(href='#{url}') #{url}
+            ul
