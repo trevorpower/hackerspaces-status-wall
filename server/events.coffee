@@ -1,13 +1,6 @@
 twitter = require '../lib/twitter'
-sockets = require 'socket.io'
 
-exports.start = (app, directory) ->
-  io = sockets.listen(app)
-
-  io.configure () ->
-    io.set "transports", ["xhr-polling"]
-    io.set "polling duration", 10
-    io.set "log level", 2
+exports.start = (io, directory) ->
 
   io.sockets.on 'connection', (socket) ->
     socket.on 'previous tweets', (max) ->

@@ -33,5 +33,10 @@ database.connect 'directories', (err, db, directories) ->
           total: Object.keys(directory.spaces).length
         port = process.env.PORT
         app.listen port, () -> console.log "Listening on port #{port}"
-        require('./events').start(app, directory.spaces)
+        io = require('socket.io').listen(app)
+        io.configure () ->
+          io.set "transports", ["xhr-polling"]
+          io.set "polling duration", 10
+          io.set "log level", 2
+        require('./events').start(io, directory.spaces)
 
