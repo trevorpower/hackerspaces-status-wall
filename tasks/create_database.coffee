@@ -1,4 +1,4 @@
-database = require('../database') require('../db_settings')
+database = require('../database/database') require('../db_settings')
   
 database.connect (err, db) ->
   if err
