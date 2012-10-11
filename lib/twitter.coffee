@@ -5,7 +5,7 @@ twit = new twitter
   access_token_key: process.env.TWITTER_ACCESS_TOKEN
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 
-database = require('../database') require('../db_settings')
+database = require('../database/database') require('../database/settings/production')
 
 getTwitterIds = (callback) ->
   database.connect (err, db) ->
