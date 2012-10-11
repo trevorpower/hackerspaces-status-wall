@@ -1,7 +1,7 @@
 request = require 'request'
 async = require 'async'
 createStatusDocument = require '../lib/space_info'
-database = require('../database/database') require('../db_settings')
+database = require('../database/database') require('../database/settings/production')
 
 spaceStatus = require
 latest = (collection, callback) ->
