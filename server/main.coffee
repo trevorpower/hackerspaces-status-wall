@@ -38,5 +38,5 @@ database.connect 'directories', (err, db, directories) ->
           io.set "transports", ["xhr-polling"]
           io.set "polling duration", 10
           io.set "log level", 2
-        require('./events').start(io, directory.spaces)
+        require('./events').start(db, io, directory.spaces)
 
