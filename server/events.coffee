@@ -3,7 +3,7 @@ request = require 'request'
 createStatusDocument = require '../lib/space_info'
 database = require('../database/database') require('../database/settings/production')
 
-spaces = null
+statuses = {}
 
 hasChanged = (a, b) ->
   a.open != b.open or a.status != b.status
@@ -14,14 +14,13 @@ poll = (space, callback) ->
       console.log "error for #{space.name}: #{err}"
       callback()
     else
-      statusDocument = createStatusDocument body
+      latest = createStatusDocument body
 
-      spaces.insert statusDocument, (err) ->
-        if err
-          console.log err
-        else
-          console.log "saved for #{space.name}"
-        callback()
+      current = statuses[space.name]
+      if current? and hasChanged(latest.status, current.status)
+        console.log "status update for #{space.name}"
+
+      statuses[space.name] = latest
 
 queue = require('async').queue(poll, 3)
   
@@ -31,9 +30,6 @@ queue_spaces = (directory) ->
     queue.push {name: name, url: url}
 
 exports.start = (db, io, directory) ->
-
-  database.connect 'spaces', (err, db, collection) ->
-    spaces = collection
 
   io.sockets.on 'connection', (socket) ->
     socket.on 'previous tweets', (max) ->
