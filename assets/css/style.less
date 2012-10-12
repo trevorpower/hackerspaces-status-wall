@@ -43,10 +43,12 @@ a {
   }
 }
 
-.section-h1 (@background: null, @border: null) {
-}
-
 @import "header";
+
+@import "open";
+#open {
+  .open(@complement1, @complement2, @complement3, @complement4, @complement5);
+}
 
 @import "tweets";
 #tweets { .tweets(@secondaryb1, @secondaryb2, @secondaryb3); }
