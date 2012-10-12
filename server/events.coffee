@@ -1,5 +1,5 @@
 twitter = require '../lib/twitter'
-poller = require '../lib/status_poller'
+poller = require('../lib/status_poller')(process.env.POLL_CONCURRENCY)
 
 exports.start = (db, io, directory) ->
 
@@ -12,4 +12,4 @@ exports.start = (db, io, directory) ->
     io.sockets.emit 'new tweet', tweet
 
   poller.listen directory, (space) ->
-    console.log "event from #{space.status.space}"
+    io.sockets.emit 'new status', space.status
