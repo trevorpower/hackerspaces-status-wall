@@ -12,4 +12,5 @@ exports.start = (db, io, directory) ->
     io.sockets.emit 'new tweet', tweet
 
   poller.listen directory, (space) ->
+    console.log "new status for #{space.status.space}"
     io.sockets.emit 'new status', space.status
