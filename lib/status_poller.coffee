@@ -1,15 +1,14 @@
-statusDocument = require '../lib/space_info'
-
 hasChanged = (a, b) ->
   a.open != b.open or a.status != b.status
 
-statuses = {}
+statuses = null
 
 module.exports = (concurrency, request) ->
 
   stop: null
 
   listen: (directory, callback) ->
+    statuses = {}
 
     poll = (space, done) ->
       request space.url, (err, status) ->
