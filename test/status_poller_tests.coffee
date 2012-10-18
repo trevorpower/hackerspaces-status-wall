@@ -1,23 +1,24 @@
 statusPoller = require('../lib/status_poller')
 
-exports.canRequest = (test) ->
+directory =
+  milklabs: "http://milklabs.ie"
 
-  states =
-    "http://milklabs.ie":
-      space: "milklabs"
-      status: "closed"
-      open: true
+states = {}
 
-  directory =
-    milklabs: "http://milklabs.ie"
+request = (url, callback) ->
+  setTimeout(
+    () -> callback(null, states[url])
+    10
+  )
 
-  request = (url, callback) ->
-    setTimeout(
-      () -> callback(null, states[url])
-      100
-    )
+poller = statusPoller 1, request
 
-  poller = statusPoller 1, request
+exports.oneEventIsFiredWhenPollingStarts = (test) ->
+
+  states["http://milklabs.ie"] =
+    space: "milklabs"
+    status: "closed"
+    open: true
 
   events = []
 
@@ -29,4 +30,4 @@ exports.canRequest = (test) ->
     test.equal events.length, 1
     test.done()
 
-  setTimeout asserts, 1000
+  setTimeout asserts, 100
