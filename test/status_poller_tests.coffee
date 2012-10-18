@@ -13,7 +13,7 @@ request = (url, callback) ->
 
 poller = statusPoller 1, request
 
-exports.oneEventIsFiredWhenPollingStarts = (test) ->
+exports.closedEventIsFiredWhenStatusChangesToClosed = (test) ->
 
   states["http://milklabs.ie"] =
     space: "milklabs"
@@ -25,9 +25,23 @@ exports.oneEventIsFiredWhenPollingStarts = (test) ->
   poller.listen directory, (status) ->
     events.push status
 
-  asserts = () ->
-    poller.stop()
+  assertSpaceOpenEvent = () ->
     test.equal events.length, 1
-    test.done()
+    test.equal events[0].open, true
 
-  setTimeout asserts, 100
+    states["http://milklabs.ie"] =
+      space: "milklabs"
+      status: "closed"
+      open: false
+
+    assertSpaceClosedEvent = () ->
+      test.equal events.length, 2
+      test.equal events[1].open, false
+
+      test.done()
+      poller.stop()
+
+    setTimeout assertSpaceClosedEvent, 200
+
+  setTimeout assertSpaceOpenEvent, 200
+
