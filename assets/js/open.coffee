@@ -9,7 +9,9 @@ window.openSpaces = (socket) ->
         .appendTo('#open ul')
         .slideDown()
     else
-      $("#open li##{status.space}").remove()
+      $("#open li##{status.space}")
+        .slideUp () ->
+          this.remove()
 
   jQuery -> socket.emit 'replay statuses'
 
