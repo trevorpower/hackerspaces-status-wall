@@ -3,10 +3,8 @@
 #= require vendor/socket.io.min.js
 #= require open
 #= require tweets
-#= require spaces
 
 socket = io.connect '/'
 
 openSpaces socket
 tweets socket
-spaces socket
