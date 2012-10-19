@@ -1,25 +1,55 @@
+
 .open (@color1, @color2, @color3, @color4, @color5) {
 
   .section(@color1, @color2, @color3);
 
-  height: 450px;
-  padding: 20;
+  @width: 140px;
 
-  li {
-    list-style-type: none;  
-    display: inline;
-    width: 90px;
+  ul {
+    margin: 0px;
+    padding: 5px;
+    padding-top: 10px;
+    height: 450px;
+    vertical-align: top;
+ 
+    li {
+      list-style-type: none;  
+      display: inline-block;
+      vertical-align: top;
+      margin: 4px;
+      padding: 0px;
+      width: @width;
+      height: 230px;
+      position: relative;
+      text-align: center;
+      background-color: @color4;
 
-    .name {
-      font-wieght: bold;
+      .name {
+        font-weight: bold;
+        color: @color3;
+        display: block;
+        text-align: center;
+        width: @width;
+        height: 50px;
+        padding: 2px;
+      }
+
+      img {
+        max-width: @width - 6;
+        max-height: 90px;
+        display: block;
+        margin: auto;
+      }
+
+      .status {
+        display: block;
+        bottom: 0px;
+        text-align: center;
+        width: @width;
+        position: absolute;
+        color: @color3;
+      }
     }
 
-    img {
-      max-width: 90px;
-      max-height: 90px;
-    }
-
-    .status {
-    }
   }
 }
