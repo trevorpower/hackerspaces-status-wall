@@ -9,24 +9,12 @@ block content
   header
     h1 Global Hackerspaces Status Wall
     section #{total} spaces in directory
-  section#open
-    h1 Open
-    ul
   section#tweets
     h1 Tweets
     ul
-  section#spaces
-    h1 Spaces
+  section#open
+    h1 Open
     ul
-  section#loading
-    h1 API Status
-    ul
-      each url, name in directory
-        li(id='#{name}')
-          details
-            summary #{name}
-            a(href='#{url}') #{url}
-            ul
   section#about
     h1 About
     :markdown
