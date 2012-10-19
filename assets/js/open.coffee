@@ -20,7 +20,7 @@ window.openSpaces = (socket) ->
 
   remove = (status) ->
     selector(status)
-      .slideUp () -> this.remove()
+      .slideUp () -> $(this).remove()
 
   socket.on 'new status', (status) ->
     if status.open
