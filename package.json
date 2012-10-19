@@ -21,6 +21,7 @@
     "ejs": "",
     "jade": "0.27.x",
     "markdown": "",
+    "nock": "",
     "nodeunit": ""
   }
 }
