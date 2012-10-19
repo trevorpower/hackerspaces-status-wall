@@ -1,5 +1,5 @@
 directoryUrl = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-database = require('../database/database') require('../database/settings/db_settings')
+database = require('../database/database') require('../database/settings/production')
 createDirectory = require '../lib/directory'
 
 console.log 'requesting directory'
