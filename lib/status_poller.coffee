@@ -36,3 +36,8 @@ module.exports = (concurrency, request) ->
       queue_spaces directory
 
     this.stop = () -> queue.empty = null
+
+    this.current = (callback) ->
+      for name, status of statuses
+        callback status
+    

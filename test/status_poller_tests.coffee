@@ -69,3 +69,22 @@ exports.closedEventIsFiredWhenStatusTextChanges = (test) ->
       test.equal events[0].status, "doing other stuff"
 
       test.done()
+
+exports.canReplayWithCallToAll = (test) ->
+
+  states["http://milklabs.ie"].status = "doing stuff"
+
+  poller.listen directory, (status) ->
+    events.push status
+
+  delay 200, () ->
+    test.equal events.length, 2, "initial events for each space"
+    events.length = 0
+
+    poller.current (status) ->
+      events.push status
+
+    delay 200, () ->
+      test.equal events.length, 2
+
+      test.done()
