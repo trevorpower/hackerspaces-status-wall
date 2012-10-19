@@ -8,7 +8,7 @@ window.openSpaces = (socket) ->
   add = (status) ->
     $(open_space(status))
       .hide()
-      .appendTo('#open ul')
+      .prependTo('#open ul')
       .slideDown()
 
   update = (status) ->
