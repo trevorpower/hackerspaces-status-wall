@@ -1,26 +1,32 @@
-directory = milklabs: "http://milklabs.ie"
+directory =
+  milklabs: "http://milklabs.ie"
+  tog: "http://tog.ie"
 states = null
 poller = null
+events = null
+delay = (time, callback) -> setTimeout(callback, time)
 
 exports.setUp = (done) ->
 
   request = (url, callback) ->
-    setTimeout(
-      () ->
-        callback null,
-          space: states[url].space
-          status: states[url].status
-          open: states[url].open
-      10
-    )
+    delay 10, () ->
+      callback null,
+        space: states[url].space
+        status: states[url].status
+        open: states[url].open
 
   states =
     "http://milklabs.ie":
       space: "milklabs"
       status: "closed"
       open: true
+    "http://tog.ie":
+      space: "TOG"
+      status: "closed"
+      open: false
 
   poller = require('../lib/status_poller')(1, request)
+  events = []
   done()
 
 exports.tearDown = (done) ->
@@ -31,46 +37,35 @@ exports.closedEventIsFiredWhenStatusChangesToClosed = (test) ->
 
   states["http://milklabs.ie"].open = true
 
-  events = []
   poller.listen directory, (status) ->
     events.push status
 
-  assertSpaceOpenEvent = () ->
-    test.equal events.length, 1
-    test.equal events[0].open, true
+  delay 200, () ->
+    test.equal events.length, 2, "initial events for each space"
+    events.length = 0
 
     states["http://milklabs.ie"].open = false
 
-    assertSpaceClosedEvent = () ->
-      test.equal events.length, 2
-      test.equal events[1].open, false
+    delay 200,  () ->
+      test.equal events.length, 1
+      test.equal events[0].open, false
 
       test.done()
-
-    setTimeout assertSpaceClosedEvent, 200
-
-  setTimeout assertSpaceOpenEvent, 200
 
 exports.closedEventIsFiredWhenStatusTextChanges = (test) ->
 
   states["http://milklabs.ie"].status = "doing stuff"
 
-  events = []
-
   poller.listen directory, (status) ->
     events.push status
 
-  assertInitialStausEvent = () ->
-    test.equal events.length, 1
-    test.equal events[0].status, "doing stuff"
-
+  delay 200, () ->
+    test.equal events.length, 2, "initial events for each space"
+    events.length = 0
     states["http://milklabs.ie"].status = "doing other stuff"
 
-    assertSpaceHasNewStatus = () ->
-      test.equal events.length, 2
-      test.equal events[1].status, "doing other stuff"
+    delay 200, () ->
+      test.equal events.length, 1
+      test.equal events[0].status, "doing other stuff"
+
       test.done()
-
-    setTimeout assertSpaceHasNewStatus, 200
-
-  setTimeout assertInitialStausEvent, 200
