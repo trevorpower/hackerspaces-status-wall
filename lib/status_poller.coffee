@@ -1,13 +1,12 @@
 hasChanged = (a, b) ->
   a.open != b.open or a.status != b.status
 
-statuses = null
-
 module.exports = (concurrency, request) ->
 
   stop: null
 
   listen: (directory, callback) ->
+
     statuses = {}
 
     poll = (space, done) ->
@@ -16,14 +15,12 @@ module.exports = (concurrency, request) ->
           console.log "error for #{space.name}: #{err}"
           done()
         else
-          current = statuses[space.name]
+          current = statuses[space.name] || {open: null}
 
-          if current?
-            if hasChanged(status, current)
-              callback(status)
-              statuses[space.name] = status
-          else
-            statuses[space.name] = {open: null}
+          if hasChanged(status, current)
+            callback(status)
+
+          statuses[space.name] = status
 
           done()
 
