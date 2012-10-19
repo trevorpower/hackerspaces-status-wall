@@ -122,4 +122,4 @@ window.spaces = (socket) ->
   socket.on 'status', (data) ->
     createSpaceTile(data).appendTo('#spaces > ul')
             
-  jQuery -> $.each(directory, getSpaceInfo)
+  #jQuery -> $.each(directory, getSpaceInfo)
