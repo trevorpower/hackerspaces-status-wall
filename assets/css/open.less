@@ -10,8 +10,8 @@
   ul {
     margin: 0px;
     padding: 3px;
-    padding-top: 14px;
-    padding-bottom: 8px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     vertical-align: top;
     text-align: center;
  
@@ -26,6 +26,7 @@
       position: relative;
       text-align: center;
       background-color: @color4;
+      border-radius: 5px;
 
       .name {
         font-weight: bold;
@@ -33,25 +34,28 @@
         display: block;
         text-align: center;
         width: @width;
-        height: 50px;
+        height: 46px;
         padding: 2px;
         padding-top: 5px;
       }
 
       img {
         max-width: @width - 6;
-        max-height: 90px;
+        max-height: 110px;
         display: block;
         margin: auto;
       }
 
       .status {
         display: block;
+        padding: 0px 1px;
         bottom: 0px;
         text-align: center;
-        width: @width;
+        width: @width - 2;
         position: absolute;
         color: @color3;
+        background-color: fade(@color5, 80%);
+        border-radius: 0px 0px 5px 5px;
       }
     }
 
