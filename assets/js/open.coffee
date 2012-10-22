@@ -2,8 +2,11 @@
 
 window.openSpaces = (socket) ->
 
+  makeId = (name) ->
+    name.replace /[^a-zA-Z0-9]+/g, '-'
+
   selector = (status) ->
-    $ "#open li##{status.space.replace(' ','-')}"
+    $ "#open li##{status.clientId}"
 
   add = (status) ->
     $(open_space(status))
@@ -23,6 +26,7 @@ window.openSpaces = (socket) ->
       .slideUp () -> $(this).remove()
 
   socket.on 'new status', (status) ->
+    status['clientId'] = makeId status.space
     if status.open
       if selector(status).length == 0
         add status
