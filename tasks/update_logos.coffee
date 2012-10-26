@@ -1,6 +1,7 @@
 database = require('../database/database') require('../database/settings/production')
 
 query = require '../lib/logo_urls'
+gm = require 'gm'
 
 latest = (collection, callback) ->
   collection
@@ -23,8 +24,10 @@ update_logos = (db, directories, callback) ->
       names = for name, value of directory.spaces
         name
       query db, names, (err, urls) ->
-        console.log urls
-        callback err
+        for name, url of urls
+          console.log name
+          logo = gm url
+          logo.write "#{name}.png", callback
 
 database.connect 'directories', (err, db, directories) ->
   if err
