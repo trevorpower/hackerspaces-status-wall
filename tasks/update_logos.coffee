@@ -26,7 +26,6 @@ update_logos = (db, directories, callback) ->
       query db, names, (err, urls) ->
         for name, url of urls
           console.log name
-          logo = gm url
           logo.write "#{name}.png", callback
 
 database.connect 'directories', (err, db, directories) ->

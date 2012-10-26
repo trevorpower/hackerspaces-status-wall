@@ -6,11 +6,19 @@ module.exports = (db, names, callback) ->
       {"status.space": 1, "status.logo": 1},
       (err, result) ->
         console.log err if err
-        callback err, result
+        if result
+          callback err,
+            name: name
+            url: result.status.logo
+        else
+          callback err,
+            name: name
+            url: null
     )
   async = require('async')
   async.map names, getLogoUrl, (err, result) ->
+    console.log result
     logos = {}
     for value in result
-      logos[value.status.space] = value.status.logo if value
+      logos[value.name] = value.url
     callback err, logos
