@@ -3,7 +3,6 @@ collections = require './collections'
 
 module.exports = (db, data, callback) ->
   createCommand = (command, done) ->
-    console.log "creating #{command.create}"
     db.executeDbCommand command, (err) ->
       collectionData = data[command.create]
       if collectionData
