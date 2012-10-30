@@ -17,17 +17,19 @@ latest = (collection, callback) ->
 
 update_logos = (db, directories, callback) ->
 
-  createLogo = (space, callback) ->
-    logo = null
-    if space.url
+  createLogo = (name, url) ->
+    if url
       #console.log "creating logo from #{space.url}"
-      logo = gm space.url
+      logo = gm url
     else
-      console.log "!!!   creating empty logo for #{space.name}"
+      console.log "!!!   creating empty logo for #{name}"
       logo = gm 200, 400, 0x003300aa
-    logo.write "logos/#{space.name}.png", (err) ->
-      console.log err if err
-      callback()
+
+  createLogoAndSave = (space, callback) ->
+    createLogo(space.name, space.url)
+      .write "logos/#{space.name}.png", (err) ->
+        console.log err if err
+        callback()
 
   latest directories, (err, directory) ->
     if err
@@ -39,7 +41,7 @@ update_logos = (db, directories, callback) ->
       query db, names, (err, urls) ->
         spaces = for name, url of urls
           name: name, url: url
-        async.forEach spaces, createLogo, callback
+        async.forEach spaces, createLogoAndSave, callback
 
 database.connect 'directories', (err, db, directories) ->
   if err
