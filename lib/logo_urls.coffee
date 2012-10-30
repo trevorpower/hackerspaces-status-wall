@@ -17,7 +17,6 @@ module.exports = (db, names, callback) ->
     )
   async = require('async')
   async.map names, getLogoUrl, (err, result) ->
-    console.log result
     logos = {}
     for value in result
       logos[value.name] = value.url
