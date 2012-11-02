@@ -15,7 +15,7 @@
     "mongodb": "",
     "async": "",
     "socket.io": "",
-    "nox": "",
+    "knox": "",
     "ntwitter": "",
     "coffee-script": "1.3.x",
     "less": "",

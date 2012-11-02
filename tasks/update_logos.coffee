@@ -2,6 +2,8 @@ database = require('../database/database') require('../database/settings/product
 
 async = require 'async'
 query = require '../lib/logo_urls'
+store = require('knox').createClient require('../s3_settings')
+request = require 'request'
 
 latest = (collection, callback) ->
   collection
@@ -14,19 +16,35 @@ latest = (collection, callback) ->
       else
         callback err, list[0]
 
+upload = (url, id, report, callback) ->
+  report "downloading '#{url}'"
+  download = request url
+
+  download.on 'error', report
+  download.on "end", () -> report "complete"
+
+  download.on 'response', (source) ->
+      headers =
+        'x-amz-acl': 'public-read'
+        'Content-Length': source.headers['content-length']
+        'Content-Type': source.headers['content-type']
+      report "uploading to '#{id}'"
+      store.putStream(source, id, headers, callback)
+        .on('error', report)
+
 update_logos = (db, directories, callback) ->
 
-  createLogo = (name, url) ->
-    if url
-      console.log "creating logo from #{url}"
-    else
-      console.log "!!!   creating empty logo for #{name}"
+  clientId = (name) ->
+    name.toLowerCase().replace /[^a-z0-9]+/g, '-'
 
-  createLogoAndSave = (space, callback) ->
-    createLogo(space.name, space.url)
-      .write "logos/#{space.name}.png", (err) ->
-        console.log err if err
-        callback()
+  saveLogo = (space, callback) ->
+    report = (info) -> console.log "#{space.name}: #{info}"
+    if space.url
+      id = "/original/#{clientId(space.name)}"
+      upload space.url, id, report, callback
+    else
+      report "no URL"
+      callback()
 
   latest directories, (err, directory) ->
     if err
@@ -38,7 +56,7 @@ update_logos = (db, directories, callback) ->
       query db, names, (err, urls) ->
         spaces = for name, url of urls
           name: name, url: url
-        async.forEach spaces, createLogoAndSave, callback
+        async.forEach spaces, saveLogo, callback
 
 database.connect 'directories', (err, db, directories) ->
   if err
