@@ -24,6 +24,7 @@ upload = (url, id, report, callback) ->
   download.on "end", () -> report "complete"
 
   download.on 'response', (source) ->
+    if source.statusCode == 200
       headers =
         'x-amz-acl': 'public-read'
         'Content-Length': source.headers['content-length']
@@ -31,6 +32,8 @@ upload = (url, id, report, callback) ->
       report "uploading to '#{id}'"
       store.putStream(source, id, headers, callback)
         .on('error', report)
+    else
+      report "source result #{source.statusCode}"
 
 update_logos = (db, directories, callback) ->
 
