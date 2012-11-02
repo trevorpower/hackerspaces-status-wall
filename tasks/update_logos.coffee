@@ -18,22 +18,25 @@ latest = (collection, callback) ->
 
 upload = (url, id, report, callback) ->
   report "downloading '#{url}'"
-  download = request url
+  try
+    download = request url
 
-  download.on 'error', report
-  download.on "end", () -> report "complete"
+    download.on 'error', report
+    download.on 'end', () -> report "complete"
 
-  download.on 'response', (source) ->
-    if source.statusCode == 200
-      headers =
-        'x-amz-acl': 'public-read'
-        'Content-Length': source.headers['content-length']
-        'Content-Type': source.headers['content-type']
-      report "uploading to '#{id}'"
-      store.putStream(source, id, headers, callback)
-        .on('error', report)
-    else
-      report "source result #{source.statusCode}"
+    download.on 'response', (source) ->
+      if source.statusCode == 200
+        headers =
+          'x-amz-acl': 'public-read'
+          'Content-Length': source.headers['content-length']
+          'Content-Type': source.headers['content-type']
+        report "uploading to '#{id}'"
+        store.putStream(source, id, headers, callback)
+          .on('error', report)
+      else
+        report "source result #{source.statusCode}"
+  catch ex
+    report ex
 
 update_logos = (db, directories, callback) ->
 
