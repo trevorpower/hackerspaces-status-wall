@@ -2,7 +2,6 @@ database = require('../database/database') require('../database/settings/product
 
 async = require 'async'
 query = require '../lib/logo_urls'
-gm = require 'gm'
 
 latest = (collection, callback) ->
   collection
@@ -19,11 +18,9 @@ update_logos = (db, directories, callback) ->
 
   createLogo = (name, url) ->
     if url
-      #console.log "creating logo from #{space.url}"
-      logo = gm url
+      console.log "creating logo from #{url}"
     else
       console.log "!!!   creating empty logo for #{name}"
-      logo = gm 200, 400, 0x003300aa
 
   createLogoAndSave = (space, callback) ->
     createLogo(space.name, space.url)
