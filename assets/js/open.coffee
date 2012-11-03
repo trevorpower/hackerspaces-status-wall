@@ -3,7 +3,7 @@
 window.openSpaces = (socket) ->
 
   makeId = (name) ->
-    name.replace /[^a-zA-Z0-9]+/g, '-'
+    name.toLowerCase().replace /[^a-z0-9]+/g, '-'
 
   selector = (status) ->
     $ "#open li##{status.clientId}"

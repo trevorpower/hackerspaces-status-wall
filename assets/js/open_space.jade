@@ -1,4 +1,4 @@
 li(id="#{clientId}")
   span.name #{space}
-  img(src="#{logo}")
+  img(src="#{$('link[rel=logos]').attr('href')}#{clientId}")
   span.status #{status}
