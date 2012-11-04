@@ -25,12 +25,16 @@ upload = (url, id, report, callback) ->
       .background('transparent')
       .resize(241, 108)
       .extent(241, 108)
-    
+        
     original.write ".#{id}.png", (err) ->
-      report err if err
-      callback()
-    #download.on 'response', (source) ->
-      #if source.statusCode == 200
+      if err
+        report err if err
+        gm(241, 108, 'transparent')
+          .write ".#{id}.png", (err) ->
+            report err if err
+            callback()
+      else
+        callback()
         #headers =
           #'x-amz-acl': 'public-read'
           #'Content-Length': source.headers['content-length']
@@ -38,8 +42,6 @@ upload = (url, id, report, callback) ->
         #report "uploading to '#{id}'"
         #store.putStream(source, id, headers, callback)
           #.on('error', report)
-      #else
-        #report "source result #{source.statusCode}"
   catch ex
     report ex
 
