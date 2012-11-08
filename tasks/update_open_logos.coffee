@@ -5,7 +5,6 @@ query = require '../lib/logo_urls'
 store = require('knox').createClient require('../s3_settings')
 request = require 'request'
 gm = require 'gm'
-fs = require 'fs'
 
 latest = (collection, callback) ->
   collection
@@ -30,7 +29,6 @@ openLogo = (url) ->
 
 uploadImage = (image, id, report, callback) ->
   image.stream 'PNG', (err, dataStream, errorStream) ->
-    out = fs.createWriteStream "./#{id}.png"
     if err
       callback arr
     else
@@ -54,7 +52,6 @@ uploadImage = (image, id, report, callback) ->
           headers =
             'x-amz-acl': 'public-read'
             'Content-Type': 'image/png'
-          #out.write imageBuffer.slice(0, imageSize), callback
           store.putBuffer(imageBuffer.slice(0, imageSize), id, headers, callback)
             .on('error', report)
 
