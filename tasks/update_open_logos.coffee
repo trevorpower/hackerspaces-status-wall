@@ -5,6 +5,7 @@ query = require '../lib/logo_urls'
 store = require('knox').createClient require('../s3_settings')
 request = require 'request'
 gm = require 'gm'
+fs = require 'fs'
 
 latest = (collection, callback) ->
   collection
@@ -17,31 +18,55 @@ latest = (collection, callback) ->
       else
         callback err, list[0]
 
+defaultLogo = () ->
+  gm(241, 108, 'transparent')
+
+openLogo = (url) ->
+  gm(url)
+  .gravity('Center')
+  .background('transparent')
+  .resize(241, 108)
+  .extent(241, 108)
+
+uploadImage = (image, id, report, callback) ->
+  image.stream 'PNG', (err, dataStream, errorStream) ->
+    out = fs.createWriteStream "./#{id}.png"
+    if err
+      callback arr
+    else
+
+      imageBuffer = new Buffer(1000000)
+      imageSize = 0
+      dataStream.on 'data', (data) ->
+        data.copy(imageBuffer, imageSize)
+        imageSize += data.length
+
+      errorBuffer = new Buffer(10000)
+      errorSize = 0
+      errorStream.on 'data', (data) ->
+        data.copy(errorBuffer, errorSize)
+        errorSize += data.length
+
+      dataStream.on 'end', (err) ->
+        if errorSize
+          callback(errorBuffer)
+        else
+          headers =
+            'x-amz-acl': 'public-read'
+            'Content-Type': 'image/png'
+          #out.write imageBuffer.slice(0, imageSize), callback
+          store.putBuffer(imageBuffer.slice(0, imageSize), id, headers, callback)
+            .on('error', report)
+
 upload = (url, id, report, callback) ->
   try
     report url
-    original = gm(url)
-      .gravity('Center')
-      .background('transparent')
-      .resize(241, 108)
-      .extent(241, 108)
-        
-    original.write ".#{id}.png", (err) ->
+    uploadImage openLogo(url), id, report, (err) ->
       if err
-        report err if err
-        gm(241, 108, 'transparent')
-          .write ".#{id}.png", (err) ->
-            report err if err
-            callback()
+        report "cutom logo failed, uploading defualt logo"
+        uploadImage defaultLogo(), id, report, callback
       else
         callback()
-        #headers =
-          #'x-amz-acl': 'public-read'
-          #'Content-Length': source.headers['content-length']
-          #'Content-Type': source.headers['content-type']
-        #report "uploading to '#{id}'"
-        #store.putStream(source, id, headers, callback)
-          #.on('error', report)
   catch ex
     report ex
 
@@ -66,7 +91,7 @@ update_logos = (db, directories, callback) ->
       query db, names, (err, urls) ->
         spaces = for name, url of urls
           name: name, url: url
-        async.forEach spaces, saveLogo, callback
+        async.forEachSeries spaces, saveLogo, callback
 
 database.connect 'directories', (err, db, directories) ->
   if err
