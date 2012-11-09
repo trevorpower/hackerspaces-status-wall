@@ -2,7 +2,7 @@ database = require('../database/database') require('../database/settings/product
 
 async = require 'async'
 query = require '../lib/logo_urls'
-store = require('knox').createClient require('../s3_settings')
+store = require('../lib/s3') require('../s3_settings')
 request = require 'request'
 gm = require 'gm'
 
