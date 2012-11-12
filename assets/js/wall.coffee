@@ -2,6 +2,7 @@
 #= require vendor/runtime.min.js
 #= require vendor/socket.io.min.js
 #= require open
+#= require map
 #= require tweets
 
 socket = io.connect '/'

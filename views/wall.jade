@@ -4,7 +4,8 @@ block scripts
   != js('wall')
   script(type="text/javascript")
     var directory = !{JSON.stringify(directory)};
-  
+  link(rel="stylesheet",href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css")
+  script(src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js")
 block content
   header
     h1 Global Hackerspaces Status Wall
@@ -12,6 +13,8 @@ block content
   section#tweets
     h1 Tweets
     ul
+  section#map
+    h1 Map
   section#open
     h1 Open
     ul
