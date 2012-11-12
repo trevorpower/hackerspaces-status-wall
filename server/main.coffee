@@ -11,13 +11,13 @@ app.configure ->
   app.use express.bodyParser()
   app.set 'view options', {layout: false}
 
-app.get '/wall', (req, res) ->
+app.get '/', (req, res) ->
   res.render 'wall.jade', directory_summary
 
 app.post '/proxy', require('./proxy')
 
 app.get '*', (req, res) ->
-  res.redirect 'wall'
+  res.redirect '/'
 
 database.connect 'directories', (err, db, directories) ->
   directories
