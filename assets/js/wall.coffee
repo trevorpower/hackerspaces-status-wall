@@ -9,3 +9,4 @@ socket = io.connect '/'
 
 openSpaces socket
 tweets socket
+map socket
