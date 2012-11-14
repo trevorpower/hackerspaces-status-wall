@@ -21,7 +21,7 @@ window.map = (socket) ->
             .bindPopup(status.space)
 
     delay 1400, () ->
-      layer = L.tileLayer 'http://{s}.tile.cloudmade.com/e15b62c19bf1450f9cbcf276aeec12ca/77568/256/{z}/{x}/{y}.png',
+      layer = L.tileLayer $('link[rel=tiles]').attr('href'),
         attributionControl: false
       layer.addTo map
 

@@ -1,6 +1,8 @@
 extends layout
 
 block scripts
+  link(href=process.env.LOGO_BASE_URL, rel="logos")
+  link(href=process.env.MAP_BASE_URL, rel="tiles")
   != js('wall')
   script(type="text/javascript")
     var directory = !{JSON.stringify(directory)};
