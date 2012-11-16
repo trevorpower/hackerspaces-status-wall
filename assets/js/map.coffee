@@ -38,12 +38,11 @@ window.map = (socket) ->
     socket.on 'new status', (status) ->
       if status.lat and status.lon
         if markers[status.space]
-          markers[status.space]
-            .bindPopup(status.space)
-        else
-          markers[status.space] = createMarker(status)
-            .addTo(map)
-            .bindPopup(status.space)
+          map.removeLayer markers[status.space]
+
+        markers[status.space] = createMarker(status)
+          .addTo(map)
+          .bindPopup(status.space)
 
     delay 1400, () ->
       layer = L.tileLayer $('link[rel=tiles]').attr('href'),
