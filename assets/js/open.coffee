@@ -34,5 +34,3 @@ window.openSpaces = (socket) ->
         update status
     else
       remove status
-
-  jQuery -> socket.emit 'replay statuses'
