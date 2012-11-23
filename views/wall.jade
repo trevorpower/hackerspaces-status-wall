@@ -9,10 +9,6 @@ block scripts
 block content
   header
     h1 Global Hackerspaces Status Wall
-  section#summary
-    h1 Summary
-    p #{total} spaces in directory
-    p#openTotal
   section#map
     h1 Map
     div#mapview
@@ -22,6 +18,10 @@ block content
   section#open
     h1 Open
     ul
+  section#summary
+    h1 Summary
+    p #{total} spaces in directory
+    p#openTotal
   section#about
     h1 About
     :markdown
