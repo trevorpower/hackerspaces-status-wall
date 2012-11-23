@@ -29,7 +29,6 @@ database.connect 'directories', (err, db, directories) ->
         console.log err
       else if directory
         directory_summary =
-          directory: directory.spaces
           total: Object.keys(directory.spaces).length
         port = process.env.PORT
         app.listen port, () -> console.log "Listening on port #{port}"
