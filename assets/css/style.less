@@ -50,6 +50,7 @@ a {
   }
 }
 
+
 @import "colours";
 @import "header";
 
@@ -69,3 +70,10 @@ a {
 @import "about";
 
 @import "footer";
+
+@media only screen and (max-width: 700px) {
+  body > header, body > footer {
+    h1 { font-size: 26px; }
+    font-size: 14px;
+  }
+}
