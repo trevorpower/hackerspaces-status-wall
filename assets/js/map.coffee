@@ -32,8 +32,11 @@ window.map = (socket) ->
   $ ->
     map = L.map 'mapview',
       attributionControl: false
+      scrollWheelZoom: false
 
     map.setView [23, -15], 2
+
+    map.zoomControl.setPosition 'bottomright'
 
     socket.on 'new status', (status) ->
       if status.lat and status.lon
