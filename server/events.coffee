@@ -8,7 +8,10 @@ exports.start = (db, io, directory) ->
   io.sockets.on 'connection', (socket) ->
     socket.on 'previous tweets', (max) ->
       twitter.recent max, (err, tweet) ->
-        socket.emit 'previous tweet', tweet if !err
+        if err
+          console.log err
+        else
+          socket.emit 'previous tweet', tweet if tweet
     socket.on 'replay statuses', () ->
       console.log 'replay requested'
       poller.current (status) ->
