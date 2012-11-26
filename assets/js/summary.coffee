@@ -1,11 +1,23 @@
+#= require vendor/guage.min.js
+
+gauge = null
+
 window.summary = (socket) ->
+
+  jQuery ->
+    gauge = new Gauge($('#summary canvas').get(0)).setOptions
+      angle: 0.05
+    gauge.maxValue = 45
 
   directory = {}
 
-  openSummary = () ->
-    open = 0
+  openCount = () ->
+    count = 0
     for name, space of directory
-      open += 1 if space.open
+      count += 1 if space.open
+    count
+
+  openSummary = (open) ->
     if open == 1
       "1 space is now open"
     else
@@ -13,5 +25,7 @@ window.summary = (socket) ->
 
   socket.on 'new status', (status) ->
     directory[status.space] = status
-    $('#openTotal').html(openSummary())
+    open = openCount()
+    $('#openTotal').html(openSummary(open))
+    gauge.set open if gauge
   
