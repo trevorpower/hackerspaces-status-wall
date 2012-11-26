@@ -9,6 +9,15 @@ block scripts
 block content
   header
     h1 Global Hackerspaces Status Wall
+  section#summary
+    h1 Summary
+    p#openTotal
+    section#summaryGauge
+      header Open Spaces
+      #gaugeText
+      | 0
+      canvas
+      | #{total}
   section#map
     h1 Map
     div#mapview
@@ -18,11 +27,6 @@ block content
   section#open
     h1 Open
     ul
-  section#summary
-    h1 Summary
-    p #{total} spaces in directory
-    p#openTotal
-    canvas
   section#about
     h1 About
     :markdown
