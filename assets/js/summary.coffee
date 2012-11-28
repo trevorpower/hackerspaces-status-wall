@@ -10,12 +10,12 @@ window.summary = (socket) ->
       angle: 0.05
       pointer:
         color: '#A36816'
-      colorStart: '#FDC372'
-      colorStop: '#FDC372'
-      strokeColor: '#FDD297'
+      colorStart: '#FDD297'
+      colorStop: '#FDD297'
+      strokeColor: '#FDC372'
       generateGradient: false
     gauge.maxValue = 45
-    gauge.setTextField $('#gaugeText').get(0)
+    gauge.setTextField $('#summaryGauge .value').get(0)
 
   directory = {}
 

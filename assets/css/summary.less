@@ -4,4 +4,41 @@
   padding: 36px;
   font-size: 22px;
   font-family: 'Cantora One', sans-serif;
+
+  text-align: center;
+
+  #summaryGauge {
+    margin-right: auto;
+    margin-left: auto;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 30px;
+
+    header {
+      text-align: center;  
+    }
+    canvas {
+      width: 300px;
+      height: 150px;
+    }
+    .value {
+      position: absolute;
+      bottom: 0px;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      width: 100%;
+      font-size: 30px;
+    }
+    .min { 
+      position: absolute;
+      bottom: 50px;
+      right: 260px;
+    }
+    .max {
+      position: absolute;
+      bottom: 50px;
+      left: 260px;
+    }
+  }
 }

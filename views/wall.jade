@@ -10,14 +10,13 @@ block content
   header
     h1 Global Hackerspaces Status Wall
   section#summary
-    h1 Summary
-    p#openTotal
+    h1 Dashboard
     section#summaryGauge
-      header Open Spaces
-      #gaugeText
-      | 0
+      header Open
       canvas
-      | #{total}
+      .min 0
+      .value
+      .max #{total}
   section#map
     h1 Map
     div#mapview
