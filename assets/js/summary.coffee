@@ -2,7 +2,6 @@
 
 gauge = null
 
-
 window.summary = (socket) ->
 
   jQuery ->
@@ -14,7 +13,6 @@ window.summary = (socket) ->
       colorStop: '#FDD297'
       strokeColor: '#FDC372'
       generateGradient: false
-    gauge.maxValue = 45
     gauge.setTextField $('#summaryGauge .value').get(0)
 
   directory = {}
@@ -27,6 +25,4 @@ window.summary = (socket) ->
 
   socket.on 'new status', (status) ->
     directory[status.space] = status
-    open = openCount()
-    gauge.set open if gauge
-  
+    gauge.set openCount() if gauge
