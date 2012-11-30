@@ -1,0 +1,37 @@
+.section (@background: null, @secondary: null, @tertiary: null) {
+  background: @background;
+  position: relative;
+  margin: 0px;
+  overflow: visible;
+
+  > h1 {
+    font-family: 'Galindo', cursive;
+    background: @tertiary;
+    border: @secondary solid 4px;
+    font-size: 24px;
+    color: #EEEEEE;
+    position: absolute;
+    top: -42px;
+    left: 30px;
+    border-radius: 10px;
+    z-index: 200;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 0px;
+  }
+}
+
+.sectionsmall() {
+  > h1 {
+    border: @secondary solid 4px;
+    font-size: 24px;
+    top: -42px;
+    left: 30px;
+    border-radius: 10px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 0px;
+  }
+}
