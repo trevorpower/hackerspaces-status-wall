@@ -14,6 +14,9 @@ window.summary = (socket) ->
       strokeColor: '#FDC372'
       generateGradient: false
     gauge.setTextField $('#summaryGauge .value').get(0)
+    gauge.maxValue = total
+    $('#summaryGauge .min').html 0
+    $('#summaryGauge .max').html total
 
   directory = {}
 

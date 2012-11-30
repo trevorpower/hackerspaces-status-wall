@@ -6,6 +6,8 @@ block scripts
   != js('wall')
   link(rel="stylesheet",href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css")
   script(src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js")
+  script(type="text/javascript")
+    var total = #{total};
 block content
   header
     h1 Global Hackerspaces Status Wall
@@ -14,9 +16,9 @@ block content
     section#summaryGauge
       header Open
       canvas
-      .min 0
+      .min
       .value
-      .max #{total}
+      .max
   section#map
     h1 Map
     div#mapview
