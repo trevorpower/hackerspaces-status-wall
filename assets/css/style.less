@@ -31,7 +31,7 @@ body {
 }
 
 #map {
-  .map(@complement1, @complement2, @complement3, @complement4, @complement5);
+  .map(@textcolor, @complement1, @complement2, @complement3, @complement4, @complement5);
 }
 
 #tweets {
@@ -51,16 +51,16 @@ body {
     > header, > footer { .headerfootersmall(); }
   }
   #summary { .sectionsmall(); }
-  #map { .sectionsmall(); }
+  #map { .map-small(); .sectionsmall(); }
   #tweets { .tweetssmall(); .sectionsmall(); }
   #open { .sectionsmall(); }
   #about { .aboutsmall(); .sectionsmall(); }
 }
 
 @media only screen and (max-height: 375px) {
-  #map { .map-small(300px); }
+  #map { .map-height(300px); }
 }
 
 @media only screen and (max-height: 315px) {
-  #map { .map-small(250px); }
+  #map { .map-height(250px); }
 }

@@ -38,6 +38,9 @@ window.map = (socket) ->
 
     map.zoomControl.setPosition 'bottomright'
 
+    $('.leaflet-control-zoom-in').html '+'
+    $('.leaflet-control-zoom-out').html '-'
+
     socket.on 'new status', (status) ->
       if status.lat and status.lon
         if markers[status.space]
