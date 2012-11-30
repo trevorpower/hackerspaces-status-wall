@@ -6,27 +6,6 @@ body {
   font-family: 'Helvetica', sans-serif;
 }
 
-.headerfooter() {
-  color: #EEEEEE;
-  border: @primary4 dotted 8px;
-  font-family: 'Galindo', cursive;
-  margin: 8px;
-  a { color: @primary5; }
-  text-align: center;
-  padding: 0px;
-  h1 { font-size: 38px; }
-  font-size: 20px;
-  line-height: 220%;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.headerfootersmall() {
-  h1 { font-size: 26px; }
-  font-size: 14px;
-  border: @primary4 dotted 6px;
-}
-
 .section (@background: null, @secondary: null, @tertiary: null) {
   background: @background;
   position: relative;
@@ -66,6 +45,8 @@ body {
 }
 
 @import "colours";
+
+@import "headerfooter";
 
 body > header, body > footer {
   .headerfooter();
