@@ -6,12 +6,7 @@ body {
   font-family: 'Helvetica', sans-serif;
 }
 
-a {
-  color: #666699;
-}
-
 .headerfooter() {
-  background: @primary1;
   color: #EEEEEE;
   border: @primary4 dotted 8px;
   font-family: 'Galindo', cursive;
@@ -24,6 +19,12 @@ a {
   line-height: 220%;
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.headerfootersmall() {
+  h1 { font-size: 26px; }
+  font-size: 14px;
+  border: @primary4 dotted 6px;
 }
 
 .section (@background: null, @secondary: null, @tertiary: null) {
@@ -50,6 +51,19 @@ a {
   }
 }
 
+.sectionsmall() {
+  > h1 {
+    border: @secondary solid 4px;
+    font-size: 24px;
+    top: -42px;
+    left: 30px;
+    border-radius: 10px;
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 3px;
+    padding-bottom: 0px;
+  }
+}
 
 @import "colours";
 @import "header";
@@ -78,27 +92,10 @@ a {
 
 @media only screen and (max-width: 700px) {
   body > header, body > footer {
-    h1 { font-size: 26px; }
-    font-size: 14px;
+    .headerfootersmall();
   }
   #about {
     font-size: 18px;
   }
-  #tweets {
-    ul {
-      li {
-        a {
-          font-size: 14px;
-          width: 148px;
-          span { width: 148px; }
-        }
-        .text {
-          font-size: 14px;
-        }
-        .text, .time {
-          margin-left: 152px;
-        }
-      }
-    }
-  }
+  #tweets { .tweetssmall(); }
 }
