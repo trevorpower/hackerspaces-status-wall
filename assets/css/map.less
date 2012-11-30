@@ -13,4 +13,22 @@
   #mapview {
     height: @height;
   }
+
+  #pageScroll {
+    background-color: @color1;
+    display: none;
+  }
+}
+
+.map-small(@height) {
+  padding: 0px;
+  #mapview { height: @height; }
+  #pageScroll {
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 60px;
+  }
 }
