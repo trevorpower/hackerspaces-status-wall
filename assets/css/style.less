@@ -42,13 +42,25 @@ body {
   .about(@secondaryb1, @secondaryb2, @secondaryb3, @secondaryb4, @secondaryb5)
 }
 
+.touch {
+  #map { .map-touch(); }
+}
+
 @media only screen and (max-width: 700px) {
   body {
     > header, > footer { .headerfootersmall(); }
   }
   #summary { .sectionsmall(); }
-  #map { .map-small(300px); .sectionsmall(); }
+  #map { .sectionsmall(); }
   #tweets { .tweetssmall(); .sectionsmall(); }
   #open { .sectionsmall(); }
   #about { .aboutsmall(); .sectionsmall(); }
+}
+
+@media only screen and (max-height: 375px) {
+  #map { .map-small(300px); }
+}
+
+@media only screen and (max-height: 315px) {
+  #map { .map-small(250px); }
 }
