@@ -1,18 +1,18 @@
+@import "headerfooter";
+
 @import "colours";
+@textcolor: #FFFFFF;
 
 body {
-  color: #FFFFFF;
+  color: @textcolor;
   background: @primary1;
   margin: 0px;
   padding: 0px;
   font-family: 'Helvetica', sans-serif;
-}
 
-
-@import "headerfooter";
-
-body > header, body > footer {
-  .headerfooter();
+  > header, > footer {
+    .headerfooter(@primary4, @primary5);
+  }
 }
 
 @import "section";
