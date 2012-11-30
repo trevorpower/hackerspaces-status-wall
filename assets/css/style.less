@@ -1,4 +1,7 @@
 @import "headerfooter";
+@import "map";
+@import "tweets";
+@import "about";
 
 @import "colours";
 @textcolor: #EEEEEE;
@@ -27,20 +30,22 @@ body {
   .summary(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
 
-@import "map";
 #map {
   .map(@complement1, @complement2, @complement3, @complement4, @complement5);
 }
 
-@import "tweets";
-#tweets { .tweets(@secondaryb1, @secondaryb2, @secondaryb3); }
+#tweets {
+  .tweets(@textcolor, @secondaryb1, @secondaryb2, @secondaryb3);
+}
 
-@import "about";
+#about {
+  .about(@secondaryb1, @secondaryb2, @secondaryb3, @secondaryb4, @secondaryb5)
+}
 
 @media only screen and (max-width: 700px) {
-  body > header, body > footer {
-    .headerfootersmall();
+  body {
+    > header, > footer { .headerfootersmall(); }
   }
-  #about { .aboutsmall(); .sectionsmall(); }
   #tweets { .tweetssmall(); .sectionsmall(); }
+  #about { .aboutsmall(); .sectionsmall(); }
 }
