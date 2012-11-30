@@ -1,6 +1,8 @@
 @import "headerfooter";
+@import "summary";
 @import "map";
 @import "tweets";
+@import "open";
 @import "about";
 
 @import "colours";
@@ -20,12 +22,10 @@ body {
 
 @import "section";
 
-@import "open";
 #open {
   .open(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
 
-@import "summary";
 #summary {
   .summary(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
@@ -46,6 +46,9 @@ body {
   body {
     > header, > footer { .headerfootersmall(); }
   }
+  #summary { .sectionsmall(); }
+  #map { .sectionsmall(); }
   #tweets { .tweetssmall(); .sectionsmall(); }
+  #open { .sectionsmall(); }
   #about { .aboutsmall(); .sectionsmall(); }
 }
