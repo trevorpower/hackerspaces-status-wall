@@ -11,7 +11,7 @@ gaugeOptions =
   colorStop: '#FDD297'
   strokeColor: '#FDC372'
   generateGradient: false
-  
+
 openGauge = null
 tweetGauge = null
 
@@ -37,7 +37,7 @@ window.summary = (socket) ->
     tweetGauge = new Gauge(gauge.children('canvas').get(0))
       .setOptions gaugeOptions
     tweetGauge.setTextField gauge.children('.value').get(0)
-    tweetGauge.maxValue = '100'
+    tweetGauge.maxValue = 100
     repeat 4000, () -> updateTweetsGauge()
 
   jQuery ->
