@@ -15,7 +15,7 @@ window.openSpaces = (socket) ->
       .slideDown()
 
   update = (status) ->
-    selector(status)
+    selector(stetatus)
       .find('.status')
       .slideUp () ->
         $(this).text(status.status)
