@@ -1,7 +1,7 @@
 #= require vendor/guage.min.js
 #= require gaugeTemplate
 
-delay = (time, func) -> setTimeout func, time
+repeat = (time, func) -> setInterval func, time
 
 gaugeOptions =
   angle: 0.05
@@ -65,13 +65,23 @@ window.summary = (socket) ->
   tweets = []
 
   tweetRate = () ->
+    return 0 unless tweets.length
     earliest = new Date(tweets[0].created_at)
       .getTime()
     span = new Date().getTime() - earliest
     rate = tweets.length / span
     rate * 1000 * 60 * 60
 
-  socket.on 'previous tweet', (data) ->
-    tweets.push data
+  updateTweetsGauge = () ->
     tweetGauge.set tweetRate() if tweetGauge
 
+  socket.on 'previous tweet', (data) ->
+    tweets.push data
+    updateTweetsGauge()
+
+  socket.on 'new tweet', (data) ->
+    tweets.shift()
+    tweets.push data
+    updateTweetsGauge()
+
+  repeat 4000, () -> updateTweetsGauge()
