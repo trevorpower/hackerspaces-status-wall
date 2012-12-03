@@ -20,13 +20,13 @@ window.summary = (socket) ->
   setupOpenGauge = () ->
     gauge = $ gaugeTemplate(id: 'openTotal', title: 'Open Spaces')
     gauge.appendTo '#summary'
+    gauge.children('.min').html '0'
+    gauge.children('.max').html "#{total}"
 
     openGauge = new Gauge(gauge.children('canvas').get(0))
       .setOptions gaugeOptions
     openGauge.setTextField gauge.children('.value').get(0)
     openGauge.maxValue = total
-    gauge.children('.min').html '0'
-    gauge.children('.max').html "#{total}"
 
   setupTweetGauge = () ->
     gauge = $ gaugeTemplate(id: 'tweetRate', title: 'Tweets per Hour')
@@ -35,14 +35,7 @@ window.summary = (socket) ->
     gauge.children('.max').html '50'
 
     tweetGauge = new Gauge(gauge.children('canvas').get(0))
-      .setOptions
-        angle: 0.05
-        pointer:
-          color: '#A36816'
-        colorStart: '#FDD297'
-        colorStop: '#FDD297'
-        strokeColor: '#FDC372'
-        generateGradient: false
+      .setOptions gaugeOptions
     tweetGauge.setTextField gauge.children('.value').get(0)
     tweetGauge.maxValue = '50'
 
@@ -70,7 +63,7 @@ window.summary = (socket) ->
       .getTime()
     span = new Date().getTime() - earliest
     rate = tweets.length / span
-    rate * 1000 * 60 * 60
+    Math.round(rate * 1000 * 60 * 60)
 
   updateTweetsGauge = () ->
     tweetGauge.set tweetRate() if tweetGauge
