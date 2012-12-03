@@ -38,6 +38,7 @@ window.summary = (socket) ->
       .setOptions gaugeOptions
     tweetGauge.setTextField gauge.children('.value').get(0)
     tweetGauge.maxValue = '100'
+    repeat 4000, () -> updateTweetsGauge()
 
   jQuery ->
     setupOpenGauge()
@@ -77,4 +78,3 @@ window.summary = (socket) ->
     tweets.push data
     updateTweetsGauge()
 
-  repeat 4000, () -> updateTweetsGauge()
