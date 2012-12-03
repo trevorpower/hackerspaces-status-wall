@@ -1,22 +1,27 @@
 #= require vendor/guage.min.js
+#= require gaugeTemplate
 
-gauge = null
+gaugeController = null
 
 window.summary = (socket) ->
 
   jQuery ->
-    gauge = new Gauge($('#summary canvas').get(0)).setOptions
-      angle: 0.05
-      pointer:
-        color: '#A36816'
-      colorStart: '#FDD297'
-      colorStop: '#FDD297'
-      strokeColor: '#FDC372'
-      generateGradient: false
-    gauge.setTextField $('#summaryGauge .value').get(0)
-    gauge.maxValue = total
-    $('#summaryGauge .min').html 0
-    $('#summaryGauge .max').html total
+    gauge = $(gaugeTemplate(id: 'openTotal'))
+      .appendTo('#summary')
+
+    gaugeController = new Gauge(gauge.children('canvas').get(0))
+      .setOptions
+        angle: 0.05
+        pointer:
+          color: '#A36816'
+        colorStart: '#FDD297'
+        colorStop: '#FDD297'
+        strokeColor: '#FDC372'
+        generateGradient: false
+    gaugeController.setTextField gauge.children('.value').get(0)
+    gaugeController.maxValue = total
+    gauge.children('.min').html 0
+    gauge.children('.max').html total
 
   directory = {}
 
@@ -28,4 +33,4 @@ window.summary = (socket) ->
 
   socket.on 'new status', (status) ->
     directory[status.space] = status
-    gauge.set openCount() if gauge
+    gaugeController.set openCount() if gaugeController
