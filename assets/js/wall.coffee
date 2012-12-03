@@ -14,4 +14,6 @@ tweets socket
 map socket
 summary socket
 
-jQuery -> socket.emit 'replay statuses'
+jQuery ->
+  socket.emit 'replay statuses'
+  socket.emit 'previous tweets', 4

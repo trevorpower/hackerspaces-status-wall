@@ -23,6 +23,3 @@ window.tweets = (socket) ->
       .prependTo('#tweets ul')
       .slideDown()
     curateList()
-
-  jQuery ->
-    socket.emit 'previous tweets', 4
