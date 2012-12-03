@@ -32,12 +32,12 @@ window.summary = (socket) ->
     gauge = $ gaugeTemplate(id: 'tweetRate', title: 'Tweets per Hour')
     gauge.appendTo '#summary'
     gauge.children('.min').html '0'
-    gauge.children('.max').html '50'
+    gauge.children('.max').html '100'
 
     tweetGauge = new Gauge(gauge.children('canvas').get(0))
       .setOptions gaugeOptions
     tweetGauge.setTextField gauge.children('.value').get(0)
-    tweetGauge.maxValue = '50'
+    tweetGauge.maxValue = '100'
 
   jQuery ->
     setupOpenGauge()
