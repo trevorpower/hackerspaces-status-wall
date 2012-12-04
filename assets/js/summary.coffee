@@ -27,6 +27,7 @@ window.summary = (socket) ->
       .setOptions gaugeOptions
     openGauge.setTextField gauge.children('.value').get(0)
     openGauge.maxValue = total
+    openGauge.set 0
 
   setupTweetGauge = () ->
     gauge = $ gaugeTemplate(id: 'tweetRate', title: 'Tweets per Hour')
@@ -38,6 +39,7 @@ window.summary = (socket) ->
       .setOptions gaugeOptions
     tweetGauge.setTextField gauge.children('.value').get(0)
     tweetGauge.maxValue = 100
+    tweetGauge.set 0
     repeat 4000, () -> updateTweetsGauge()
 
   jQuery ->
@@ -70,7 +72,7 @@ window.summary = (socket) ->
     tweetGauge.set tweetRate() if tweetGauge
 
   socket.on 'previous tweet', (data) ->
-    tweets.push data
+    tweets.unshift data
     updateTweetsGauge()
 
   socket.on 'new tweet', (data) ->
