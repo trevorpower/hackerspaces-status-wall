@@ -1,59 +1,66 @@
+@import "headerfooter";
+@import "summary";
+@import "map";
+@import "tweets";
+@import "open";
+@import "about";
+
+@import "colours";
+@textcolor: #EEEEEE;
+
 body {
-  color: #FFFFFF;
+  color: @textcolor;
   background: @primary1;
   margin: 0px;
   padding: 0px;
   font-family: 'Helvetica', sans-serif;
-}
 
-a {
-  color: #666699;
-}
-
-.headerfooter() {
-  background: @primary1;
-  color: #EEEEEE;
-  border: @primary4 dotted 8px;
-  font-family: 'Galindo', cursive;
-  margin: 8px;
-  a { color: @primary5; }
-  text-align: center;
-}
-
-.section (@background: null, @secondary: null, @tertiary: null) {
-  background: @background;
-  position: relative;
-  margin: 0px;
-  overflow: visible;
-
-  > h1 {
-    font-family: 'Galindo', cursive;
-    background: @tertiary;
-    border: @secondary solid 4px;
-    font-size: 24px;
-    color: #EEEEEE;
-    position: absolute;
-    top: -42px;
-    left: 30px;
-    border-radius: 10px;
-    z-index: 200;
-    padding-left: 11px;
-    padding-right: 11px;
-    padding-top: 3px;
-    padding-bottom: 0px;
+  > header, > footer {
+    .headerfooter(@textcolor, @primary4, @primary5);
   }
 }
 
-@import "header";
+@import "section";
 
-@import "open";
 #open {
   .open(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
 
-@import "tweets";
-#tweets { .tweets(@secondaryb1, @secondaryb2, @secondaryb3); }
+#summary {
+  .summary(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
+}
 
-@import "about";
+#map {
+  .map(@textcolor, @complement1, @complement2, @complement3, @complement4, @complement5);
+}
 
-@import "footer";
+#tweets {
+  .tweets(@textcolor, @secondaryb1, @secondaryb2, @secondaryb3);
+}
+
+#about {
+  .about(@secondaryb1, @secondaryb2, @secondaryb3, @secondaryb4, @secondaryb5)
+}
+
+.touch {
+  #map { .map-touch(); }
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    > header, > footer { .headerfootersmall(); }
+  }
+  #summary { .summary-small(); .sectionsmall(); }
+  #map { .map-small(); .sectionsmall(); }
+  #tweets { .tweetssmall(); .sectionsmall(); }
+  #open { .sectionsmall(); }
+  #about { .aboutsmall(); .sectionsmall(); }
+}
+
+@media only screen and (max-height: 375px) {
+  #map { .map-height(300px); }
+}
+
+@media only screen and (max-height: 315px) {
+  #map { .map-height(250px); }
+}

@@ -1,0 +1,60 @@
+.summary (@color1, @color2, @color3, @color4, @color5) {
+  .section(@color1, @color2, @color3);
+
+  padding: 36px;
+  font-size: 22px;
+  font-family: 'Cantora One', sans-serif;
+  padding: 15px;
+
+  text-align: center;
+
+  .gauge {
+    margin-right: 12px;
+    margin-left: 12px;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 30px;
+    padding-top: 15px;
+
+    header {
+      text-align: center;  
+      position: absolute;
+      top: 0px;
+      margin: 0 auto;
+      display: block;
+      width: 100%;
+    }
+    canvas {
+      width: 300px;
+      height: 150px;
+    }
+    .value {
+      position: absolute;
+      bottom: 0px;
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      width: 100%;
+      font-size: 30px;
+    }
+    .min { 
+      position: absolute;
+      bottom: 50px;
+      right: 260px;
+    }
+    .max {
+      position: absolute;
+      bottom: 50px;
+      left: 260px;
+    }
+  }
+}
+
+.summary-small() {
+  .gauge {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: 13px;
+    padding-top: 11px;
+  }
+}

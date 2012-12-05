@@ -15,7 +15,7 @@ window.openSpaces = (socket) ->
       .slideDown()
 
   update = (status) ->
-    selector(status)
+    selector(stetatus)
       .find('.status')
       .slideUp () ->
         $(this).text(status.status)
@@ -34,5 +34,3 @@ window.openSpaces = (socket) ->
         update status
     else
       remove status
-
-  jQuery -> socket.emit 'replay statuses'

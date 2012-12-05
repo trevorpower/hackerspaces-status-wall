@@ -1,14 +1,22 @@
 extends layout
 
 block scripts
+  link(href=process.env.LOGO_BASE_URL, rel="logos")
+  link(href=process.env.MAP_BASE_URL, rel="tiles")
   != js('wall')
+  link(rel="stylesheet",href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css")
+  script(src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js")
   script(type="text/javascript")
-    var directory = !{JSON.stringify(directory)};
-  
+    var total = #{total};
 block content
   header
     h1 Global Hackerspaces Status Wall
-    section #{total} spaces in directory
+  section#summary
+    h1 Dashboard
+  section#map
+    h1 Map
+    div#mapview
+    div#pageScroll
   section#tweets
     h1 Tweets
     ul

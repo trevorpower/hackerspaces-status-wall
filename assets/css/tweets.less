@@ -1,18 +1,20 @@
-.tweets(@color1, @color2, @color3) {
+.tweets(@textcolor, @color1, @color2, @color3) {
 
   .section(@color1, @color2, @color3);
   text-align: center;
 
-  color: #FFFFFF;
+  color: @textcolor;
   height: 450px;
 
   a {
     font-family: 'Cantora One', sans-serif;
     font-size: 16pt;
-    color: #FFFFFF;
+    color: @textcolor;
   }
 
   ul {
+    max-height: 450px;
+    overflow: hidden;
     position: absolute;
     bottom: 0px;
     left: 0px;
@@ -46,6 +48,24 @@
         margin-left: 200px;
         font-size: 12px;
         color: #BBBBBB;
+      }
+    }
+  }
+}
+
+.tweetssmall() {
+  ul {
+    li {
+      a {
+        font-size: 14px;
+        width: 148px;
+        span { width: 148px; }
+      }
+      .text {
+        font-size: 14px;
+      }
+      .text, .time {
+        margin-left: 152px;
       }
     }
   }

@@ -1,7 +1,12 @@
-#about {
-  .section(@secondaryb1, @secondaryb2, @secondaryb3);
+.about(@color1, @color2, @color3, @color4, @color5) {
+  .section(@color1, @color2, @color3);
   padding: 36px;
   font-size: 22px;
   font-family: 'Cantora One', sans-serif;
-  a { color: @secondaryb5; }
+  a { color: @color5; }
+}
+
+.aboutsmall() {
+  font-size: 18px;
+  padding: 28px;
 }
