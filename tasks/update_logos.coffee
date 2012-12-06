@@ -3,11 +3,10 @@ database = require('../database/database') require('../database/settings/product
 async = require 'async'
 query = require '../lib/logo_urls'
 
-s3 = require '../s3_settings'
 store =
-  if s3.bucket
-    console.log "Using S3 storage - #{s3.bucket}"
-    require('../lib/s3') s3
+  if process.env.S3_BUCKET
+    console.log "Using S3 storage - #{process.env.S3_BUCKET}"
+    require('../lib/s3')
   else
     console.log 'Using local storage'
     require('../local/store')
