@@ -1,52 +1,33 @@
 request = require 'request'
+mongojs = require 'mongojs'
 async = require 'async'
-createStatusDocument = require '../lib/space_info'
-database = require('../database/database') require('../database/settings/production')
 
-spaceStatus = require
-latest = (collection, callback) ->
-  collection
-    .find()
-    .sort({$natural: -1})
-    .limit(1)
-    .toArray (err, list) ->
-      if err
-        callback err
-      else
-        callback err, list[0]
+db = mongojs process.env.MONGO_URL, ['spaces']
 
-update_spaces = (directories, spaces, callback) ->
-  update_space = (space, callback) ->
-    console.log "requesting #{space.url}"
-    request space.url, (err, res, body) ->
+screenName = (status) ->
+  name = status.contact?.twitter
+  if name and name[0] == '@'
+    name.substring 1
+  else
+    name
+
+update_space = (space, callback) ->
+  request
+    uri: space.api
+    json: true,
+    (err, res, body) ->
       if err
         console.log "error for #{space.name}: #{err}"
         callback()
       else
-        console.log "reply for #{space.name}"
-        statusDocument = createStatusDocument body
-        
-        spaces.insert statusDocument, (err) ->
-          if err
-            console.log err
-          else
-            console.log "saved for #{space.name}"
+        info =
+          twitter_handle: screenName(body)
+          logo: body.logo
+        db.spaces.update space, info, (err) ->
+          console.log "#{space.name} synced"
           callback()
 
-  latest directories, (err, directory) ->
-    if err
-      callback err
-    else
-      console.log "directory found for #{directory.date}"
-      entries = for name, url of directory.spaces
-        {name: name, url: url}
-      async.forEach entries, update_space, (err) ->
-        callback err
-
-database.connect 'directories', 'spaces', (err, db, directories, spaces) ->
-    if err
-      console.log err
-      process.exit()
-    else
-      update_spaces directories, spaces, (err) ->
-        process.exit()
+db.spaces.find (err, spaces) ->
+  async.forEach spaces, update_space, (err) ->
+    console.log err if err
+    process.exit()
