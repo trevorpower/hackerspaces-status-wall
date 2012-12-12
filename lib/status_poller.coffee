@@ -27,8 +27,8 @@ module.exports = (concurrency, request) ->
     queue = require('async').queue(poll, concurrency)
     
     queue_spaces = (directory) ->
-      for name, url of directory
-        queue.push {name: name, url: url}
+      for space in directory
+        queue.push {name: space.name, url: space.api}
 
     queue_spaces directory
 
