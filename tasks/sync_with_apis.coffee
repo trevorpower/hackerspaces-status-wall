@@ -21,8 +21,9 @@ update_space = (space, callback) ->
         callback()
       else
         info =
-          twitter_handle: screenName(body)
-          logo: body.logo
+          $set:
+            twitter_handle: screenName(body)
+            logo: body.logo
         db.spaces.update space, info, (err) ->
           console.log "#{space.name} synced"
           callback()

@@ -1,33 +1,38 @@
 request = require 'request'
+mongojs = require 'mongojs'
 async = require 'async'
-twitterApi = "http://api.twitter.com/1/"
 
-database = require('../database/database') require('../database/settings/production')
-  
-database.connect 'tweeps', (err, db, tweeps) ->
-  saveTwitterInfo = (name, callback) ->
-    console.log "requesting info for @#{name}"
-    request "#{twitterApi}users/show.json?screen_name=#{name}", (err, res, body) ->
+twitterApi = "http://api.twitter.com/1/users/show.json"
+
+db = mongojs process.env.MONGO_URL, ['spaces']
+ 
+saveTwitterInfo = (space, callback) ->
+  console.log "@#{space.twitter_handle}"
+  request
+    uri: "#{twitterApi}?screen_name=#{space.twitter_handle}"
+    json: true,
+    (err, res, body) ->
       if res.statusCode == 200
-        tweeps.insert(
-          {date: new Date(), user: JSON.parse(body)}
-          (err) ->
-            if err
-              console.log err
-            else
-              console.log "saved tweep #{name}" if !err
-            callback()
-        )
+        info =
+          $set:
+            twitter_id: body.id
+        db.spaces.update {name: space.name}, info, (err) ->
+          if err
+            console.log err
+          else
+            console.log "@#{space.twitter_handle} -> #{body.id}"
+          callback()
       else
-        console.log "#{res.statusCode}: #{err} - #{name} - #{body}"
+        console.log "#{res.statusCode}: #{err} - #{space.name}"
+        console.log body
         callback()
 
-  if err
-    console.log err
-  else
-    console.log "connected to #{db}"
+query =
+  twitter_handle:
+    $exists: true
 
-    require('../lib/twitterScreenNames')  db, (err, names) ->
-      console.log "got #{names.length} screen names"
-      async.forEach names, saveTwitterInfo, (err) ->
-        process.exit()
+db.spaces.find query, (err, spaces) ->
+  console.log spaces
+  async.forEach spaces, saveTwitterInfo, (err) ->
+    process.exit()
+
