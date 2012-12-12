@@ -30,6 +30,7 @@ saveTwitterInfo = (space, callback) ->
 query =
   twitter_handle:
     $exists: true
+    $ne: null
 
 db.spaces.find query, (err, spaces) ->
   console.log spaces
