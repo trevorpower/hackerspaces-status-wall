@@ -1,21 +1,10 @@
-database = require('../database/database') require('../database/settings/production')
-
-async = require 'async'
-query = require '../lib/logo_urls'
-store = require('knox').createClient require('../s3_settings')
 request = require 'request'
+async = require 'async'
+mongojs = require 'mongojs'
+store = require('knox').createClient require('../s3_settings')
 gm = require 'gm'
 
-latest = (collection, callback) ->
-  collection
-    .find()
-    .sort({$natural: -1})
-    .limit(1)
-    .toArray (err, list) ->
-      if err
-        callback err
-      else
-        callback err, list[0]
+db = mongojs process.env.MONGO_URL, ['spaces']
 
 defaultLogo = () ->
   gm(241, 108, 'transparent')
@@ -67,34 +56,21 @@ upload = (url, id, report, callback) ->
   catch ex
     report ex
 
-update_logos = (db, directories, callback) ->
+clientId = (name) ->
+  name.toLowerCase().replace /[^a-z0-9]+/g, '-'
 
-  clientId = (name) ->
-    name.toLowerCase().replace /[^a-z0-9]+/g, '-'
+saveLogo = (space, callback) ->
+  report = (info) -> console.log "#{space.name}: #{info}"
+  url = "#{process.env.LOGO_BASE_URL}#{clientId(space.name)}"
+  id = "/open/#{clientId(space.name)}"
+  upload url, id, report, callback
 
-  saveLogo = (space, callback) ->
-    report = (info) -> console.log "#{space.name}: #{info}"
-    url = "#{process.env.LOGO_BASE_URL}#{clientId(space.name)}"
-    id = "/open/#{clientId(space.name)}"
-    upload url, id, report, callback
+query =
+  logo:
+    $exists: true
+    $ne: null
 
-  latest directories, (err, directory) ->
-    if err
-      callback err
-    else
-      console.log "directory found for #{directory.date}"
-      names = for name, value of directory.spaces
-        name
-      query db, names, (err, urls) ->
-        spaces = for name, url of urls
-          name: name, url: url
-        async.forEachSeries spaces, saveLogo, callback
-
-database.connect 'directories', (err, db, directories) ->
-  if err
-    console.log err
+db.spaces.find query, (err, spaces) ->
+  async.forEach spaces, saveLogo, (err) ->
+    console.log err if err
     process.exit()
-  else
-    update_logos db, directories, (err) ->
-      console.log err
-      process.exit()

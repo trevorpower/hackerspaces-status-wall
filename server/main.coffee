@@ -19,23 +19,20 @@ app.post '/proxy', require('./proxy')
 app.get '*', (req, res) ->
   res.redirect '/'
 
-database.connect 'directories', (err, db, directories) ->
-  directories
-    .find()
-    .sort($natural: -1)
-    .limit(1)
-    .each (err, directory) ->
-      if err
-        console.log err
-      else if directory
-        directory_summary =
-          total: Object.keys(directory.spaces).length
-        port = process.env.PORT
-        app.listen port, () -> console.log "Listening on port #{port}"
-        io = require('socket.io').listen(app)
-        io.configure () ->
-          io.set "transports", ["xhr-polling"]
-          io.set "polling duration", 10
-          io.set "log level", 2
-        require('./events').start(db, io, directory.spaces)
+database.connect 'spaces', (err, db, spaces) ->
+  spaces.find().toArray (err, apis) ->
+    if err
+      console.log err
+    else
+      directory_summary =
+        total: apis.length
+      console.log directory_summary
+      port = process.env.PORT
+      app.listen port, () -> console.log "Listening on port #{port}"
+      io = require('socket.io').listen(app)
+      io.configure () ->
+        io.set "transports", ["xhr-polling"]
+        io.set "polling duration", 10
+        io.set "log level", 2
+      require('./events').start(db, io, apis)
 

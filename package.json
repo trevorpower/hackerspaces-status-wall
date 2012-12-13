@@ -13,6 +13,7 @@
     "connect-assets": "2.3.x",
     "request": "",
     "mongodb": "",
+    "mongojs": "",
     "async": "",
     "socket.io": "",
     "knox": "",
