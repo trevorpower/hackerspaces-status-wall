@@ -8,6 +8,9 @@ complete = (status) ->
   console.log status
   process.exit()
 
+id = (name) ->
+  name.toLowerCase().replace /[^a-z0-9]+/g, '-'
+
 request
   uri: "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
   json: true,
@@ -21,7 +24,7 @@ request
           complete err
         else
           for name, url of body
-            query = name: name
+            query = id: id(name)
             update =
               $set:
                 api: url

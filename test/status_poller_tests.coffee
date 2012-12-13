@@ -1,6 +1,6 @@
 directory = [
-  {name: 'miLKlabs', api: "http://milklabs.ie"},
-  {name: 'TOG', api: "http://tog.ie"}
+  {id: 'miLKlabs', api: "http://milklabs.ie"},
+  {id: 'TOG', api: "http://tog.ie"}
 ]
 
 states = null

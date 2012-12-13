@@ -33,7 +33,5 @@ exports.recent = (max, callback) ->
   db.tweets.find()
     .sort($natural: -1)
     .limit max, (err, tweets) ->
-      console.log tweets.length
       for tweet in tweets
-        console.log tweet
         callback null, tweet

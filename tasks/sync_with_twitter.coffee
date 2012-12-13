@@ -36,4 +36,3 @@ db.spaces.find query, (err, spaces) ->
   console.log spaces
   async.forEach spaces, saveTwitterInfo, (err) ->
     process.exit()
-

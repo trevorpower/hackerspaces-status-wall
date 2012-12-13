@@ -17,15 +17,16 @@ update_space = (space, callback) ->
     json: true,
     (err, res, body) ->
       if err
-        console.log "error for #{space.name}: #{err}"
+        console.log "error for #{space.id}: #{err}"
         callback()
       else
         info =
           $set:
+            name: body.space
             twitter_handle: screenName(body)
             logo: body.logo
         db.spaces.update space, info, (err) ->
-          console.log "#{space.name} synced"
+          console.log "#{space.id} synced"
           callback()
 
 db.spaces.find (err, spaces) ->
