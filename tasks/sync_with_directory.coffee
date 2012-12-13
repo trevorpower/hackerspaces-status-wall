@@ -33,4 +33,3 @@ request
                 console.log err
               else
                 console.log "#{name} updated"
-          complete 'done'

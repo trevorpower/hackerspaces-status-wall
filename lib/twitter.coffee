@@ -17,7 +17,7 @@ getTwitterIds = (callback) ->
 
   db.spaces.find query, twitter_id: true, (err, ids) ->
     console.log err if err
-    callback ids.map((result) -> result.twitter_id)
+    callback err, ids.map((result) -> result.twitter_id)
 
 exports.listen = (callback) ->
   getTwitterIds (err, ids) ->
