@@ -45,6 +45,10 @@ query =
     $ne: null
 
 db.spaces.find query, (err, spaces) ->
-  async.forEach spaces, saveLogo, (err) ->
-    console.log err if err
+  if err
+    console.log err
     process.exit()
+  else
+    async.forEach spaces, saveLogo, (err) ->
+      console.log err if err
+      process.exit()
