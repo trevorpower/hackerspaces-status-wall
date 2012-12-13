@@ -28,8 +28,7 @@ exports.listen = (callback) ->
       stream.on 'data', (data) ->
         return if data.disconnect?
         callback data
-        database.connect 'tweets', (err, db, tweets) ->
-          tweets.insert data if !err
+        db.tweets.insert data
 
 exports.recent = (max, callback) ->
   db.tweets.find()
