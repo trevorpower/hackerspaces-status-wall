@@ -20,7 +20,11 @@ app.get '*', (req, res) ->
   res.redirect '/'
 
 database.connect 'spaces', (err, db, spaces) ->
-  spaces.find().toArray (err, apis) ->
+  query =
+    api:
+      $exists: true
+      $ne: null
+  spaces.find(query).toArray (err, apis) ->
     if err
       console.log err
     else
@@ -35,4 +39,3 @@ database.connect 'spaces', (err, db, spaces) ->
         io.set "polling duration", 10
         io.set "log level", 2
       require('./events').start(db, io, apis)
-
