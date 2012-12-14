@@ -21,7 +21,7 @@ getTwitterIds = (callback) ->
 
 exports.listen = (callback) ->
   getTwitterIds (err, ids) ->
-    console.log ids.length
+    console.log "following #{ids.length} accounts on twitter"
     twit.stream 'statuses/filter', {follow: ids}, (stream) ->
       stream.on 'error', (data) ->
         console.log data
