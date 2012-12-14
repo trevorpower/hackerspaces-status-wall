@@ -37,5 +37,5 @@ database.connect 'spaces', (err, db, spaces) ->
       io.configure () ->
         io.set "transports", ["xhr-polling"]
         io.set "polling duration", 10
-        io.set "log level", 2
+        io.set "log level", 1
       require('./events').start(db, io, apis)
