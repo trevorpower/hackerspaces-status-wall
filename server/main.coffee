@@ -1,5 +1,4 @@
 express = require 'express'
-database = require('../database/database') require('../database/settings/production')
 
 directory_summary = null
 
@@ -19,23 +18,24 @@ app.post '/proxy', require('./proxy')
 app.get '*', (req, res) ->
   res.redirect '/'
 
-database.connect 'spaces', (err, db, spaces) ->
-  query =
-    api:
-      $exists: true
-      $ne: null
-  spaces.find(query).toArray (err, apis) ->
-    if err
-      console.log err
-    else
-      directory_summary =
-        total: apis.length
-      console.log directory_summary
-      port = process.env.PORT
-      app.listen port, () -> console.log "Listening on port #{port}"
-      io = require('socket.io').listen(app)
-      io.configure () ->
-        io.set "transports", ["xhr-polling"]
-        io.set "polling duration", 10
-        io.set "log level", 1
-      require('./events').start(db, io, apis)
+db = require('mongojs') process.env.MONGO_URL, ['spaces']
+
+query =
+  api:
+    $exists: true
+    $ne: null
+db.spaces.find(query).toArray (err, apis) ->
+  if err
+    console.log err
+  else
+    directory_summary =
+      total: apis.length
+    console.log directory_summary
+    port = process.env.PORT
+    app.listen port, () -> console.log "Listening on port #{port}"
+    io = require('socket.io').listen(app)
+    io.configure () ->
+      io.set "transports", ["xhr-polling"]
+      io.set "polling duration", 10
+      io.set "log level", 1
+    require('./events').start(io, apis)
