@@ -29,7 +29,12 @@ update_space = (space, callback) ->
           console.log "#{space.id} synced"
           callback()
 
-db.spaces.find (err, spaces) ->
+query =
+  api:
+    $exists: true
+    $ne: null
+    
+db.spaces.find query, (err, spaces) ->
   async.forEach spaces, update_space, (err) ->
     console.log err if err
     process.exit()
