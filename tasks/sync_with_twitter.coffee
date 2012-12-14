@@ -15,7 +15,7 @@ saveTwitterInfo = (space, callback) ->
         info =
           $set:
             twitter_id: body.id
-        db.spaces.update {name: space.name}, info, (err) ->
+        db.spaces.update {id: space.id}, info, (err) ->
           if err
             console.log err
           else
@@ -37,6 +37,6 @@ query =
   ]
 
 
-db.spaces.find query, (err, spaces) ->
+db.spaces.find(query).limit 20, (err, spaces) ->
   async.forEach spaces, saveTwitterInfo, (err) ->
     process.exit()
