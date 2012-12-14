@@ -31,6 +31,11 @@ query =
   twitter_handle:
     $exists: true
     $ne: null
+  $or:
+    twitter_id: null
+    twitter_id:
+      $exists: false
+
 
 db.spaces.find query, (err, spaces) ->
   console.log spaces

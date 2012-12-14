@@ -10,7 +10,7 @@ query =
     q: '[[Category:Hackerspace]][[Twitter::+]]'
     po: '?Twitter'
     'p[format]': 'json'
-    limit: 30
+    limit: 900
 
 spaceId = (name) ->
   name.toLowerCase()
@@ -19,25 +19,25 @@ spaceId = (name) ->
     .replace(/-$/, '')
 
 extractTwitterHandle = (url) ->
-  if url.indexOf('twitter.com') != -1
-    console.log url
-    url.match(/[^\/]+(?=(\/$)|$)/)[0]
+  if url.indexOf('tter.com') != -1
+    url.match(/[^\/@]+(?=(\/$)|$)/)[0]
+  else if url.indexOf('/') == -1
+    url.match(/[^:@]+$/)[0]
   else
+    console.log "unable to extract handle from #{url}"
     null
 
 syncSpace = (space) ->
   id = spaceId space.label
   twitter = extractTwitterHandle space.twitter
-  console.log twitter
   update = $set: {}
   query = id: id
-  update.$set['twitter_handle'] = twitter if twitter
+  if twitter
+    update.$set['twitter_handle'] = twitter
 
   db.spaces.update query, update, {upsert: true}, (err) ->
     if err
       console.log err
-    else
-      console.log "#{id} updated"
 
 request query, (err, response, body) ->
   if err
