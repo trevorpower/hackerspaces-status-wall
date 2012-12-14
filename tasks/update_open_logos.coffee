@@ -11,10 +11,10 @@ defaultLogo = () ->
 
 openLogo = (url) ->
   gm(url)
-  .gravity('Center')
-  .background('transparent')
-  .resize(241, 108)
-  .extent(241, 108)
+    .gravity('Center')
+    .background('transparent')
+    .resize(241, 108)
+    .extent(241, 108)
 
 uploadImage = (image, id, report, callback) ->
   image.stream 'PNG', (err, dataStream, errorStream) ->
@@ -71,6 +71,6 @@ query =
     $ne: null
 
 db.spaces.find query, (err, spaces) ->
-  async.forEach spaces, saveLogo, (err) ->
+  async.forEachSeries spaces, saveLogo, (err) ->
     console.log err if err
     process.exit()
