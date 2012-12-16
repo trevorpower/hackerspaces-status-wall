@@ -1,4 +1,5 @@
 #= require tweet
+#= require vendor/jquery.timeago
 
 window.tweets = (socket) ->
 
@@ -15,6 +16,8 @@ window.tweets = (socket) ->
       .hide()
       .prependTo('#tweets ul')
       .slideDown()
+      .find('time')
+      .timeago()
     curateList()
 
   socket.on 'previous tweet', (data) ->
@@ -22,4 +25,6 @@ window.tweets = (socket) ->
       .hide()
       .appendTo('#tweets ul')
       .slideDown()
+      .find('time')
+      .timeago()
     curateList()
