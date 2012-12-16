@@ -2,13 +2,15 @@ delay = (t, f) -> setTimeout(f, t)
 
 primary1 = '#FB7A44'
 primary2 = '#BC7455'
+primary3 = '#A34016'
 complement1 = '#2EAB79'
 complement2 = '#3A8064'
+complement3 = '#0F6F48'
 complement5 = '#7FD5B2'
 
 locationColor = primary1
-openColor = complement2
-closedColor = primary2
+openColor = complement3
+closedColor = primary3
 
 markers = {}
 tweets = []
