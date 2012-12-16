@@ -66,7 +66,8 @@ window.summary = (socket) ->
       .getTime()
     span = new Date().getTime() - earliest
     rate = tweets.length / span
-    Math.round(rate * 1000 * 60 * 60)
+    hourly = rate * 1000 * 60 * 60
+    Math.min 100, Math.round(hourly)
 
   updateTweetsGauge = () ->
     tweetGauge.set tweetRate() if tweetGauge
