@@ -11,6 +11,7 @@ openColor = complement2
 closedColor = primary2
 
 markers = {}
+tweets = []
 
 createMarker = (status) ->
   statusMarker = L.circleMarker [status.lat, status.lon],
@@ -26,6 +27,12 @@ createMarker = (status) ->
 
   L.featureGroup [statusMarker, location]
 
+tweetMarker = (tweet) ->
+  L.circleMarker tweet.coordinates.coordinates.reverse(),
+    weight: 0
+    fillColor: '#114169'
+    fillOpacity: 1
+    radius: 3
 
 window.map = (socket) ->
 
@@ -49,6 +56,21 @@ window.map = (socket) ->
         markers[status.space] = createMarker(status)
           .addTo(map)
           .bindPopup(status.space)
+
+    addTweetToMap = (tweet) ->
+      if tweet.coordinates
+        marker = tweetMarker(tweet)
+        marker.addTo(map)
+        tweets.push marker
+      else
+        tweets.push null
+
+    socket.on 'previous tweet', addTweetToMap
+    socket.on 'new tweet', (data) ->
+      addTweetToMap(data)
+      map.removeLayer tweets[0] if tweets[0]
+      tweets.shift()
+   
 
     delay 1400, () ->
       layer = L.tileLayer $('link[rel=tiles]').attr('href'),
