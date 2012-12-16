@@ -3,4 +3,4 @@ li
     img(src="#{user.profile_image_url}")
     span @#{user.screen_name}
   span.text #{text}
-  span.time #{created_at}
+  time(datetime="#{created_at}") #{created_at}
