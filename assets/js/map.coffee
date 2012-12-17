@@ -1,3 +1,6 @@
+#= require vendor/leaflet.js
+#= require vendor/leaflet.markercluster.js
+
 delay = (t, f) -> setTimeout(f, t)
 
 primary1 = '#FB7A44'
