@@ -32,7 +32,10 @@ createMarker = (status) ->
     fillOpacity: 1
     radius: 5
 
+  location
   L.featureGroup [statusMarker, location]
+  #statusMarker
+  L.marker [status.lat, status.lon]
 
 tweetMarker = (tweet) ->
   L.circleMarker tweet.coordinates.coordinates.reverse(),
@@ -40,6 +43,14 @@ tweetMarker = (tweet) ->
     fillColor: '#114169'
     fillOpacity: 1
     radius: 3
+
+clusterIcon = (cluster) ->
+  size = 15 + (cluster.getChildCount() / 2.5)
+  font = 12 + (cluster.getChildCount() / 5)
+  new L.DivIcon
+    iconSize: new L.Point(size, size)
+    html: "<span style='line-height: #{size}px; font-size: #{font}px'>#{cluster.getChildCount()}</span>"
+    className: 'cluster'
 
 window.map = (socket) ->
 
@@ -55,7 +66,9 @@ window.map = (socket) ->
     $('.leaflet-control-zoom-in').html '+'
     $('.leaflet-control-zoom-out').html '-'
 
-    clusters = new L.MarkerClusterGroup()
+    clusters = new L.MarkerClusterGroup(
+      iconCreateFunction: clusterIcon
+    )
 
     socket.on 'new status', (status) ->
       if status.lat and status.lon
