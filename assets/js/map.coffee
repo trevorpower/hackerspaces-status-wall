@@ -18,6 +18,8 @@ closedColor = primary3
 markers = {}
 tweets = []
 
+clusters = null
+
 createMarker = (status) ->
   statusMarker = L.circleMarker [status.lat, status.lon],
     weight: 0
@@ -53,15 +55,17 @@ window.map = (socket) ->
     $('.leaflet-control-zoom-in').html '+'
     $('.leaflet-control-zoom-out').html '-'
 
+    clusters = new L.MarkerClusterGroup()
+
     socket.on 'new status', (status) ->
       if status.lat and status.lon
         if markers[status.space]
           map.removeLayer markers[status.space]
 
         markers[status.space] = createMarker(status)
-          .addTo(map)
+          .addTo(clusters)
           .bindPopup(status.space)
-
+        
     addTweetToMap = (tweet) ->
       if tweet.coordinates
         marker = tweetMarker(tweet)
@@ -75,10 +79,10 @@ window.map = (socket) ->
       addTweetToMap(data)
       map.removeLayer tweets[0] if tweets[0]
       tweets.shift()
-   
 
     delay 1400, () ->
       layer = L.tileLayer $('link[rel=tiles]').attr('href'),
         attributionControl: false
       layer.addTo map
+      clusters.addTo map
 
