@@ -34,7 +34,7 @@ db.spaces.find(withApi).toArray (err, apis) ->
   if err
     console.log err
   else
-    db.spaces.find(withLocation).toArray (err, locations) ->
+    db.spaces.find(withLocation, {_id: 0, location: 1}).toArray (err, locations) ->
       if err
         console.log err
       else
