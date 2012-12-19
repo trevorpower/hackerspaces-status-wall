@@ -1,6 +1,6 @@
 express = require 'express'
 
-directory_summary = null
+directory = null
 
 app = express.createServer()
 
@@ -11,7 +11,7 @@ app.configure ->
   app.set 'view options', {layout: false}
 
 app.get '/', (req, res) ->
-  res.render 'wall.jade', directory_summary
+  res.render 'wall.jade', directory
 
 app.post '/proxy', require('./proxy')
 
@@ -20,22 +20,32 @@ app.get '*', (req, res) ->
 
 db = require('mongojs') process.env.MONGO_URL, ['spaces']
 
-query =
+withApi =
   api:
     $exists: true
     $ne: null
-db.spaces.find(query).toArray (err, apis) ->
+
+withLocation =
+  location:
+    $exists: true
+    $ne: null
+
+db.spaces.find(withApi).toArray (err, apis) ->
   if err
     console.log err
   else
-    directory_summary =
-      total: apis.length
-    console.log directory_summary
-    port = process.env.PORT
-    app.listen port, () -> console.log "Listening on port #{port}"
-    io = require('socket.io').listen(app)
-    io.configure () ->
-      io.set "transports", ["xhr-polling"]
-      io.set "polling duration", 10
-      io.set "log level", 1
-    require('./events').start(io, apis)
+    db.spaces.find(withLocation, {_id: 0, location: 1}).toArray (err, locations) ->
+      if err
+        console.log err
+      else
+        directory =
+          total: apis.length
+          locations: locations
+        port = process.env.PORT
+        app.listen port, () -> console.log "Listening on port #{port}"
+        io = require('socket.io').listen(app)
+        io.configure () ->
+          io.set "transports", ["xhr-polling"]
+          io.set "polling duration", 10
+          io.set "log level", 1
+        require('./events').start(io, apis)

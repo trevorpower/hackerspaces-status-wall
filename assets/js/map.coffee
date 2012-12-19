@@ -52,6 +52,13 @@ clusterIcon = (cluster) ->
     html: "<span style='line-height: #{size}px; font-size: #{font}px'>#{cluster.getChildCount()}</span>"
     className: 'cluster'
 
+locationMarker = (space) ->
+  L.circleMarker space.location,
+    weight: 0
+    fillColor: '#EEEEEE'
+    fillOpacity: 1
+    radius: 2
+    
 window.map = (socket) ->
 
   $ ->
@@ -87,6 +94,9 @@ window.map = (socket) ->
       else
         tweets.push null
 
+    for space in locations
+      locationMarker(space).addTo(clusters)
+
     socket.on 'previous tweet', addTweetToMap
     socket.on 'new tweet', (data) ->
       addTweetToMap(data)
@@ -98,4 +108,3 @@ window.map = (socket) ->
         attributionControl: false
       layer.addTo map
       clusters.addTo map
-
