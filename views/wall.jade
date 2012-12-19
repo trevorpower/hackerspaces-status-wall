@@ -6,6 +6,7 @@ block scripts
   != js('wall')
   script(type="text/javascript")
     var total = #{total};
+    var locations = !{JSON.stringify(locations)};
 block content
   header
     h1 Global Hackerspaces Status Wall

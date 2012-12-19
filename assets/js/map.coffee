@@ -39,6 +39,13 @@ tweetMarker = (tweet) ->
     fillOpacity: 1
     radius: 3
 
+locationMarker = (space) ->
+  L.circleMarker space.location,
+    weight: 0
+    fillColor: '#EEEEEE'
+    fillOpacity: 1
+    radius: 2
+    
 window.map = (socket) ->
 
   $ ->
@@ -69,6 +76,9 @@ window.map = (socket) ->
         tweets.push marker
       else
         tweets.push null
+
+    for space in locations
+      locationMarker(space).addTo(map)
 
     socket.on 'previous tweet', addTweetToMap
     socket.on 'new tweet', (data) ->
