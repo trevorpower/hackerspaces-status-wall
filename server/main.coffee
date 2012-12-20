@@ -29,12 +29,17 @@ withLocation =
   location:
     $exists: true
     $ne: null
+locationFields =
+  _id: 0
+  id: 1
+  location: 1
+  name: 1
 
 db.spaces.find(withApi).toArray (err, apis) ->
   if err
     console.log err
   else
-    db.spaces.find(withLocation, {_id: 0, location: 1}).toArray (err, locations) ->
+    db.spaces.find(withLocation, locationFields).toArray (err, locations) ->
       if err
         console.log err
       else

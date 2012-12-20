@@ -45,22 +45,32 @@ tweetMarker = (tweet) ->
     radius: 3
 
 clusterIcon = (cluster) ->
+  markers = cluster.getAllChildMarkers()
+  total = markers.length
+  opened = markers.filter((s) -> s.space.status == true).length
+  closed = markers.filter((s) -> s.space.status == false).length
   L.divIcon
     iconSize: new L.Point(100, 30)
     html: """
-          <span class='open'>#{cluster.getChildCount()}</span>
-          <span class='total'>#{cluster.getChildCount()}</span>
-          <span class='close'>#{cluster.getChildCount()}</span>"
+          <span class='open'>#{opened}</span>
+          <span class='total'>#{total}</span>
+          <span class='close'>#{closed}</span>"
           """
     className: 'cluster'
 
-locationMarker = (space) ->
+spaceMarker = (space) ->
   marker = L.marker space.location,
     weight: 0
     fillColor: '#EEEEEE'
     fillOpacity: 1
     radius: 2
     icon: L.divIcon(html: '.', className: 'location')
+    
+spaceId = (name) ->
+  name.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-/, '')
+    .replace(/-$/, '')
     
 window.map = (socket) ->
 
@@ -81,13 +91,11 @@ window.map = (socket) ->
     )
 
     socket.on 'new status', (status) ->
-      #if status.lat and status.lon
-        #if markers[status.space]
-        #map.removeLayer markers[status.space]
-
-        #markers[status.space] = createMarker(status)
-          #.addTo(clusters)
-          #.bindPopup(status.space)
+      id = spaceId status.space
+      for location in locations
+        if location.id == id
+          location['status'] = status.open
+          break
         
     addTweetToMap = (tweet) ->
       if tweet.coordinates
@@ -98,7 +106,7 @@ window.map = (socket) ->
         tweets.push null
 
     for space in locations
-      marker = locationMarker(space)
+      marker = spaceMarker(space)
         .addTo(clusters)
       space['marker'] = marker
       marker['space'] = space
