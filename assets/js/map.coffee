@@ -48,8 +48,11 @@ clusterIcon = (cluster) ->
   size = 15 + (cluster.getChildCount() / 2.5)
   font = 12 + (cluster.getChildCount() / 5)
   new L.DivIcon
-    iconSize: new L.Point(size, size)
-    html: "<span style='line-height: #{size}px; font-size: #{font}px'>#{cluster.getChildCount()}</span>"
+    iconSize: new L.Point(size, size / 2)
+    html: "
+      <span class='open'>#{cluster.getChildCount()}</span>
+      <span class='total'>#{cluster.getChildCount()}</span>
+      <span class='close'>#{cluster.getChildCount()}</span>"
     className: 'cluster'
 
 locationMarker = (space) ->
