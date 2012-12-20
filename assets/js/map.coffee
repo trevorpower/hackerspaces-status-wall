@@ -20,22 +20,22 @@ tweets = []
 
 clusters = null
 
-createMarker = (status) ->
-  statusMarker = L.circleMarker [status.lat, status.lon],
-    weight: 0
-    fillColor: if status.open then openColor else closedColor
-    fillOpacity: 1
-    radius: if status.open then 14 else 11
-  location = L.circleMarker [status.lat, status.lon],
-    weight: 0
-    fillColor: '#FFFFFF'
-    fillOpacity: 1
-    radius: 5
-
-  location
-  L.featureGroup [statusMarker, location]
+#createMarker = (status) ->
+  #statusMarker = L.circleMarker [status.lat, status.lon],
+  #  weight: 0
+  #  fillColor: if status.open then openColor else closedColor
+  #  fillOpacity: 1
+  #  radius: if status.open then 14 else 11
+  #location = L.circleMarker [status.lat, status.lon],
+  #  weight: 0
+  #  fillColor: '#FFFFFF'
+  #  fillOpacity: 1
+  #  radius: 5
+  #
+  #location
+  #L.featureGroup [statusMarker, location]
   #statusMarker
-  L.marker [status.lat, status.lon]
+  #L.marker [status.lat, status.lon]
 
 tweetMarker = (tweet) ->
   L.circleMarker tweet.coordinates.coordinates.reverse(),
@@ -45,22 +45,22 @@ tweetMarker = (tweet) ->
     radius: 3
 
 clusterIcon = (cluster) ->
-  size = 15 + (cluster.getChildCount() / 2.5)
-  font = 12 + (cluster.getChildCount() / 5)
-  new L.DivIcon
-    iconSize: new L.Point(size, size / 2)
-    html: "
-      <span class='open'>#{cluster.getChildCount()}</span>
-      <span class='total'>#{cluster.getChildCount()}</span>
-      <span class='close'>#{cluster.getChildCount()}</span>"
+  L.divIcon
+    iconSize: new L.Point(100, 30)
+    html: """
+          <span class='open'>#{cluster.getChildCount()}</span>
+          <span class='total'>#{cluster.getChildCount()}</span>
+          <span class='close'>#{cluster.getChildCount()}</span>"
+          """
     className: 'cluster'
 
 locationMarker = (space) ->
-  L.circleMarker space.location,
+  marker = L.marker space.location,
     weight: 0
     fillColor: '#EEEEEE'
     fillOpacity: 1
     radius: 2
+    icon: L.divIcon(html: '.', className: 'location')
     
 window.map = (socket) ->
 
@@ -81,13 +81,13 @@ window.map = (socket) ->
     )
 
     socket.on 'new status', (status) ->
-      if status.lat and status.lon
-        if markers[status.space]
-          map.removeLayer markers[status.space]
+      #if status.lat and status.lon
+        #if markers[status.space]
+        #map.removeLayer markers[status.space]
 
-        markers[status.space] = createMarker(status)
-          .addTo(clusters)
-          .bindPopup(status.space)
+        #markers[status.space] = createMarker(status)
+          #.addTo(clusters)
+          #.bindPopup(status.space)
         
     addTweetToMap = (tweet) ->
       if tweet.coordinates
@@ -98,7 +98,10 @@ window.map = (socket) ->
         tweets.push null
 
     for space in locations
-      locationMarker(space).addTo(clusters)
+      marker = locationMarker(space)
+        .addTo(clusters)
+      space['marker'] = marker
+      marker['space'] = space
 
     socket.on 'previous tweet', addTweetToMap
     socket.on 'new tweet', (data) ->
@@ -106,7 +109,7 @@ window.map = (socket) ->
       map.removeLayer tweets[0] if tweets[0]
       tweets.shift()
 
-    delay 1400, () ->
+    delay 1000, () ->
       layer = L.tileLayer $('link[rel=tiles]').attr('href'),
         attributionControl: false
       layer.addTo map
