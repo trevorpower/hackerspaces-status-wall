@@ -61,12 +61,6 @@ spaceMarker = (space) ->
   marker = L.marker space.location,
     icon: icon(space)
     
-spaceId = (name) ->
-  name.toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-/, '')
-    .replace(/-$/, '')
-    
 window.map = (socket) ->
 
   $ ->
@@ -86,9 +80,8 @@ window.map = (socket) ->
     )
 
     socket.on 'new status', (status) ->
-      id = spaceId status.space
       for location in locations
-        if location.id == id
+        if location.id == status.id
           location['status'] = status.open
           marker = location['marker']
           clusters.removeLayer marker

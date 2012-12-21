@@ -17,6 +17,8 @@ module.exports = (concurrency, request) ->
         else
           current = statuses[space.id] || {open: null}
 
+          status['id'] = space.id
+
           if hasChanged(status, current)
             callback(status)
 
