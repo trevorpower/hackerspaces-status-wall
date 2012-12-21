@@ -68,16 +68,16 @@
     width: 14px;
     height: 14px;
     display: block;
-    border-radius: 7px;
+    border-radius: 9px;
   }
   .location.open {
-    border-radius: 9px;
-    border: solid 4px #0F6F48;
+    border-radius: 11px;
+    border: solid 6px #0F6F48;
   }
 
   .location.closed {
-    border-radius: 9px;
-    border: solid 4px #A34016;
+    border-radius: 11px;
+    border: solid 6px #A34016;
   }
 
   .cluster {
@@ -85,9 +85,9 @@
     font-family: 'Cantora One', sans-serif;
     text-align: center; 
     .number(@size) {
-      font-size: @size + 7px;
-      width: @size * 2 + 14px;
-      height: @size * 2 + 14px;
+      font-size: @size + 10px;
+      width: @size * 2 + 15px;
+      height: @size * 2 + 15px;
       line-height: @size * 2 + 14px;
       display: inline-block;
       border-radius: @size + 8px;
@@ -109,23 +109,25 @@
       background-color: #A34016;
       position: relative;
     }
-    .zero {
-      display: none;
-    }
-    .one { .number(0); }
-    .two { .number(1); }
-    .three { .number(2); }
-    .five { .number(3); }
-    .eight { .number(4); }
-    .thirteen { .number(5); }
-    .twentyone { .number(6); }
-    .thirtyfour { .number(7); }
-    .fiftyfive { .number(8); }
-    .eightynine { .number(9); }
-    .onefourfour { .number(10); }
-    .twothreethree { .number(11); }
-    .threesevenseven { .number(12); }
-    .thousand { .number(13); }
+    .size0 { display: none; }
+    .size1 { .number(0); }
+    .size2 { .number(1); }
+    .size3 { .number(2); }
+    .size4 { .number(3); }
+    .size5 { .number(4); }
+    .size6 { .number(5); }
+    .size7 { .number(6); }
+    .size8 { .number(7); }
+    .size9 { .number(8); }
+    .size10 { .number(9); }
+    .size11 { .number(10); }
+    .size12 { .number(11); }
+    .size13 { .number(12); }
+    .size14 { .number(13); }
+    .size15 { .number(14); }
+    .size16 { .number(15); }
+    .size17 { .number(16); }
+    .size18 { .number(17); }
   }
 }
 

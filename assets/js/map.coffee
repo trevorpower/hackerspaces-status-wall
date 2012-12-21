@@ -15,27 +15,8 @@ locationColor = primary1
 openColor = complement3
 closedColor = primary3
 
-markers = {}
 tweets = []
-
 clusters = null
-
-#createMarker = (status) ->
-  #statusMarker = L.circleMarker [status.lat, status.lon],
-  #  weight: 0
-  #  fillColor: if status.open then openColor else closedColor
-  #  fillOpacity: 1
-  #  radius: if status.open then 14 else 11
-  #location = L.circleMarker [status.lat, status.lon],
-  #  weight: 0
-  #  fillColor: '#FFFFFF'
-  #  fillOpacity: 1
-  #  radius: 5
-  #
-  #location
-  #L.featureGroup [statusMarker, location]
-  #statusMarker
-  #L.marker [status.lat, status.lon]
 
 tweetMarker = (tweet) ->
   L.circleMarker tweet.coordinates.coordinates.reverse(),
@@ -44,24 +25,10 @@ tweetMarker = (tweet) ->
     fillOpacity: 1
     radius: 3
 
-sizeName = (num) ->
-  switch num
-    when 0 then 'zero'
-    when 1 then 'one'
-    when 2 then 'two'
-    when 3 then 'three'
-    else
-      if num <= 5 then 'five'
-      else if num <= 8 then 'eight'
-      else if num <= 13 then 'thirteen'
-      else if num <= 21 then 'twentyone'
-      else if num <= 34 then 'thirtyfour'
-      else if num <= 55 then 'fiftyfive'
-      else if num <= 89 then 'eightynine'
-      else if num <= 144 then 'onefourfour'
-      else if num <= 233 then 'twothreethree'
-      else if num <= 377 then 'threesevenseven'
-      else 'thousand'
+sizeIndex = (num) ->
+  fibs = [0,1,2,3,4,5,8,13,21,34,55,89,144,233,377,610,987,1597]
+  for fib, index in fibs
+    return index if num <= fib
     
 clusterIcon = (cluster) ->
   markers = cluster.getAllChildMarkers()
@@ -69,11 +36,11 @@ clusterIcon = (cluster) ->
   opened = markers.filter((s) -> s.space.status == true).length
   closed = markers.filter((s) -> s.space.status == false).length
   L.divIcon
-    iconSize: new L.Point(82, 24)
+    iconSize: new L.Point(98, 24)
     html: """
-          <span class='open #{sizeName opened}'>#{opened}</span>
-          <span class='total #{sizeName total}'>#{total}</span>
-          <span class='close #{sizeName closed}'>#{closed}</span>
+          <span class='open size#{sizeIndex opened}'>#{opened}</span>
+          <span class='total size#{sizeIndex total}'>#{total}</span>
+          <span class='close size#{sizeIndex closed}'>#{closed}</span>
           """
     className: 'cluster'
 
