@@ -69,7 +69,7 @@ clusterIcon = (cluster) ->
   opened = markers.filter((s) -> s.space.status == true).length
   closed = markers.filter((s) -> s.space.status == false).length
   L.divIcon
-    iconSize: new L.Point(78, 24)
+    iconSize: new L.Point(82, 24)
     html: """
           <span class='open #{sizeName opened}'>#{opened}</span>
           <span class='total #{sizeName total}'>#{total}</span>
@@ -77,9 +77,22 @@ clusterIcon = (cluster) ->
           """
     className: 'cluster'
 
+locationClass =
+  unknown: 'location'
+  open: 'location open'
+  closed: 'location closed'
+
+icon = (space) ->
+  L.divIcon
+    html: ''
+    className: switch space.status
+      when true then 'location open'
+      when false then 'location closed'
+      else 'location'
+
 spaceMarker = (space) ->
   marker = L.marker space.location,
-    icon: L.divIcon(html: '', className: 'location')
+    icon: icon(space)
     
 spaceId = (name) ->
   name.toLowerCase()
@@ -110,8 +123,10 @@ window.map = (socket) ->
       for location in locations
         if location.id == id
           location['status'] = status.open
-          clusters.removeLayer location['marker']
-          clusters.addLayer location['marker']
+          marker = location['marker']
+          clusters.removeLayer marker
+          marker.setIcon icon(location)
+          clusters.addLayer marker
           break
         
     addTweetToMap = (tweet) ->
