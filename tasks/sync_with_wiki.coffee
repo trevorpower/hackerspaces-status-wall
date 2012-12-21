@@ -6,6 +6,10 @@ db = mongojs process.env.MONGO_URL, ['spaces']
 
 spaceId = (name) ->
   name.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '')
+
+spaceSlug = (name) ->
+  name.toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-/, '')
     .replace(/-$/, '')
@@ -30,6 +34,8 @@ syncSpace = (space) ->
   update =
     $set:
       name: space.label
+      slug: spaceSlug space.label
+      synced: new Date()
   query = id: id
 
   twitter = extractTwitterHandle space.twitter

@@ -17,7 +17,7 @@ update_space = (space, callback) ->
     json: true,
     (err, res, body) ->
       if err
-        console.log "error for #{space.id}: #{err}"
+        console.log "error for #{space.slug}: #{err}"
         callback()
       else
         info =
@@ -26,7 +26,7 @@ update_space = (space, callback) ->
             twitter_handle: screenName(body)
             logo: body.logo
         db.spaces.update space, info, (err) ->
-          console.log "#{space.id} synced"
+          console.log "#{space.slug} synced"
           callback()
 
 query =

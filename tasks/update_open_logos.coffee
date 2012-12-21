@@ -56,13 +56,10 @@ upload = (url, id, report, callback) ->
   catch ex
     report ex
 
-clientId = (name) ->
-  name.toLowerCase().replace /[^a-z0-9]+/g, '-'
-
 saveLogo = (space, callback) ->
   report = (info) -> console.log "#{space.name}: #{info}"
-  url = "#{process.env.LOGO_BASE_URL}#{clientId(space.name)}"
-  id = "/open/#{clientId(space.name)}"
+  url = "#{process.env.LOGO_BASE_URL}#{space.slug}"
+  id = "/open/#{space.slug}"
   upload url, id, report, callback
 
 query =

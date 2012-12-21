@@ -27,13 +27,10 @@ upload = (url, id, report, callback) ->
   catch ex
     report ex
 
-clientId = (name) ->
-  name.toLowerCase().replace /[^a-z0-9]+/g, '-'
-
 saveLogo = (space, callback) ->
   report = (info) -> console.log "#{space.name}: #{info}"
   if space.logo
-    id = "/original/#{clientId(space.name)}"
+    id = "/original/#{space.slug}"
     upload space.logo, id, report, callback
   else
     report "no URL"
