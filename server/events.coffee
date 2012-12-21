@@ -18,8 +18,8 @@ exports.start = (io, apis) ->
         console.log "replay status for #{status.space}"
         socket.emit 'new status', status
 
-  #twitter.listen (tweet) ->
-  #  io.sockets.emit 'new tweet', tweet
+  twitter.listen (tweet) ->
+    io.sockets.emit 'new tweet', tweet
 
   poller.listen apis, (status) ->
     console.log "new status for #{status.space}"
