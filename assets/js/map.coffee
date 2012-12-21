@@ -44,17 +44,36 @@ tweetMarker = (tweet) ->
     fillOpacity: 1
     radius: 3
 
+sizeName = (num) ->
+  switch num
+    when 0 then 'zero'
+    when 1 then 'one'
+    when 2 then 'two'
+    when 3 then 'three'
+    else
+      if num <= 5 then 'five'
+      else if num <= 8 then 'eight'
+      else if num <= 13 then 'thirteen'
+      else if num <= 21 then 'twentyone'
+      else if num <= 34 then 'thirtyfour'
+      else if num <= 55 then 'fiftyfive'
+      else if num <= 89 then 'eightynine'
+      else if num <= 144 then 'onefourfour'
+      else if num <= 233 then 'twothreethree'
+      else if num <= 377 then 'threesevenseven'
+      else 'thousand'
+    
 clusterIcon = (cluster) ->
   markers = cluster.getAllChildMarkers()
   total = markers.length
   opened = markers.filter((s) -> s.space.status == true).length
   closed = markers.filter((s) -> s.space.status == false).length
   L.divIcon
-    iconSize: new L.Point(100, 30)
+    iconSize: new L.Point(78, 24)
     html: """
-          <span class='open'>#{opened}</span>
-          <span class='total'>#{total}</span>
-          <span class='close'>#{closed}</span>"
+          <span class='open #{sizeName opened}'>#{opened}</span>
+          <span class='total #{sizeName total}'>#{total}</span>
+          <span class='close #{sizeName closed}'>#{closed}</span>
           """
     className: 'cluster'
 

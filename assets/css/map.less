@@ -1,7 +1,6 @@
 .map(@textcolor, @color1, @color2, @color3, @color4, @color5) {
-
   .section(@color1, @color2, @color3);
-
+  
   @height: 400px;
 
   padding: 0px;
@@ -68,16 +67,48 @@
     color: @textcolor;
     font-family: 'Cantora One', sans-serif;
     text-align: center; 
+    .number(@size) {
+      font-size: @size + 7px;
+      width: @size * 2 + 14px;
+      height: @size * 2 + 14px;
+      line-height: @size * 2 + 14px;
+      display: inline-block;
+      border-radius: @size + 8px;
+      vertical-align: middle;
+      margin: 0px;
+      padding: 0px;
+      margin-left: -3px;
+      margin-right: -3px;
+    }
     .total {
       background-color: @textcolor;
       color: @color3;
     }
     .open {
-      background-color: #0F6F48
+      background-color: #0F6F48;
+      position: relative;
     }
     .close {
-      background-color: #A34016
+      background-color: #A34016;
+      position: relative;
     }
+    .zero {
+      display: none;
+    }
+    .one { .number(0); }
+    .two { .number(1); }
+    .three { .number(2); }
+    .five { .number(3); }
+    .eight { .number(4); }
+    .thirteen { .number(5); }
+    .twentyone { .number(6); }
+    .thirtyfour { .number(7); }
+    .fiftyfive { .number(8); }
+    .eightynine { .number(9); }
+    .onefourfour { .number(10); }
+    .twothreethree { .number(11); }
+    .threesevenseven { .number(12); }
+    .thousand { .number(13); }
   }
 }
 
