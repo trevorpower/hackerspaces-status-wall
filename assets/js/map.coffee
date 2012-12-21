@@ -79,11 +79,7 @@ clusterIcon = (cluster) ->
 
 spaceMarker = (space) ->
   marker = L.marker space.location,
-    weight: 0
-    fillColor: '#EEEEEE'
-    fillOpacity: 1
-    radius: 2
-    icon: L.divIcon(html: '.', className: 'location')
+    icon: L.divIcon(html: '', className: 'location')
     
 spaceId = (name) ->
   name.toLowerCase()
@@ -127,6 +123,7 @@ window.map = (socket) ->
     for space in locations
       marker = spaceMarker(space)
         .addTo(clusters)
+        .bindPopup(space.name)
       space['marker'] = marker
       marker['space'] = space
 
