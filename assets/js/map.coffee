@@ -110,6 +110,8 @@ window.map = (socket) ->
       for location in locations
         if location.id == id
           location['status'] = status.open
+          clusters.removeLayer location['marker']
+          clusters.addLayer location['marker']
           break
         
     addTweetToMap = (tweet) ->
