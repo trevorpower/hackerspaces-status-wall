@@ -18,7 +18,7 @@ extractTwitterHandle = (url) ->
   return null unless url
 
   if url.indexOf('tter.com') != -1
-    url.match(/[^\/@]+(?=(\/$)|$)/)[0]
+    url.match(/[^\/@#]+(?=(\/$)|$)/)[0]
   else if url.indexOf('/') == -1
     url.match(/[^:@]+$/)[0]
   else

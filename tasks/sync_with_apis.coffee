@@ -11,6 +11,10 @@ screenName = (status) ->
   else
     name
 
+extractLocation = (status) ->
+  return null unless status.lon and status.lat
+  [status.lat, status.lon]
+
 update_space = (space, callback) ->
   request
     uri: space.api
@@ -25,6 +29,10 @@ update_space = (space, callback) ->
             name: body.space
             twitter_handle: screenName(body)
             logo: body.logo
+
+        location = extractLocation body
+        info.$set['location'] = location if location
+
         db.spaces.update space, info, (err) ->
           console.log "#{space.slug} synced"
           callback()
