@@ -1,4 +1,3 @@
-createDirectory = require '../lib/directory'
 request = require 'request'
 
 db = require('mongojs') process.env.MONGO_URL, ['spaces']
