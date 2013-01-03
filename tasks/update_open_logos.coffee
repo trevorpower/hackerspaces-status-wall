@@ -2,7 +2,7 @@ request = require 'request'
 async = require 'async'
 
 store =
-  if s3.bucket
+  if process.env.S3_BUCKET
     console.log "Using S3 storage - #{s3.bucket}"
     require('../lib/s3')
   else

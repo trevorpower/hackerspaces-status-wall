@@ -10,6 +10,7 @@ store =
     console.log 'Using local storage'
     require('../local/store')
 
+console.log store
 request = require 'request'
 
 db = mongojs process.env.MONGO_URL, ['spaces']
