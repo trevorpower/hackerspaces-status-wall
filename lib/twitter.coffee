@@ -1,42 +1,38 @@
 twitter = require 'ntwitter'
+mongojs = require 'mongojs'
+
 twit = new twitter
   consumer_key: process.env.TWITTER_CONSUMER_KEY
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET
   access_token_key: process.env.TWITTER_ACCESS_TOKEN
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 
-database = require('../database/database') require('../database/settings/production')
+db = mongojs process.env.MONGO_URL, ['spaces', 'tweets']
 
 getTwitterIds = (callback) ->
-  database.connect (err, db) ->
-    if err
-      callback err
-    else
-      console.log 'connected to db'
-      db.command
-        distinct: "tweeps"
-        key: "user.id",
-        (err, result) ->
-          if err
-            callback err
-          else
-            callback err, result.values
+  query =
+    twitter_id:
+      $exists: true
+      $ne: null
+
+  db.spaces.find query, twitter_id: true, (err, ids) ->
+    console.log err if err
+    callback err, ids.map((result) -> result.twitter_id)
 
 exports.listen = (callback) ->
   getTwitterIds (err, ids) ->
+    console.log "following #{ids.length} accounts on twitter"
     twit.stream 'statuses/filter', {follow: ids}, (stream) ->
       stream.on 'error', (data) ->
         console.log data
       stream.on 'data', (data) ->
         return if data.disconnect?
         callback data
-        database.connect 'tweets', (err, db, tweets) ->
-          tweets.insert data if !err
+        db.tweets.insert data
 
 exports.recent = (max, callback) ->
-  database.connect 'tweets', (err, db, tweets) ->
-    tweets
-      .find(disconnect: {$exists: false})
-      .sort($natural: -1)
-      .limit(max)
-      .each(callback)
+  db.tweets.find()
+    .sort($natural: -1)
+    .limit max, (err, tweets) ->
+      for tweet in tweets
+        callback null, tweet

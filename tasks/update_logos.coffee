@@ -1,7 +1,6 @@
-database = require('../database/database') require('../database/settings/production')
-
+request = require 'request'
+mongojs = require 'mongojs'
 async = require 'async'
-query = require '../lib/logo_urls'
 
 store =
   if process.env.S3_BUCKET
@@ -13,16 +12,7 @@ store =
 
 request = require 'request'
 
-latest = (collection, callback) ->
-  collection
-    .find()
-    .sort({$natural: -1})
-    .limit(1)
-    .toArray (err, list) ->
-      if err
-        callback err
-      else
-        callback err, list[0]
+db = mongojs process.env.MONGO_URL, ['spaces']
 
 upload = (url, id, report, callback) ->
   report "downloading '#{url}'"
@@ -46,37 +36,25 @@ upload = (url, id, report, callback) ->
   catch ex
     report ex
 
-update_logos = (db, directories, callback) ->
+saveLogo = (space, callback) ->
+  report = (info) -> console.log "#{space.name}: #{info}"
+  if space.logo
+    id = "/original/#{space.slug}"
+    upload space.logo, id, report, callback
+  else
+    report "no URL"
+    callback()
 
-  clientId = (name) ->
-    name.toLowerCase().replace /[^a-z0-9]+/g, '-'
+query =
+  logo:
+    $exists: true
+    $ne: null
 
-  saveLogo = (space, callback) ->
-    report = (info) -> console.log "#{space.name}: #{info}"
-    if space.url
-      id = "/original/#{clientId(space.name)}"
-      upload space.url, id, report, callback
-    else
-      report "no URL"
-      callback()
-
-  latest directories, (err, directory) ->
-    if err
-      callback err
-    else
-      console.log "directory found for #{directory.date}"
-      names = for name, value of directory.spaces
-        name
-      query db, names, (err, urls) ->
-        spaces = for name, url of urls
-          name: name, url: url
-        async.forEach spaces, saveLogo, callback
-
-database.connect 'directories', (err, db, directories) ->
+db.spaces.find query, (err, spaces) ->
   if err
     console.log err
     process.exit()
   else
-    update_logos db, directories, (err) ->
-      console.log err
+    async.forEach spaces, saveLogo, (err) ->
+      console.log err if err
       process.exit()

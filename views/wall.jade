@@ -4,10 +4,9 @@ block scripts
   link(href=process.env.LOGO_BASE_URL, rel="logos")
   link(href=process.env.MAP_BASE_URL, rel="tiles")
   != js('wall')
-  link(rel="stylesheet",href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css")
-  script(src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js")
   script(type="text/javascript")
     var total = #{total};
+    var locations = !{JSON.stringify(locations)};
 block content
   header
     h1 Global Hackerspaces Status Wall
@@ -26,12 +25,19 @@ block content
   section#about
     h1 About
     :markdown
-      Various [hackerspaces](http://en.wikipedia.org/wiki/Hackerspace) from
-      around the world implement the
-      [HackerSpace Status API](http://hackerspaces.nl/spaceapi/) and make
-      the endpoint available on the web.
-      This API is designed to make information about the space available
-      for consumption by other software.
-      
-      This page uses a directory of such endpoints and combines information
-      in various ways to produce the above content.
+      This page shows **real-time** status information for
+      [hackerspaces](http://en.wikipedia.org/wiki/Hackerspace)
+      from around the world.
+
+      Information about global hackerspaces is periodically pulled from the
+      following sources:
+
+      + [Hackerspace Status API Directory](http://hackerspaces.nl/spaceapi/)
+      + [Individual hackerspace implemented status APIs](http://hackerspaces.nl/spaceapi/)
+      + [The Hackerspace Wiki](http://hackerspaces.org)
+
+      This page updates in real-time with information from the following
+      sources:
+
+      + [Individual hackerspace implemented status APIs](http://hackerspaces.nl/spaceapi/)
+      + [Twitter](http://twitter.com)

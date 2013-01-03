@@ -12,23 +12,25 @@ module.exports = (concurrency, request) ->
     poll = (space, done) ->
       request space.url, (err, status) ->
         if err
-          console.log "error for #{space.name}: #{err}"
+          console.log "error for #{space.id}: #{err}"
           done()
         else
-          current = statuses[space.name] || {open: null}
+          current = statuses[space.id] || {open: null}
+
+          status['id'] = space.id
 
           if hasChanged(status, current)
             callback(status)
 
-          statuses[space.name] = status
+          statuses[space.id] = status
 
           done()
 
     queue = require('async').queue(poll, concurrency)
     
     queue_spaces = (directory) ->
-      for name, url of directory
-        queue.push {name: name, url: url}
+      for space in directory
+        queue.push {id: space.id, url: space.api}
 
     queue_spaces directory
 

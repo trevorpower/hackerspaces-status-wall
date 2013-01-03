@@ -1,6 +1,8 @@
-directory =
-  milklabs: "http://milklabs.ie"
-  tog: "http://tog.ie"
+directory = [
+  {id: 'miLKlabs', api: "http://milklabs.ie"},
+  {id: 'TOG', api: "http://tog.ie"}
+]
+
 states = null
 poller = null
 events = null
