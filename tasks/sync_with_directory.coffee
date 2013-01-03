@@ -1,11 +1,10 @@
 request = require 'request'
+async = require 'async'
 
 db = require('mongojs') process.env.MONGO_URL, ['spaces']
 
-console.log 'requesting directory'
-
-complete = (status) ->
-  console.log status
+complete = (err) ->
+  console.log err if err
   process.exit()
 
 id = (name) ->
@@ -17,7 +16,8 @@ slug = (name) ->
     .replace(/^-/, '')
     .replace(/-$/, '')
 
-syncSpace = (name, url) ->
+syncSpace = (space, callback) ->
+  [name, url] = space
   query = id: id(name)
   update =
     $set:
@@ -26,10 +26,10 @@ syncSpace = (name, url) ->
       api: url
       synced: new Date()
   db.spaces.update query, update, {upsert: true}, (err) ->
-    if err
-      console.log err
-    else
-      console.log "#{name} updated"
+    console.log err if err
+    callback()
+
+console.log 'requesting directory'
 
 request
   uri: "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
@@ -39,5 +39,10 @@ request
       complete err
     else
       console.log 'reply recieved'
-      for name, url of body
-        syncSpace name, url
+      spaces = for name, url of body
+        [name, url]
+      console.log "#{spaces.length} spaces in directory"
+      async.forEachSeries spaces, syncSpace, (err) ->
+        console.log "directory sync complete"
+        complete err
+
