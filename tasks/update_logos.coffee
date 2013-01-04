@@ -19,6 +19,7 @@ module.exports = (callback) ->
       download = request url
 
       download.on 'error', report
+      download.on 'error', () -> callback()
       download.on 'end', () -> report "complete"
 
       download.on 'response', (source) ->
@@ -34,7 +35,7 @@ module.exports = (callback) ->
           report "source result #{source.statusCode}"
           callback()
     catch ex
-      report ex
+      report "exception: #{ex}"
       callback()
 
   saveLogo = (space, callback) ->
