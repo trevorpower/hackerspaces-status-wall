@@ -1,82 +1,83 @@
 request = require 'request'
 async = require 'async'
 
-store =
-  if process.env.S3_BUCKET
-    console.log "Using S3 storage - #{s3.bucket}"
-    require('../lib/s3')
-  else
-    console.log 'Using local storage'
-    require('../local/store')
-
-mongojs = require 'mongojs'
-
-gm = require 'gm'
-
-db = mongojs process.env.MONGO_URL, ['spaces']
-
-defaultLogo = () ->
-  gm(241, 108, 'transparent')
-
-openLogo = (url) ->
-  gm(url)
-    .gravity('Center')
-    .background('transparent')
-    .resize(241, 108)
-    .extent(241, 108)
-
-uploadImage = (image, id, report, callback) ->
-  image.stream 'PNG', (err, dataStream, errorStream) ->
-    if err
-      callback arr
+module.exports = (callback) ->
+  store =
+    if process.env.S3_BUCKET
+      console.log "Using S3 storage - #{process.env.S3_BUCKET}"
+      require('../lib/s3')
     else
+      console.log 'Using local storage'
+      require('../local/store')
 
-      imageBuffer = new Buffer(1000000)
-      imageSize = 0
-      dataStream.on 'data', (data) ->
-        data.copy(imageBuffer, imageSize)
-        imageSize += data.length
+  mongojs = require 'mongojs'
 
-      errorBuffer = new Buffer(10000)
-      errorSize = 0
-      errorStream.on 'data', (data) ->
-        data.copy(errorBuffer, errorSize)
-        errorSize += data.length
+  gm = require 'gm'
 
-      dataStream.on 'end', (err) ->
-        if errorSize
-          callback(errorBuffer)
-        else
-          headers =
-            'x-amz-acl': 'public-read'
-            'Content-Type': 'image/png'
-          store.putBuffer(imageBuffer.slice(0, imageSize), id, headers, callback)
-            .on('error', report)
+  db = mongojs process.env.MONGO_URL, ['spaces']
 
-upload = (url, id, report, callback) ->
-  try
-    report url
-    uploadImage openLogo(url), id, report, (err) ->
+  defaultLogo = () ->
+    gm(241, 108, 'transparent')
+
+  openLogo = (url) ->
+    gm(url)
+      .gravity('Center')
+      .background('transparent')
+      .resize(241, 108)
+      .extent(241, 108)
+
+  uploadImage = (image, id, report, callback) ->
+    image.stream 'PNG', (err, dataStream, errorStream) ->
       if err
-        report "cutom logo failed, uploading defualt logo"
-        uploadImage defaultLogo(), id, report, callback
+        callback arr
       else
-        callback()
-  catch ex
-    report ex
 
-saveLogo = (space, callback) ->
-  report = (info) -> console.log "#{space.name}: #{info}"
-  url = "#{process.env.LOGO_BASE_URL}#{space.slug}"
-  id = "/open/#{space.slug}"
-  upload url, id, report, callback
+        imageBuffer = new Buffer(1000000)
+        imageSize = 0
+        dataStream.on 'data', (data) ->
+          data.copy(imageBuffer, imageSize)
+          imageSize += data.length
 
-query =
-  logo:
-    $exists: true
-    $ne: null
+        errorBuffer = new Buffer(10000)
+        errorSize = 0
+        errorStream.on 'data', (data) ->
+          data.copy(errorBuffer, errorSize)
+          errorSize += data.length
 
-db.spaces.find query, (err, spaces) ->
-  async.forEachSeries spaces, saveLogo, (err) ->
-    console.log err if err
-    process.exit()
+        dataStream.on 'end', (err) ->
+          if errorSize
+            callback(errorBuffer)
+          else
+            headers =
+              'x-amz-acl': 'public-read'
+              'Content-Type': 'image/png'
+            store.putBuffer(imageBuffer.slice(0, imageSize), id, headers, callback)
+              .on('error', report)
+
+  upload = (url, id, report, callback) ->
+    try
+      report url
+      uploadImage openLogo(url), id, report, (err) ->
+        if err
+          report "cutom logo failed, uploading defualt logo"
+          uploadImage defaultLogo(), id, report, callback
+        else
+          callback()
+    catch ex
+      report ex
+
+  saveLogo = (space, callback) ->
+    report = (info) -> console.log "#{space.name}: #{info}"
+    url = "#{process.env.LOGO_BASE_URL}#{space.slug}"
+    id = "/open/#{space.slug}"
+    upload url, id, report, callback
+
+  query =
+    logo:
+      $exists: true
+      $ne: null
+
+  db.spaces.find query, (err, spaces) ->
+    async.forEachSeries spaces, saveLogo, (err) ->
+      console.log err if err
+      callback()
