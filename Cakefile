@@ -5,6 +5,8 @@ syncWiki = require './tasks/sync_with_wiki'
 syncApis = require './tasks/sync_with_apis'
 syncTwitter = require './tasks/sync_with_twitter'
 
+updateLogos = require './tasks/update_logos'
+
 task 'sync:directory', 'sync with the api directory', () ->
   syncDirectory () -> process.exit()
 
@@ -16,6 +18,9 @@ task 'sync:apis', 'sync with status apis', () ->
 
 task 'sync:twitter', 'sync with twitter', () ->
   syncTwitter () -> process.exit()
+
+task 'sync:logos', 'update stored logos', () ->
+  updateLogos () -> process.exit()
 
 task 'sync:all', 'sync with all sources', () ->
   async.series [
