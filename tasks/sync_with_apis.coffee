@@ -2,47 +2,50 @@ request = require 'request'
 mongojs = require 'mongojs'
 async = require 'async'
 
-db = mongojs process.env.MONGO_URL, ['spaces']
+module.exports = (callback) ->
+  db = mongojs process.env.MONGO_URL, ['spaces']
 
-screenName = (status) ->
-  name = status.contact?.twitter
-  if name and name[0] == '@'
-    name.substring 1
-  else
-    name
+  screenName = (status) ->
+    name = status.contact?.twitter
+    if name and name[0] == '@'
+      name.substring 1
+    else
+      name
 
-extractLocation = (status) ->
-  return null unless status.lon and status.lat
-  [status.lat, status.lon]
+  extractLocation = (status) ->
+    return null unless status.lon and status.lat
+    [status.lat, status.lon]
 
-update_space = (space, callback) ->
-  request
-    uri: space.api
-    json: true,
-    (err, res, body) ->
-      if err
-        console.log "error for #{space.slug}: #{err}"
-        callback()
-      else
-        info =
-          $set:
-            name: body.space
-            twitter_handle: screenName(body)
-            logo: body.logo
-
-        location = extractLocation body
-        info.$set['location'] = location if location
-
-        db.spaces.update space, info, (err) ->
-          console.log "#{space.slug} synced"
+  update_space = (space, callback) ->
+    request
+      uri: space.api
+      json: true,
+      (err, res, body) ->
+        if err
+          console.log "error for #{space.slug}: #{err}"
           callback()
+        else
+          info =
+            $set:
+              name: body.space
+              twitter_handle: screenName(body)
+              logo: body.logo
 
-query =
-  api:
-    $exists: true
-    $ne: null
-    
-db.spaces.find query, (err, spaces) ->
-  async.forEach spaces, update_space, (err) ->
-    console.log err if err
-    process.exit()
+          location = extractLocation body
+          info.$set['location'] = location if location
+
+          db.spaces.update space, info, (err) ->
+            console.log "#{space.slug} synced"
+            callback()
+
+  query =
+    api:
+      $exists: true
+      $ne: null
+
+  console.log "syncing to status APIs"
+
+  db.spaces.find query, (err, spaces) ->
+    async.forEach spaces, update_space, (err) ->
+      console.log err if err
+      callback()
