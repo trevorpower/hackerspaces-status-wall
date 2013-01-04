@@ -32,8 +32,10 @@ module.exports = (callback) ->
             .on('error', report)
         else
           report "source result #{source.statusCode}"
+          callback()
     catch ex
       report ex
+      callback()
 
   saveLogo = (space, callback) ->
     report = (info) -> console.log "#{space.name}: #{info}"
