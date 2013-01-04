@@ -1,48 +1,50 @@
 request = require 'request'
 async = require 'async'
 
-db = require('mongojs') process.env.MONGO_URL, ['spaces']
+module.exports = (callback) ->
 
-complete = (err) ->
-  console.log err if err
-  process.exit()
+  db = require('mongojs') process.env.MONGO_URL, ['spaces']
 
-id = (name) ->
-  name.toLowerCase().replace /[^a-z0-9]+/g, ''
-
-slug = (name) ->
-  name.toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-/, '')
-    .replace(/-$/, '')
-
-syncSpace = (space, callback) ->
-  [name, url] = space
-  query = id: id(name)
-  update =
-    $set:
-      name: name
-      slug: slug name
-      api: url
-      synced: new Date()
-  db.spaces.update query, update, {upsert: true}, (err) ->
+  complete = (err) ->
     console.log err if err
     callback()
 
-console.log 'requesting directory'
+  id = (name) ->
+    name.toLowerCase().replace /[^a-z0-9]+/g, ''
 
-request
-  uri: "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
-  json: true,
-  (err, res, body) ->
-    if err
-      complete err
-    else
-      console.log 'reply recieved'
-      spaces = for name, url of body
-        [name, url]
-      console.log "#{spaces.length} spaces in directory"
-      async.forEachSeries spaces, syncSpace, (err) ->
-        console.log "directory sync complete"
+  slug = (name) ->
+    name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-/, '')
+      .replace(/-$/, '')
+
+  syncSpace = (space, callback) ->
+    [name, url] = space
+    query = id: id(name)
+    update =
+      $set:
+        name: name
+        slug: slug name
+        api: url
+        synced: new Date()
+    db.spaces.update query, update, {upsert: true}, (err) ->
+      console.log err if err
+      callback()
+
+  console.log 'requesting directory'
+
+  request
+    uri: "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+    json: true,
+    (err, res, body) ->
+      if err
         complete err
+      else
+        console.log 'reply recieved'
+        spaces = for name, url of body
+          [name, url]
+        console.log "#{spaces.length} spaces in directory"
+        async.forEachSeries spaces, syncSpace, (err) ->
+          console.log "directory sync complete"
+          complete err
 
