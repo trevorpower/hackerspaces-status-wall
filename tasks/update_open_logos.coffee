@@ -68,7 +68,7 @@ module.exports = (callback) ->
 
   saveLogo = (space, callback) ->
     report = (info) -> console.log "#{space.name}: #{info}"
-    url = "#{process.env.LOGO_BASE_URL}#{space.slug}"
+    url = "#{process.env.LOGO_BASE_URL}original/#{space.slug}"
     id = "/open/#{space.slug}"
     upload url, id, report, callback
 
