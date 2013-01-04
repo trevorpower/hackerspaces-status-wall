@@ -32,16 +32,17 @@ module.exports = (callback) ->
       if err
         callback arr
       else
-
-        imageBuffer = new Buffer(1000000)
+        imageBuffer = new Buffer(400000)
         imageSize = 0
         dataStream.on 'data', (data) ->
+          report 'data'
           data.copy(imageBuffer, imageSize)
           imageSize += data.length
 
         errorBuffer = new Buffer(10000)
         errorSize = 0
         errorStream.on 'data', (data) ->
+          report 'error'
           data.copy(errorBuffer, errorSize)
           errorSize += data.length
 
