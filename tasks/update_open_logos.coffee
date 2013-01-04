@@ -27,6 +27,7 @@ module.exports = (callback) ->
       .extent(241, 108)
 
   uploadImage = (image, id, report, callback) ->
+    report id
     image.stream 'PNG', (err, dataStream, errorStream) ->
       if err
         callback arr
@@ -55,16 +56,13 @@ module.exports = (callback) ->
               .on('error', report)
 
   upload = (url, id, report, callback) ->
-    try
-      report url
-      uploadImage openLogo(url), id, report, (err) ->
-        if err
-          report "cutom logo failed, uploading defualt logo"
-          uploadImage defaultLogo(), id, report, callback
-        else
-          callback()
-    catch ex
-      report ex
+    report url
+    uploadImage openLogo(url), id, report, (err) ->
+      if err
+        report "custom logo failed, uploading defualt logo"
+        uploadImage defaultLogo(), id, report, callback
+      else
+        callback()
 
   saveLogo = (space, callback) ->
     report = (info) -> console.log "#{space.name}: #{info}"
