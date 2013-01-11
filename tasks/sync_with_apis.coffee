@@ -12,6 +12,12 @@ module.exports = (callback) ->
     else
       name
 
+  slug = (name) ->
+    name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-/, '')
+      .replace(/-$/, '')
+
   extractLocation = (status) ->
     return null unless status.lon and status.lat
     [status.lat, status.lon]
@@ -29,6 +35,7 @@ module.exports = (callback) ->
             $set:
               name: body.space
               twitter_handle: screenName(body)
+              slug: slug body.space
               logo: body.logo
 
           location = extractLocation body

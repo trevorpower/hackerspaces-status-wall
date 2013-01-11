@@ -48,7 +48,7 @@ module.exports = (callback) ->
 
         dataStream.on 'end', (err) ->
           if errorSize
-            callback(errorBuffer)
+            callback errorBuffer.toString()
           else
             headers =
               'x-amz-acl': 'public-read'
