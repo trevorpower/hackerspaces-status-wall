@@ -30,7 +30,7 @@ module.exports = (callback) ->
     report id
     image.stream 'PNG', (err, dataStream, errorStream) ->
       if err
-        callback arr
+        callback err
       else
         imageBuffer = new Buffer(400000)
         imageSize = 0
@@ -43,12 +43,13 @@ module.exports = (callback) ->
         errorSize = 0
         errorStream.on 'data', (data) ->
           report 'error'
+          report data
           data.copy(errorBuffer, errorSize)
           errorSize += data.length
 
         dataStream.on 'end', (err) ->
           if errorSize
-            callback errorBuffer.toString()
+            callback errorBuffer
           else
             headers =
               'x-amz-acl': 'public-read'
