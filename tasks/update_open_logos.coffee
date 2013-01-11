@@ -12,7 +12,7 @@ module.exports = (callback) ->
 
   mongojs = require 'mongojs'
 
-  gm = require('gm').subClass imageMagic: true
+  gm = require('gm').subClass imageMagick: true
 
   db = mongojs process.env.MONGO_URL, ['spaces']
 
