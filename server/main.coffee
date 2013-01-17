@@ -13,8 +13,6 @@ app.configure ->
 app.get '/', (req, res) ->
   res.render 'wall.jade', directory
 
-app.post '/proxy', require('./proxy')
-
 app.get '*', (req, res) ->
   res.redirect '/'
 
