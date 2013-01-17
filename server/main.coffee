@@ -8,6 +8,7 @@ app.configure ->
   app.use require('connect-assets')
     jsCompilers: require('./jade-assets')
   app.use express.bodyParser()
+  app.use express.favicon(__dirname + '/../logo.ico')
   app.set 'view options', {layout: false}
 
 app.get '/', (req, res) ->
