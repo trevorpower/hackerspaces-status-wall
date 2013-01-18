@@ -34,6 +34,7 @@ module.exports = (callback) ->
           info =
             $set:
               name: body.space
+              web: body.url
               twitter_handle: screenName(body)
               slug: slug body.space
               logo: body.logo
