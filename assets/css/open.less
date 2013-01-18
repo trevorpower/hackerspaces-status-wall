@@ -9,8 +9,8 @@
   ul {
     margin: 0px;
     padding: 3px;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 22px;
+    padding-bottom: 22px;
     vertical-align: top;
     text-align: center;
  
@@ -20,45 +20,48 @@
       vertical-align: top;
       margin: 4px;
       padding: 0px;
-      width: @width;
-      height: @height;
       position: relative;
       text-align: center;
       background-color: @color4;
       border-radius: 5px;
-
-      .name {
-        font-family: 'Cantora One', sans-serif;
-        font-size: 16pt;
-        color: @color3;
-        display: block;
-        text-align: center;
+      a {
         width: @width;
-        height: 23px;
-        padding: 2px;
-        padding-top: 5px;
-      }
-
-      img {
-        max-width: @width - 18;
-        max-height: 108px;
+        height: @height;
         display: block;
-        margin: auto;
-        vertical-align: middle;
-      }
+        text-decoration: none;
+        .name {
+          font-family: 'Cantora One', sans-serif;
+          font-size: 16pt;
+          color: @color3;
+          display: block;
+          text-align: center;
+          width: @width;
+          height: 23px;
+          padding: 2px;
+          padding-top: 5px;
+        }
 
-      .status {
-        display: block;
-        padding: 0px 1px;
-        bottom: 0px;
-        text-align: center;
-        width: @width - 2;
-        position: absolute;
-        color: @color3;
-        background-color: fade(@color5, 80%);
-        border-radius: 0px 0px 5px 5px;
+        img {
+          max-width: @width - 18;
+          max-height: 108px;
+          display: block;
+          margin: auto;
+          vertical-align: middle;
+          border: none;
+        }
+
+        .status {
+          display: block;
+          padding: 0px 1px;
+          bottom: 0px;
+          text-align: center;
+          width: @width - 2;
+          position: absolute;
+          color: @color3;
+          background-color: fade(@color5, 80%);
+          border-radius: 0px 0px 5px 5px;
+        }
       }
     }
-
   }
 }
