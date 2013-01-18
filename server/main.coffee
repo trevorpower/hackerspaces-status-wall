@@ -33,6 +33,7 @@ locationFields =
   id: 1
   location: 1
   name: 1
+  web: 1
 
 db.spaces.find(withApi).toArray (err, apis) ->
   if err

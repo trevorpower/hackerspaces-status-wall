@@ -47,6 +47,9 @@ module.exports = (callback) ->
     if location
       update.$set['location'] = location
 
+    if space.website
+      update.$set['web'] = space.website
+
     db.spaces.update query, update, {upsert: true}, (err) ->
       #console.log "'#{space.label}' synced"
       console.log err if err
@@ -58,7 +61,7 @@ module.exports = (callback) ->
       json: true
       qs:
         q: '[[Category:Hackerspace]][[Hackerspace status::!planned]]'
-        po: '?Twitter\n?Location'
+        po: '?Twitter\n?Location\n?Website'
         'p[format]': 'json'
         limit: limit
         offset: offset

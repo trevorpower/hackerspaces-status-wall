@@ -1,5 +1,6 @@
 #= require vendor/leaflet.js
 #= require vendor/leaflet.markercluster.js
+#= require map_marker
 
 delay = (t, f) -> setTimeout(f, t)
 
@@ -100,7 +101,7 @@ window.map = (socket) ->
     for space in locations
       marker = spaceMarker(space)
         .addTo(clusters)
-        .bindPopup(space.name)
+        .bindPopup(map_marker(space))
       space['marker'] = marker
       marker['space'] = space
 
