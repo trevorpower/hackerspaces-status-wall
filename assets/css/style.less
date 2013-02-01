@@ -1,7 +1,7 @@
 @import "vendor/leaflet";
 
 @import "headerfooter";
-@import "summary";
+@import "dashboard";
 @import "map";
 @import "tweets";
 @import "open";
@@ -28,8 +28,8 @@ body {
   .open(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
 
-#summary {
-  .summary(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
+#dashboard {
+  .dashboard(@secondarya1, @secondarya2, @secondarya3, @secondarya4, @secondarya5);
 }
 
 #map {
@@ -52,7 +52,7 @@ body {
   body {
     > header, > footer { .headerfootersmall(); }
   }
-  #summary { .summary-small(); .sectionsmall(); }
+  #dashboard { .dashboard-small(); .sectionsmall(); }
   #map { .map-small(); .sectionsmall(); }
   #tweets { .tweetssmall(); .sectionsmall(); }
   #open { .sectionsmall(); }

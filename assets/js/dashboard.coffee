@@ -15,11 +15,11 @@ gaugeOptions =
 openGauge = null
 tweetGauge = null
 
-window.summary = (socket) ->
+window.dashboard = (socket) ->
 
   setupOpenGauge = () ->
     gauge = $ gaugeTemplate(id: 'openTotal', title: 'Open Spaces')
-    gauge.appendTo '#summary'
+    gauge.appendTo '#dashboard'
     gauge.children('.min').html '0'
     gauge.children('.max').html "#{total}"
 
@@ -31,7 +31,7 @@ window.summary = (socket) ->
 
   setupTweetGauge = () ->
     gauge = $ gaugeTemplate(id: 'tweetRate', title: 'Tweets per Hour')
-    gauge.appendTo '#summary'
+    gauge.appendTo '#dashboard'
     gauge.children('.min').html '0'
     gauge.children('.max').html '100'
 

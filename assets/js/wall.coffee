@@ -5,14 +5,14 @@
 #= require open
 #= require map
 #= require tweets
-#= require summary
+#= require dashboard
 
 socket = io.connect '/'
 
 openSpaces socket
 tweets socket
 map socket
-summary socket
+dashboard socket
 
 $ ->
   socket.emit 'replay statuses'
