@@ -17,7 +17,7 @@ module.exports = (concurrency, request) ->
         else
           current = statuses[space.id] || {open: null}
 
-          status['id'] = space.id
+          status['slug'] = space.slug
 
           if hasChanged(status, current)
             callback(status)
@@ -30,7 +30,10 @@ module.exports = (concurrency, request) ->
     
     queue_spaces = (directory) ->
       for space in directory
-        queue.push {id: space.id, url: space.api}
+        queue.push
+          id: space.id
+          url: space.api
+          slug: space.slug
 
     queue_spaces directory
 
