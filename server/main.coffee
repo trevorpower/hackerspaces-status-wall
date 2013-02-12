@@ -30,7 +30,7 @@ withLocation =
     $ne: null
 locationFields =
   _id: 0
-  id: 1
+  slug: 1
   location: 1
   name: 1
   web: 1

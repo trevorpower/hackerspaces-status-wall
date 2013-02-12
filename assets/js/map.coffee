@@ -82,7 +82,7 @@ window.map = (socket) ->
 
     socket.on 'new status', (status) ->
       for location in locations
-        if location.id == status.id
+        if location.slug == status.slug
           location['status'] = status.open
           marker = location['marker']
           clusters.removeLayer marker
