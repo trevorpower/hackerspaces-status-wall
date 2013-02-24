@@ -36,7 +36,6 @@ module.exports = (callback) ->
               name: body.space
               web: body.url
               twitter_handle: screenName(body)
-              slug: slug body.space
               logo: body.logo
 
           location = extractLocation body
