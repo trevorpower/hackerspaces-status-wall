@@ -17,12 +17,15 @@ module.exports = (concurrency, request) ->
         else
           current = statuses[space.id] || {open: null}
 
-          status['slug'] = space.slug
+          try
+            status['slug'] = space.slug
 
-          if hasChanged(status, current)
-            callback(status)
+            if hasChanged(status, current)
+              callback(status)
 
-          statuses[space.id] = status
+            statuses[space.id] = status
+          catch ex
+            console.log "error processing #{space.id}: #{ex}"
 
           done()
 
