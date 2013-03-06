@@ -4,6 +4,7 @@ syncDirectory = require './tasks/sync_with_directory'
 syncWiki = require './tasks/sync_with_wiki'
 syncApis = require './tasks/sync_with_apis'
 syncTwitter = require './tasks/sync_with_twitter'
+clean = require './tasks/clean_spaces'
 
 updateLogos = require './tasks/update_logos'
 updateOpenLogos = require './tasks/update_open_logos'
@@ -20,6 +21,9 @@ task 'sync:apis', 'sync with status apis', () ->
 task 'sync:twitter', 'sync with twitter', () ->
   syncTwitter () -> process.exit()
 
+task 'clean', 'clean old spaces', () ->
+  clean () -> process.exit()
+
 task 'logos:original', 'update stored logos', () ->
   updateLogos () -> process.exit()
 
@@ -33,6 +37,7 @@ task 'sync:all', 'sync with all sources', () ->
       syncApis,
       syncTwitter,
       updateLogos,
-      updateOpenLogos
+      updateOpenLogos,
+      clean
     ], () -> process.exit()
 
