@@ -31,27 +31,27 @@ module.exports = (callback) ->
     [location.lat, location.lon]
 
   syncSpace = (space, callback) ->
-    id = spaceId space.label
+    id = spaceId space.name
     update =
       $set:
-        name: space.label
-        slug: spaceSlug space.label
+        name: space.name
+        slug: spaceSlug space.name
         synced: new Date()
     query = id: id
 
-    twitter = extractTwitterHandle space.twitter
+    twitter = extractTwitterHandle space.details.Twitter[0]
     if twitter
       update.$set['twitter_handle'] = twitter
 
-    location = extractLocation space.location
+    location = extractLocation space.details.Location[0]
     if location
       update.$set['location'] = location
 
-    if space.website
-      update.$set['web'] = space.website
+    if space.details.Website[0]
+      update.$set['web'] = space.details.Website[0]
 
     db.spaces.update query, update, {upsert: true}, (err) ->
-      #console.log "'#{space.label}' synced"
+      console.log "'#{space.name}' synced"
       console.log err if err
       callback()
 
@@ -70,8 +70,12 @@ module.exports = (callback) ->
       if err
         console.log err
       else
-        async.forEachSeries body.items, syncSpace, () ->
-          if body.items.length == limit
+        spaces = for name, details of body.results
+          name: details.fulltext,
+          details: details.printouts
+        
+        async.forEachSeries spaces, syncSpace, () ->
+          if spaces.length == limit
             syncSpaces offset + limit, limit, callback
           else
             callback()
