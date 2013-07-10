@@ -1,41 +1,49 @@
-request = require 'request'
+twitter = require 'ntwitter'
+
+twit = new twitter
+  consumer_key: process.env.TWITTER_CONSUMER_KEY
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+
 mongojs = require 'mongojs'
 async = require 'async'
-
-twitterApi = "http://api.twitter.com/1/users/show.json"
 
 module.exports = (callback) ->
   db = mongojs process.env.MONGO_URL, ['spaces']
    
-  saveTwitterInfo = (space, callback) ->
-    request
-      uri: "#{twitterApi}?screen_name=#{space.twitter_handle}"
-      json: true,
-      (err, res, body) ->
-        if res.statusCode == 200
-          info =
-            $set:
-              twitter_id: body.id
-          db.spaces.update {id: space.id}, info, (err) ->
-            if err
-              console.log err
-            else
-              console.log "@#{space.twitter_handle} -> #{body.id}"
-            callback()
-        else
-          console.log "@#{space.twitter_handle}"
-          console.log "#{res.statusCode}: #{err} - #{space.name}"
-          console.log body
-          callback()
+  saveTwitterInfo = (user, callback) ->
+    info =
+      $set:
+        twitter_id: user.id
+    query =
+      twitter_handle:
+        $regex: user.screen_name
+        $options: 'i'
+    db.spaces.update query, info, (err) ->
+      if err
+        console.log err
+      else
+        console.log "@#{user.screen_name} -> #{user.id}"
+      callback()
 
   query =
-    twitter_handle:
-      $exists: true
-      $ne: null
-    $or: [
-      { twitter_id: null },
-      { twitter_id: {$exists: false} }
-    ]
+    distinct: 'spaces'
+    key: 'twitter_handle'
+    query:
+      twitter_handle:
+        $exists: true
+        $ne: null
+      $or: [
+        { twitter_id: null },
+        { twitter_id: {$exists: false} }
+      ]
 
-  db.spaces.find(query).limit 20, (err, spaces) ->
-    async.forEach spaces, saveTwitterInfo, callback
+  db.command query, (err, spaces) ->
+    handles = spaces.values.slice(0, 90)
+    console.log handles
+    twit.showUser handles, (err, result) ->
+      if err
+        console.log err
+      else
+        async.forEach result, saveTwitterInfo, callback
