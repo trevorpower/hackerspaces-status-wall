@@ -70,14 +70,13 @@ module.exports = (callback) ->
       if err
         console.log err
       else
-        spaces = for name, details of body.results
-          name: details.fulltext,
-          details: details.printouts
-        
-        async.forEachSeries spaces, syncSpace, () ->
-          if spaces.length == limit
+        if body
+          spaces = for name, details of body.results
+            name: details.fulltext,
+            details: details.printouts
+          async.forEachSeries spaces, syncSpace, () ->
             syncSpaces offset + limit, limit, callback
-          else
-            callback()
+        else
+          callback()
 
   syncSpaces 0, 100, callback
