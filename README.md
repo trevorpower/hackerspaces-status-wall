@@ -1,6 +1,6 @@
 Hackerspaces Status Wall
 ========================
-Shows the status of hackerspaces that implement the [hackerspace status API](https://hackerspaces.nl/spaceapi/).
+Shows the status of hackerspaces that implement the [hackerspace status API](https://spaceapi.net).
 It uses a directory API to find the available endpoints.
 Displays recent tweets from the spaces.
 
