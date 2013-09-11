@@ -14,6 +14,9 @@ app.configure ->
 app.get '/', (req, res) ->
   res.render 'wall.jade', directory
 
+app.get '/log', (req, res) ->
+  res.render 'log.jade', directory
+
 app.get '*', (req, res) ->
   res.redirect '/'
 
