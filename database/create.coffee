@@ -11,4 +11,5 @@ module.exports = (db, data, callback) ->
             done()
       else
         done()
+
   async.forEach collections, createCommand, callback

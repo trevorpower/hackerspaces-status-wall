@@ -1,9 +1,11 @@
 request = require 'request'
 async = require 'async'
 
+directory = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+
 module.exports = (callback) ->
 
-  db = require('mongojs') process.env.MONGO_URL, ['spaces']
+  db = require('mongojs') process.env.MONGO_URL, ['spaces', 'events']
 
   complete = (err) ->
     console.log err if err
@@ -32,12 +34,24 @@ module.exports = (callback) ->
       callback()
 
   console.log 'requesting directory'
+  db.events.insert
+    date: new Date()
+    activity: "Directory Sync"
+    event: "Started"
+    details: directory
+    priority: "info"
 
   request
-    uri: "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+    uri: directory
     json: true,
     (err, res, body) ->
       if err
+        db.events.insert
+          date: new Date()
+          activity: "Directory Sync"
+          event: "Error"
+          details: err
+          priority: "error"
         complete err
       else
         console.log 'reply recieved'
@@ -46,5 +60,11 @@ module.exports = (callback) ->
         console.log "#{spaces.length} spaces in directory"
         async.forEachSeries spaces, syncSpace, (err) ->
           console.log "directory sync complete"
+          db.events.insert
+            date: new Date()
+            activity: "Directory Sync"
+            event: "Complete"
+            details: directory
+            priority: "info"
           complete err
 
