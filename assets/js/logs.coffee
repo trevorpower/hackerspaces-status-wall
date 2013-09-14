@@ -1,0 +1,4 @@
+#= event
+
+window.logs = () ->
+
