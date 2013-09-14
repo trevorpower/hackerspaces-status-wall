@@ -2,4 +2,39 @@
 
   .section(@color1, @color2, @color3);
 
+  color: @textcolor;
+
+  ul {
+    margin: 0px;
+    padding: 20px;
+    li {
+      border-left: 6px solid @color4;
+      list-style-type: none;
+      position: relative;
+      margin: 0px;
+      padding: 20px;
+      padding-left: 10px;
+      margin-top: 10px;
+      height: 92px;
+      background: @color2;
+      .details {
+        line-height: 150%;
+        width: 200px;
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        .activity {
+          font-weight: bold; 
+        }
+      }
+      .content {
+        margin-left: 210px;
+        overflow: hidden;
+      }
+    }
+    .error {
+      border-left: 6px solid @primary4;
+    }
+  }
+
 }

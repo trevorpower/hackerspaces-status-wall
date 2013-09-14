@@ -13,7 +13,3 @@ $ ->
     .done (data) ->
       $.each data, (i, e) ->
         model.events.push e
-    .fail () ->
-      alert "fail"
-
-
