@@ -8,7 +8,9 @@ block content
     h1 Events
     ul(data-bind="foreach: events")
       li(data-bind="css: priority")
-        span.event(data-bind="text: activity")
-        span.date(data-bind="text: date")
-        span.event(data-bind="text: event")
-        span.details(data-bind="text: details")
+        .details
+          .activity(data-bind="text: activity")
+          .event(data-bind="text: event")
+          .date(data-bind="text: new Date(date).toLocaleDateString()")
+          .time(data-bind="text: new Date(date).toLocaleTimeString()")
+        .content(data-bind="text: details")
