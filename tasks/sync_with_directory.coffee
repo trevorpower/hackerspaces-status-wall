@@ -50,7 +50,7 @@ module.exports = (callback) ->
           date: new Date()
           activity: "Directory Sync"
           event: "Error"
-          details: err
+          details: JSON.stringify(err)
           priority: "error"
         complete err
       else

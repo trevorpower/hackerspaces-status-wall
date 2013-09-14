@@ -1,9 +1,14 @@
 extends layout
 
 block scripts
+  != js('logs')
 
 block content
   section#events
     h1 Events
     ul(data-bind="foreach: events")
-      li
+      li(data-bind="css: priority")
+        span.event(data-bind="text: activity")
+        span.date(data-bind="text: date")
+        span.event(data-bind="text: event")
+        span.details(data-bind="text: details")

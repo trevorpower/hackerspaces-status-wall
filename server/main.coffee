@@ -4,6 +4,8 @@ directory = null
 
 app = express.createServer()
 
+db = require('mongojs') process.env.MONGO_URL, ['spaces', 'events']
+
 app.configure ->
   app.use require('connect-assets')
     jsCompilers: require('./jade-assets')
@@ -15,12 +17,15 @@ app.get '/', (req, res) ->
   res.render 'wall.jade', directory
 
 app.get '/log', (req, res) ->
-  res.render 'log.jade', directory
+  res.render 'log.jade'
 
+app.get '/log.json', (req, res) ->
+  db.events.find().toArray (error, events) ->
+    res.send events
+    
 app.get '*', (req, res) ->
   res.redirect '/'
 
-db = require('mongojs') process.env.MONGO_URL, ['spaces']
 
 withApi =
   api:
@@ -56,4 +61,4 @@ db.spaces.find(withApi).toArray (err, apis) ->
           io.set "transports", ["xhr-polling"]
           io.set "polling duration", 10
           io.set "log level", 1
-        require('./events').start(io, apis)
+        #require('./events').start(io, apis)
