@@ -33,7 +33,6 @@ module.exports = (callback) ->
       console.log err if err
       callback()
 
-  console.log 'requesting directory'
   db.events.insert
     date: new Date()
     activity: "Directory Sync"
@@ -57,14 +56,13 @@ module.exports = (callback) ->
         console.log 'reply recieved'
         spaces = for name, url of body
           [name, url]
-        console.log "#{spaces.length} spaces in directory"
         async.forEachSeries spaces, syncSpace, (err) ->
-          console.log "directory sync complete"
-          db.events.insert
-            date: new Date()
-            activity: "Directory Sync"
-            event: "Complete"
-            details: directory
-            priority: "info"
+          unless err
+            db.events.insert
+              date: new Date()
+              activity: "Directory Sync"
+              event: "Complete"
+              details: "#{spaces.length} spaces in directory"
+              priority: "info"
           complete err
 
