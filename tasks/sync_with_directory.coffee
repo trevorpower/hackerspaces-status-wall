@@ -1,7 +1,7 @@
 request = require 'request'
 async = require 'async'
 
-directory = "http://chasmcity.sonologic.nl/spacestatusdirectory.php"
+directory = "http://spaceapi.net/directory.json"
 
 module.exports = (callback) ->
 
