@@ -9,6 +9,6 @@ $ ->
   $.ajax('log.json')
     .done (data) ->
       $.each data, (i, e) ->
-        model.events.push e
+        model.events.unshift e
 
   ko.applyBindings model
