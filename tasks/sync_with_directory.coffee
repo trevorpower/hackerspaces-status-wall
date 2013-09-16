@@ -7,6 +7,8 @@ module.exports = (callback) ->
 
   db = require('mongojs') process.env.MONGO_URL, ['spaces', 'events']
 
+  log = require('../lib/logger') db.events, "Directory Sync"
+
   complete = (err) ->
     console.log err if err
     callback()
@@ -33,36 +35,19 @@ module.exports = (callback) ->
       console.log err if err
       callback()
 
-  db.events.insert
-    date: new Date()
-    activity: "Directory Sync"
-    event: "Started"
-    details: directory
-    priority: "info"
+  log.info "Started", "Requesting directory from '#{directory}'"
 
   request
     uri: directory
     json: true,
     (err, res, body) ->
       if err
-        db.events.insert
-          date: new Date()
-          activity: "Directory Sync"
-          event: "Error"
-          details: JSON.stringify(err)
-          priority: "error"
-        complete err
+        log.error JSON.stringify(err)
+        callback()
       else
-        console.log 'reply recieved'
         spaces = for name, url of body
           [name, url]
         async.forEachSeries spaces, syncSpace, (err) ->
           unless err
-            db.events.insert
-              date: new Date()
-              activity: "Directory Sync"
-              event: "Complete"
-              details: "#{spaces.length} spaces in directory"
-              priority: "info"
+            log.info "Complete", "#{spaces.length} spaces in directory"
           complete err
-
