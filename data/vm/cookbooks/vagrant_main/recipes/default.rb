@@ -1,0 +1,13 @@
+include_recipe "apt"
+include_recipe "google-dns"
+include_recipe "foreman"
+include_recipe "mongodb"
+include_recipe "htop"
+include_recipe "networking_basic"
+include_recipe "git"
+include_recipe "nodejs" # version 0.10.xx includes npm
+include_recipe "zsh"
+include_recipe "oh-my-zsh"
+include_recipe "users"
+include_recipe "vim"
+include_recipe "project_initializer"
